@@ -25,7 +25,7 @@ export function Header() {
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
           <span className="font-serif text-xl md:text-2xl font-semibold tracking-tight">
-            MAISON PARFUM
+            WAEL BEN YAGHLANE
           </span>
         </Link>
 
