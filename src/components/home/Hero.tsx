@@ -14,18 +14,18 @@ export function Hero() {
       
       <div className="container relative z-10 text-center px-4 py-20">
         <span className="inline-block text-xs uppercase tracking-[0.3em] text-muted-foreground mb-6 animate-fade-in">
-          The Art of Fragrance
+          Wael Ben Yaghlane
         </span>
         
         <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl font-medium tracking-tight mb-6 animate-fade-in" style={{ animationDelay: '0.1s' }}>
-          Discover Your
+          Là où chaque fragrance
           <br />
-          <span className="italic">Signature Scent</span>
+          <span className="italic">raconte une histoire</span>
         </h1>
         
         <p className="max-w-xl mx-auto text-muted-foreground text-lg mb-10 animate-fade-in" style={{ animationDelay: '0.2s' }}>
-          Explore our curated collection of the world's most exquisite fragrances, 
-          crafted by master perfumers for the discerning collector.
+          Découvrez notre collection exclusive de parfums d'exception, 
+          créés pour les amateurs de fragrances raffinées.
         </p>
         
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in" style={{ animationDelay: '0.3s' }}>
