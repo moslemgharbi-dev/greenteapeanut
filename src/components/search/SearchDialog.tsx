@@ -47,13 +47,13 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle className="font-serif">Search Fragrances</DialogTitle>
+            <DialogTitle className="font-serif">Rechercher</DialogTitle>
         </DialogHeader>
         
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Search by name or brand..."
+            placeholder="Rechercher par nom ou marque..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="pl-10"
@@ -92,9 +92,9 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
               ))}
             </div>
           ) : query.trim() ? (
-            <p className="text-center text-muted-foreground py-8">No fragrances found</p>
+            <p className="text-center text-muted-foreground py-8">Aucun parfum trouvé</p>
           ) : (
-            <p className="text-center text-muted-foreground py-8">Start typing to search</p>
+            <p className="text-center text-muted-foreground py-8">Commencez à écrire pour rechercher</p>
           )}
         </div>
       </DialogContent>

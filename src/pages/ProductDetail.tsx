@@ -36,11 +36,11 @@ export default function ProductDetail() {
         <Header />
         <main className="flex-1 flex items-center justify-center">
           <div className="text-center">
-            <h1 className="text-2xl font-serif mb-4">Product not found</h1>
+            <h1 className="text-2xl font-serif mb-4">Produit introuvable</h1>
             <Button asChild variant="outline">
               <Link to="/shop">
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to Shop
+                Retour à la boutique
               </Link>
             </Button>
           </div>
@@ -67,7 +67,7 @@ export default function ProductDetail() {
       selectedOptions: selectedVariant.selectedOptions || []
     });
     
-    toast.success('Added to bag', {
+    toast.success('Ajouté au panier', {
       description: `${product.title}${selectedVariant.title !== 'Default Title' ? ` - ${selectedVariant.title}` : ''}`,
       position: 'top-center',
     });
@@ -85,7 +85,7 @@ export default function ProductDetail() {
               className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Collection
+              Retour à la collection
             </Link>
           </nav>
 
@@ -101,7 +101,7 @@ export default function ProductDetail() {
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-muted-foreground">
-                    No image
+                    Aucune image
                   </div>
                 )}
               </div>
@@ -141,7 +141,7 @@ export default function ProductDetail() {
               {/* Variants */}
               {hasMultipleVariants && (
                 <div className="space-y-3">
-                  <label className="text-sm font-medium">Select Option</label>
+                  <label className="text-sm font-medium">Choisir une option</label>
                   <div className="flex flex-wrap gap-2">
                     {variants.map((variant) => (
                       <button
@@ -163,7 +163,7 @@ export default function ProductDetail() {
 
               {/* Quantity */}
               <div className="space-y-3">
-                <label className="text-sm font-medium">Quantity</label>
+                <label className="text-sm font-medium">Quantité</label>
                 <div className="flex items-center gap-3">
                   <Button
                     variant="outline"
@@ -194,9 +194,9 @@ export default function ProductDetail() {
                 {cartLoading ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
                 ) : !selectedVariant?.availableForSale ? (
-                  'Out of Stock'
+                  'Rupture de stock'
                 ) : (
-                  'Add to Bag'
+                  'Ajouter au panier'
                 )}
               </Button>
 
