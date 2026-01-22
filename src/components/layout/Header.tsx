@@ -29,9 +29,6 @@ export function Header() {
           <Link to="/contact" className="hover:opacity-80 transition-opacity">
             Contact
           </Link>
-          <Link to="/blog" className="hover:opacity-80 transition-opacity">
-            Blog
-          </Link>
           <Link to="/maison" className="hover:opacity-80 transition-opacity">
             Maison Wael Ben Yaghlane
           </Link>
@@ -182,13 +179,6 @@ export function Header() {
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Contact
-              </Link>
-              <Link
-                to="/blog"
-                className="text-sm font-medium py-2"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Blog
               </Link>
               <Link
                 to="/maison"
