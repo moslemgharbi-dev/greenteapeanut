@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Heart, Menu, Search, User, X } from 'lucide-react';
+import { Heart, Menu, Search, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { CartDrawer } from '@/components/cart/CartDrawer';
 import { SearchDialog } from '@/components/search/SearchDialog';
@@ -25,18 +25,14 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       {/* Top bar */}
       <div className="hidden md:block bg-foreground text-background">
-        <div className="container flex h-9 items-center justify-end gap-6 text-xs tracking-wide">
-          <Link to="/about" className="hover:opacity-80 transition-opacity">
+        <div className="container flex h-9 items-center justify-start gap-6 text-xs tracking-wide">
+          <Link to="/contact" className="hover:opacity-80 transition-opacity">
             Contact
           </Link>
-          <a
-            href="#"
-            className="hover:opacity-80 transition-opacity"
-            onClick={(e) => e.preventDefault()}
-          >
+          <Link to="/blog" className="hover:opacity-80 transition-opacity">
             Blog
-          </a>
-          <Link to="/about" className="hover:opacity-80 transition-opacity">
+          </Link>
+          <Link to="/maison" className="hover:opacity-80 transition-opacity">
             Maison Wael Ben Yaghlane
           </Link>
         </div>
@@ -95,17 +91,6 @@ export function Header() {
             }}
           >
             <Heart className="h-5 w-5" />
-          </Button>
-
-          <Button
-            variant="ghost"
-            size="icon"
-            aria-label="Mon compte"
-            onClick={() => {
-              // Placeholder: pas de fonctionnalité demandée
-            }}
-          >
-            <User className="h-5 w-5" />
           </Button>
 
           <CartDrawer />
@@ -192,14 +177,21 @@ export function Header() {
 
             <div className="pt-2 border-t border-border flex flex-col">
               <Link
-                to="/about"
+                to="/contact"
                 className="text-sm font-medium py-2"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Contact
               </Link>
               <Link
-                to="/about"
+                to="/blog"
+                className="text-sm font-medium py-2"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Blog
+              </Link>
+              <Link
+                to="/maison"
                 className="text-sm font-medium py-2"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
