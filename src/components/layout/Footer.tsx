@@ -14,7 +14,7 @@ const TikTokIcon = ({ className }: { className?: string }) => (
 
 export function Footer() {
   return (
-    <footer className="border-t border-border bg-secondary/30">
+    <footer className="border-t border-border bg-foreground text-background">
       <div className="container py-12 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
@@ -22,7 +22,7 @@ export function Footer() {
             <Link to="/" className="font-serif text-xl font-semibold tracking-tight">
               WAEL BEN YAGHLANE
             </Link>
-            <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
+            <p className="mt-4 text-sm text-background/70 leading-relaxed">
               Là où chaque fragrance raconte une histoire.
             </p>
             {/* Social Media Icons */}
@@ -31,7 +31,7 @@ export function Footer() {
                 href="https://instagram.com" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-foreground transition-colors"
+                className="text-background/70 hover:text-background transition-colors"
                 aria-label="Instagram"
               >
                 <Instagram className="h-5 w-5" />
@@ -40,7 +40,7 @@ export function Footer() {
                 href="https://facebook.com" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-foreground transition-colors"
+                className="text-background/70 hover:text-background transition-colors"
                 aria-label="Facebook"
               >
                 <Facebook className="h-5 w-5" />
@@ -49,7 +49,7 @@ export function Footer() {
                 href="https://tiktok.com" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-foreground transition-colors"
+                className="text-background/70 hover:text-background transition-colors"
                 aria-label="TikTok"
               >
                 <TikTokIcon className="h-5 w-5" />
@@ -62,84 +62,109 @@ export function Footer() {
             <h4 className="font-medium text-sm uppercase tracking-wider mb-4">Boutique</h4>
             <ul className="space-y-3">
               <li>
-                <Link to="/shop" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                <Link to="/shop" className="text-sm text-background/70 hover:text-background transition-colors">
                   Tous les Parfums
                 </Link>
               </li>
               <li>
-                <Link to="/shop?category=women" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                <Link to="/shop?category=women" className="text-sm text-background/70 hover:text-background transition-colors">
                   Pour Elle
                 </Link>
               </li>
               <li>
-                <Link to="/shop?category=men" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                <Link to="/shop?category=men" className="text-sm text-background/70 hover:text-background transition-colors">
                   Pour Lui
                 </Link>
               </li>
               <li>
-                <Link to="/shop?category=new" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                <Link to="/shop?category=new" className="text-sm text-background/70 hover:text-background transition-colors">
                   Nouveautés
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Company */}
+          {/* À propos (sans Blog) */}
           <div>
             <h4 className="font-medium text-sm uppercase tracking-wider mb-4">À Propos</h4>
             <ul className="space-y-3">
               <li>
-                <Link to="/about" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  Notre Histoire
+                <Link to="/maison" className="text-sm text-background/70 hover:text-background transition-colors">
+                  La Maison
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  Contact
-                </Link>
-              </li>
-              <li>
-                <Link to="/shipping" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  Livraison & Retours
+                <Link to="/about" className="text-sm text-background/70 hover:text-background transition-colors">
+                  Notre histoire
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Newsletter */}
+          {/* Jovoy & vous */}
           <div>
-            <h4 className="font-medium text-sm uppercase tracking-wider mb-4">Restez Connecté</h4>
-            <p className="text-sm text-muted-foreground mb-4">
-              Inscrivez-vous pour des offres exclusives.
-            </p>
-            <form className="flex gap-2">
-              <input
-                type="email"
-                placeholder="Votre email"
-                className="flex-1 px-3 py-2 text-sm bg-background border border-input rounded-sm focus:outline-none focus:ring-1 focus:ring-ring"
-              />
-              <button
-                type="submit"
-                className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-sm hover:bg-primary/90 transition-colors"
-              >
-                OK
-              </button>
-            </form>
+            <h4 className="font-medium text-sm uppercase tracking-wider mb-4">Jovoy & Vous</h4>
+            <ul className="space-y-3">
+              <li>
+                <Link to="/shipping" className="text-sm text-background/70 hover:text-background transition-colors">
+                  Livraison
+                </Link>
+              </li>
+              <li>
+                <Link to="/contact" className="text-sm text-background/70 hover:text-background transition-colors">
+                  Contactez-nous
+                </Link>
+              </li>
+              <li>
+                <Link to="/faq" className="text-sm text-background/70 hover:text-background transition-colors">
+                  FAQ
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Informations générales */}
+        <div className="mt-10 grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="hidden md:block" />
+          <div className="hidden md:block" />
+          <div className="hidden md:block" />
+          <div>
+            <h4 className="font-medium text-sm uppercase tracking-wider mb-4">Informations générales</h4>
+            <ul className="space-y-3">
+              <li>
+                <Link to="/mentions-legales" className="text-sm text-background/70 hover:text-background transition-colors">
+                  Mentions légales
+                </Link>
+              </li>
+              <li>
+                <Link to="/cgv" className="text-sm text-background/70 hover:text-background transition-colors">
+                  CGV
+                </Link>
+              </li>
+              <li>
+                <Link to="/cgu" className="text-sm text-background/70 hover:text-background transition-colors">
+                  CGU
+                </Link>
+              </li>
+              <li>
+                <Link to="/confidentialite-cookies" className="text-sm text-background/70 hover:text-background transition-colors">
+                  Politique de confidentialité & Cookies
+                </Link>
+              </li>
+              <li>
+                <Link to="/parametres-cookies" className="text-sm text-background/70 hover:text-background transition-colors">
+                  Paramètres des cookies
+                </Link>
+              </li>
+            </ul>
           </div>
         </div>
 
         <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs text-background/70">
             © {new Date().getFullYear()} Wael Ben Yaghlane. Tous droits réservés.
           </p>
-          <div className="flex gap-6">
-            <Link to="/privacy" className="text-xs text-muted-foreground hover:text-foreground transition-colors">
-              Politique de Confidentialité
-            </Link>
-            <Link to="/terms" className="text-xs text-muted-foreground hover:text-foreground transition-colors">
-              Conditions d'Utilisation
-            </Link>
-          </div>
         </div>
       </div>
     </footer>

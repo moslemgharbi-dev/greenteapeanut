@@ -9,6 +9,13 @@ import Shop from "./pages/Shop";
 import ProductDetail from "./pages/ProductDetail";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import Shipping from "./pages/Shipping";
+import Faq from "./pages/Faq";
+import MentionsLegales from "./pages/MentionsLegales";
+import Cgv from "./pages/Cgv";
+import Cgu from "./pages/Cgu";
+import ConfidentialiteCookies from "./pages/ConfidentialiteCookies";
+import ParametresCookies from "./pages/ParametresCookies";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,6 +32,13 @@ function AppContent() {
         <Route path="/about" element={<About />} />
         <Route path="/maison" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/shipping" element={<Shipping />} />
+        <Route path="/faq" element={<Faq />} />
+        <Route path="/mentions-legales" element={<MentionsLegales />} />
+        <Route path="/cgv" element={<Cgv />} />
+        <Route path="/cgu" element={<Cgu />} />
+        <Route path="/confidentialite-cookies" element={<ConfidentialiteCookies />} />
+        <Route path="/parametres-cookies" element={<ParametresCookies />} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />
       </Routes>
