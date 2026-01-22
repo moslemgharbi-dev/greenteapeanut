@@ -37,9 +37,11 @@ export function CartDrawer() {
       </SheetTrigger>
       <SheetContent className="w-full sm:max-w-md flex flex-col h-full">
         <SheetHeader className="flex-shrink-0">
-          <SheetTitle className="font-serif text-xl">Shopping Bag</SheetTitle>
+          <SheetTitle className="font-serif text-xl">Panier</SheetTitle>
           <SheetDescription>
-            {totalItems === 0 ? "Your bag is empty" : `${totalItems} item${totalItems !== 1 ? 's' : ''} in your bag`}
+            {totalItems === 0
+              ? "Votre panier est vide"
+              : `${totalItems} article${totalItems !== 1 ? 's' : ''} dans votre panier`}
           </SheetDescription>
         </SheetHeader>
         
@@ -48,8 +50,8 @@ export function CartDrawer() {
             <div className="flex-1 flex items-center justify-center">
               <div className="text-center">
                 <ShoppingBag className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <p className="text-muted-foreground">Your bag is empty</p>
-                <p className="text-sm text-muted-foreground mt-1">Add some fragrances to get started</p>
+                <p className="text-muted-foreground">Votre panier est vide</p>
+                <p className="text-sm text-muted-foreground mt-1">Ajoutez des fragrances pour commencer</p>
               </div>
             </div>
           ) : (
@@ -112,12 +114,12 @@ export function CartDrawer() {
               
               <div className="flex-shrink-0 space-y-4 pt-6 border-t border-border mt-4">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">Subtotal</span>
+                  <span className="text-sm text-muted-foreground">Sous-total</span>
                   <span className="text-lg font-semibold">
                     {items[0]?.price.currencyCode || 'USD'} {totalPrice.toFixed(2)}
                   </span>
                 </div>
-                <p className="text-xs text-muted-foreground">Shipping calculated at checkout</p>
+                <p className="text-xs text-muted-foreground">Livraison calculée lors du paiement</p>
                 <Button 
                   onClick={handleCheckout} 
                   className="w-full" 
@@ -129,7 +131,7 @@ export function CartDrawer() {
                   ) : (
                     <>
                       <ExternalLink className="w-4 h-4 mr-2" />
-                      Proceed to Checkout
+                      Procéder au paiement
                     </>
                   )}
                 </Button>

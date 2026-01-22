@@ -31,13 +31,13 @@ export function Hero() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in" style={{ animationDelay: '0.3s' }}>
           <Button asChild size="lg" className="min-w-[200px]">
             <Link to="/shop">
-              Explore Collection
+              Découvrir la collection
               <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>
           <Button asChild variant="outline" size="lg" className="min-w-[200px]">
             <Link to="/about">
-              Our Story
+              Notre histoire
             </Link>
           </Button>
         </div>

@@ -13,17 +13,17 @@ export function FeaturedProducts() {
         <div className="flex items-end justify-between mb-12">
           <div>
             <span className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-3 block">
-              Our Collection
+              Notre collection
             </span>
             <h2 className="font-serif text-3xl md:text-4xl font-medium">
-              Featured Fragrances
+              Parfums en vedette
             </h2>
           </div>
           <Link 
             to="/shop" 
             className="hidden sm:flex items-center gap-2 text-sm font-medium hover:text-accent transition-colors"
           >
-            View All
+            Voir tout
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
@@ -40,9 +40,9 @@ export function FeaturedProducts() {
           </div>
         ) : (
           <div className="text-center py-16 bg-secondary/30 rounded-lg">
-            <p className="text-muted-foreground mb-2">No products in your store yet</p>
+            <p className="text-muted-foreground mb-2">Aucun produit dans votre boutique pour le moment</p>
             <p className="text-sm text-muted-foreground">
-              Tell me what perfumes you'd like to add, and I'll create them for you!
+              Dites-moi quels parfums vous souhaitez ajouter, et je les créerai pour vous.
             </p>
           </div>
         )}
@@ -52,7 +52,7 @@ export function FeaturedProducts() {
             to="/shop" 
             className="inline-flex items-center gap-2 text-sm font-medium hover:text-accent transition-colors"
           >
-            View All Products
+            Voir tous les produits
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>

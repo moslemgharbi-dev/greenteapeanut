@@ -33,7 +33,7 @@ export function ProductCard({ product }: ProductCardProps) {
       selectedOptions: firstVariant.selectedOptions || []
     });
     
-    toast.success('Added to bag', {
+    toast.success('Ajouté au panier', {
       description: node.title,
       position: 'top-center',
     });
@@ -70,7 +70,7 @@ export function ProductCard({ product }: ProductCardProps) {
             ) : (
               <>
                 <Plus className="h-4 w-4 mr-1" />
-                Quick Add
+                Ajout rapide
               </>
             )}
           </Button>
@@ -79,7 +79,7 @@ export function ProductCard({ product }: ProductCardProps) {
         {/* Out of stock badge */}
         {firstVariant && !firstVariant.availableForSale && (
           <div className="absolute top-3 left-3 px-2 py-1 bg-muted text-muted-foreground text-xs font-medium rounded-sm">
-            Out of Stock
+            Rupture de stock
           </div>
         )}
       </div>

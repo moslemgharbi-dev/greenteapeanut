@@ -17,10 +17,10 @@ export default function Shop() {
                 Collection
               </span>
               <h1 className="font-serif text-3xl md:text-4xl font-medium">
-                All Fragrances
+                Tous les parfums
               </h1>
               <p className="text-muted-foreground mt-2">
-                Explore our curated selection of luxury perfumes
+                Découvrez notre sélection de parfums d'exception
               </p>
             </div>
 

@@ -35,25 +35,25 @@ export function Header() {
             to="/shop" 
             className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
           >
-            Shop All
+            Tous les parfums
           </Link>
           <Link 
             to="/shop?category=women" 
             className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
           >
-            For Her
+            Pour elle
           </Link>
           <Link 
             to="/shop?category=men" 
             className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
           >
-            For Him
+            Pour lui
           </Link>
           <Link 
             to="/about" 
             className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
           >
-            Our Story
+            Notre histoire
           </Link>
         </nav>
 
@@ -79,28 +79,28 @@ export function Header() {
               className="text-sm font-medium py-2"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              Shop All
+              Tous les parfums
             </Link>
             <Link 
               to="/shop?category=women" 
               className="text-sm font-medium py-2"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              For Her
+              Pour elle
             </Link>
             <Link 
               to="/shop?category=men" 
               className="text-sm font-medium py-2"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              For Him
+              Pour lui
             </Link>
             <Link 
               to="/about" 
               className="text-sm font-medium py-2"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              Our Story
+              Notre histoire
             </Link>
           </div>
         </nav>
