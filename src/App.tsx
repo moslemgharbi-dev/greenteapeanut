@@ -17,6 +17,7 @@ import Cgu from "./pages/Cgu";
 import ConfidentialiteCookies from "./pages/ConfidentialiteCookies";
 import ParametresCookies from "./pages/ParametresCookies";
 import NotFound from "./pages/NotFound";
+import { PerfumeAssistantWidget } from "@/components/perfumist/PerfumeAssistantWidget";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +26,7 @@ function AppContent() {
   
   return (
     <BrowserRouter>
+      <PerfumeAssistantWidget />
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/shop" element={<Shop />} />
