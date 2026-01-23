@@ -133,4 +133,17 @@
   .animate-marquee-ltr {
     animation: marquee-ltr 28s linear infinite;
   }
+
+  @keyframes marquee-rtl {
+    from {
+      transform: translateX(0%);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  .animate-marquee-rtl {
+    animation: marquee-rtl 28s linear infinite;
+  }
 }
