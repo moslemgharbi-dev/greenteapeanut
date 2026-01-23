@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { MapPin, Phone, Clock } from 'lucide-react';
+import { MapPin, Phone, Clock, MessageCircle } from 'lucide-react';
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, 'Veuillez renseigner votre nom.').max(100, '100 caractères maximum.'),
@@ -24,6 +24,10 @@ const CONTACT = {
     '41 Rue des Salines, Tunis 1000',
   ],
   phones: ['+216 24 433 702', '+216 54 025 030'],
+  whatsapp: {
+    label: '+216 24 433 702',
+    waMeUrl: 'https://wa.me/21624433702',
+  },
   hours: [
     {
       title: 'Boutique Tunis',
@@ -113,7 +117,30 @@ export default function Contact() {
                         </a>
                       </li>
                     ))}
+                    <li className="flex gap-3">
+                      <MessageCircle className="mt-0.5 h-4 w-4 text-muted-foreground" aria-hidden="true" />
+                      <a
+                        className="text-foreground/90 hover:underline"
+                        href={CONTACT.whatsapp.waMeUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        WhatsApp : {CONTACT.whatsapp.label}
+                      </a>
+                    </li>
                   </ul>
+
+                  <div className="pt-4">
+                    <p className="text-sm font-semibold">Horaires</p>
+                    <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+                      <li>
+                        <span className="text-foreground/90">Boutique Tunis</span> : Lun–Sam 08:00–18:00 · Dim 15:00–21:00
+                      </li>
+                      <li>
+                        <span className="text-foreground/90">Boutique Kram</span> : Lun–Sam 09:00–21:00 · Dim 08:00–13:00
+                      </li>
+                    </ul>
+                  </div>
                 </section>
 
                 {/* Hours */}
