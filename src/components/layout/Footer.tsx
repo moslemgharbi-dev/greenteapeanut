@@ -42,7 +42,7 @@ export function Footer() {
               {/* Social Media Icons */}
               <div className="flex gap-4 mt-6">
                 <a 
-                  href="https://instagram.com" 
+                  href="https://www.instagram.com/ben_yaghlane_fragrance/" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="text-background/70 hover:text-background transition-colors"
@@ -51,7 +51,7 @@ export function Footer() {
                   <Instagram className="h-5 w-5" />
                 </a>
                 <a 
-                  href="https://facebook.com" 
+                  href="https://www.facebook.com/benyaghlanefragrance.24433702" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="text-background/70 hover:text-background transition-colors"
@@ -60,7 +60,7 @@ export function Footer() {
                   <Facebook className="h-5 w-5" />
                 </a>
                 <a 
-                  href="https://tiktok.com" 
+                  href="https://www.tiktok.com/@ben_yaghlanefragrance01" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="text-background/70 hover:text-background transition-colors"
