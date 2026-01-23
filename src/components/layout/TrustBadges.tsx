@@ -13,8 +13,8 @@ const BADGES: TrustBadge[] = [
     Icon: Truck,
   },
   {
-    title: "Service client 24/7",
-    description: "Toujours à votre écoute",
+    title: "Service client",
+    description: "À votre écoute 5j/7",
     Icon: Headphones,
   },
   {
