@@ -3,7 +3,7 @@ import StaticPage from "./StaticPage";
 export default function MentionsLegales() {
   return (
     <StaticPage
-      eyebrow="Informations générales"
+      eyebrow="Informations légales"
       title="Mentions légales"
       lead="Informations légales et identification de l’éditeur du site."
     >

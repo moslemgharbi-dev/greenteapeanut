@@ -3,7 +3,7 @@ import StaticPage from "./StaticPage";
 export default function ConfidentialiteCookies() {
   return (
     <StaticPage
-      eyebrow="Informations générales"
+      eyebrow="Informations légales"
       title="Politique de confidentialité & Cookies"
       lead="Comment nous traitons vos données et l’utilisation des cookies."
     >
