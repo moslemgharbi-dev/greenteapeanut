@@ -6,195 +6,107 @@ import { cn } from "@/lib/utils";
 import { Sparkles } from "lucide-react";
 import { useProducts, type ShopifyProduct } from "@/hooks/useProducts";
 import { ProductCard } from "@/components/products/ProductCard";
-import { toast } from "sonner";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
-function extractRecoHandles(text: string): string[] {
-  const match = text.match(/\n?RECO_HANDLES:\s*(.*)\s*$/m);
-  if (!match) return [];
-  const raw = match[1]?.trim();
-  if (!raw) return [];
-  return raw
-    .split(",")
-    .map((s) => s.trim())
-    .filter(Boolean)
-    .slice(0, 3);
+function normalize(s: string) {
+  return s
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .replace(/[^a-z0-9\s-]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
-async function streamPerfumist({
-  messages,
+function pickRecommendations({
   products,
-  signal,
-  onDelta,
-  onDone,
+  userText,
+  limit = 3,
 }: {
-  messages: Msg[];
-  products: Array<{ title: string; handle: string; description?: string; price?: string; currencyCode?: string }>;
-  signal: AbortSignal;
-  onDelta: (delta: string) => void;
-  onDone: () => void;
-}) {
-  const url = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/perfumist-chat`;
+  products: ShopifyProduct[];
+  userText: string;
+  limit?: number;
+}): ShopifyProduct[] {
+  const q = normalize(userText);
+  if (!products.length) return [];
 
-  const resp = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
-    },
-    body: JSON.stringify({ messages, products }),
-    signal,
-  });
+  // Simple keyword mapping (basic rule-based)
+  const keywordGroups: Record<string, string[]> = {
+    vanille: ["vanille", "vanilla", "gourmand", "caramel", "sucre"],
+    boise: ["boise", "bois", "cedre", "santal", "oud", "ambre"],
+    frais: ["frais", "fresh", "agrume", "citrus", "bergamote", "marine"],
+    floral: ["floral", "fleur", "rose", "jasmin", "iris", "tubereuse"],
+    epice: ["epice", "epices", "poivre", "cannelle", "cardamome"],
+  };
 
-  if (!resp.ok) {
-    if (resp.status === 429) throw new Error("Trop de requêtes (429). Réessaie dans quelques secondes.");
-    if (resp.status === 402) throw new Error("Crédits IA insuffisants (402). Merci d’ajouter des crédits.");
-    throw new Error(`Erreur IA (${resp.status}).`);
-  }
-  if (!resp.body) throw new Error("Flux indisponible.");
+  const desired = Object.entries(keywordGroups)
+    .filter(([, kws]) => kws.some((k) => q.includes(k)))
+    .map(([k]) => k);
 
-  const reader = resp.body.getReader();
-  const decoder = new TextDecoder();
-  let textBuffer = "";
-  let streamDone = false;
-
-  while (!streamDone) {
-    const { done, value } = await reader.read();
-    if (done) break;
-    textBuffer += decoder.decode(value, { stream: true });
-
-    let newlineIndex: number;
-    while ((newlineIndex = textBuffer.indexOf("\n")) !== -1) {
-      let line = textBuffer.slice(0, newlineIndex);
-      textBuffer = textBuffer.slice(newlineIndex + 1);
-
-      if (line.endsWith("\r")) line = line.slice(0, -1);
-      if (line.startsWith(":") || line.trim() === "") continue;
-      if (!line.startsWith("data: ")) continue;
-
-      const jsonStr = line.slice(6).trim();
-      if (jsonStr === "[DONE]") {
-        streamDone = true;
-        break;
+  const scored = products
+    .map((p) => {
+      const text = normalize(`${p.node.title} ${p.node.description ?? ""}`);
+      let score = 0;
+      // direct contains user words
+      for (const token of q.split(" ")) {
+        if (token.length < 4) continue;
+        if (text.includes(token)) score += 2;
       }
-
-      try {
-        const parsed = JSON.parse(jsonStr);
-        const content = parsed.choices?.[0]?.delta?.content as string | undefined;
-        if (content) onDelta(content);
-      } catch {
-        // Incomplete JSON split across chunks: re-buffer and wait
-        textBuffer = line + "\n" + textBuffer;
-        break;
+      // mapped keywords boost
+      for (const group of desired) {
+        for (const kw of keywordGroups[group] ?? []) {
+          if (text.includes(normalize(kw))) score += 3;
+        }
       }
-    }
-  }
+      return { p, score };
+    })
+    .sort((a, b) => b.score - a.score);
 
-  // Final flush
-  if (textBuffer.trim()) {
-    for (let raw of textBuffer.split("\n")) {
-      if (!raw) continue;
-      if (raw.endsWith("\r")) raw = raw.slice(0, -1);
-      if (raw.startsWith(":") || raw.trim() === "") continue;
-      if (!raw.startsWith("data: ")) continue;
-      const jsonStr = raw.slice(6).trim();
-      if (jsonStr === "[DONE]") continue;
-      try {
-        const parsed = JSON.parse(jsonStr);
-        const content = parsed.choices?.[0]?.delta?.content as string | undefined;
-        if (content) onDelta(content);
-      } catch {
-        // ignore leftovers
-      }
-    }
-  }
-
-  onDone();
+  const top = scored.filter((x) => x.score > 0).slice(0, limit).map((x) => x.p);
+  if (top.length) return top;
+  return scored.slice(0, limit).map((x) => x.p);
 }
 
 export function PerfumeAssistantWidget() {
   const [open, setOpen] = React.useState(false);
   const [input, setInput] = React.useState("");
   const [messages, setMessages] = React.useState<Msg[]>([]);
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [recommendedHandles, setRecommendedHandles] = React.useState<string[]>([]);
+  const [recommended, setRecommended] = React.useState<ShopifyProduct[]>([]);
 
   const { data: products = [] } = useProducts();
-  const catalog = React.useMemo(
-    () =>
-      (products ?? []).map((p) => ({
-        title: p.node.title,
-        handle: p.node.handle,
-        description: p.node.description?.slice(0, 180) || "",
-        price: p.node.priceRange?.minVariantPrice?.amount,
-        currencyCode: p.node.priceRange?.minVariantPrice?.currencyCode,
-      })),
-    [products],
-  );
-
-  const recommendedProducts = React.useMemo(() => {
-    if (!recommendedHandles.length) return [] as ShopifyProduct[];
-    const map = new Map(products.map((p) => [p.node.handle, p] as const));
-    return recommendedHandles.map((h) => map.get(h)).filter(Boolean) as ShopifyProduct[];
-  }, [products, recommendedHandles]);
-
-  const abortRef = React.useRef<AbortController | null>(null);
+  const hasProducts = products.length > 0;
 
   const close = React.useCallback(() => {
-    abortRef.current?.abort();
-    abortRef.current = null;
-    setIsLoading(false);
     setOpen(false);
   }, []);
 
   const send = React.useCallback(async () => {
     const text = input.trim();
-    if (!text || isLoading) return;
+    if (!text) return;
 
     setInput("");
-    setRecommendedHandles([]);
+    setRecommended([]);
 
     const userMsg: Msg = { role: "user", content: text };
-    const nextMsgs = [...messages, userMsg];
-    setMessages(nextMsgs);
-    setIsLoading(true);
+    setMessages((prev) => [...prev, userMsg]);
 
-    abortRef.current?.abort();
-    const controller = new AbortController();
-    abortRef.current = controller;
+    const recos = pickRecommendations({ products, userText: text, limit: 3 });
+    setRecommended(recos);
 
-    let assistantSoFar = "";
-    const upsertAssistant = (chunk: string) => {
-      assistantSoFar += chunk;
-      setMessages((prev) => {
-        const last = prev[prev.length - 1];
-        if (last?.role === "assistant") {
-          return prev.map((m, i) => (i === prev.length - 1 ? { ...m, content: assistantSoFar } : m));
-        }
-        return [...prev, { role: "assistant", content: assistantSoFar }];
-      });
+    const assistant: Msg = {
+      role: "assistant",
+      content:
+        `Très bien. Pour affiner :\n` +
+        `1) Occasion (quotidien / bureau / soirée) ?\n` +
+        `2) Plutôt (frais / floral / boisé / vanillé / épicé) ?\n` +
+        `3) Intensité (discrète / marquée) ?` +
+        (!hasProducts
+          ? `\n\nJe ne vois pas encore de produits dans la boutique pour te recommander une sélection.`
+          : `\n\nVoici une première sélection selon ce que tu as écrit :`),
     };
-
-    try {
-      await streamPerfumist({
-        messages: nextMsgs,
-        products: catalog,
-        signal: controller.signal,
-        onDelta: (chunk) => upsertAssistant(chunk),
-        onDone: () => {
-          setIsLoading(false);
-          const handles = extractRecoHandles(assistantSoFar);
-          setRecommendedHandles(handles);
-        },
-      });
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : "Erreur inconnue";
-      console.error(e);
-      setIsLoading(false);
-      toast.error("Impossible de lancer le Conseiller Parfum", { description: msg });
-    }
-  }, [catalog, input, isLoading, messages]);
+    setMessages((prev) => [...prev, assistant]);
+  }, [hasProducts, input, products]);
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") send();
@@ -231,7 +143,7 @@ export function PerfumeAssistantWidget() {
                 placeholder="Dites-nous, quel est votre parfum favori ?"
                 aria-label="Votre message"
               />
-              <Button type="button" onClick={send} disabled={isLoading || !input.trim()}>
+              <Button type="button" onClick={send} disabled={!input.trim()}>
                 Envoyer
               </Button>
             </div>
@@ -284,11 +196,11 @@ export function PerfumeAssistantWidget() {
                   </div>
                 </div>
 
-                {recommendedProducts.length > 0 && (
+                {recommended.length > 0 && (
                   <section aria-label="Recommandations" className="pt-2">
                     <p className="text-sm font-medium">Sélection recommandée</p>
                     <div className="mt-3 grid gap-4 sm:grid-cols-2">
-                      {recommendedProducts.map((p) => (
+                      {recommended.map((p) => (
                         <ProductCard key={p.node.id} product={p} />
                       ))}
                     </div>
