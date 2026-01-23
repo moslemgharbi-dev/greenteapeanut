@@ -61,8 +61,17 @@ export function Header() {
 
         {/* Brand (center) */}
         <Link to="/" className="justify-self-center text-center">
-          <span className="font-serif text-xl md:text-3xl font-semibold tracking-tight">
-            WAEL BEN YAGHLANE
+          <span className="inline-flex items-center justify-center gap-3">
+            <img
+              src="/favicon.png"
+              alt="Wael Ben Yaghlane"
+              className="h-7 w-7 md:h-9 md:w-9"
+              loading="eager"
+              decoding="async"
+            />
+            <span className="font-serif text-xl md:text-3xl font-semibold tracking-tight">
+              WAEL BEN YAGHLANE
+            </span>
           </span>
           <span className="sr-only">Accueil</span>
         </Link>
