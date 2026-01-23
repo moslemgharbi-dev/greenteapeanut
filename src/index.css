@@ -120,4 +120,17 @@
   .text-balance {
     text-wrap: balance;
   }
+
+  @keyframes marquee-ltr {
+    from {
+      transform: translateX(-50%);
+    }
+    to {
+      transform: translateX(0%);
+    }
+  }
+
+  .animate-marquee-ltr {
+    animation: marquee-ltr 28s linear infinite;
+  }
 }
