@@ -3,7 +3,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Sparkles } from "lucide-react";
+import { MessageCircleHeart } from "lucide-react";
 import { useProducts, type ShopifyProduct } from "@/hooks/useProducts";
 import { ProductCard } from "@/components/products/ProductCard";
 
@@ -119,13 +119,14 @@ export function PerfumeAssistantWidget() {
         onClick={() => setOpen(true)}
         className={cn(
           "fixed bottom-6 left-6 z-50",
-          "h-12 w-12 rounded-full bg-primary text-primary-foreground shadow-lg",
+          "h-14 w-14 rounded-full bg-primary text-primary-foreground shadow-xl",
+          "ring-2 ring-ring ring-offset-2 ring-offset-background",
           "grid place-items-center",
           "hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
         )}
         aria-label="Ouvrir le Conseiller Parfum"
       >
-        <Sparkles className="h-5 w-5" aria-hidden="true" />
+        <MessageCircleHeart className="h-6 w-6" aria-hidden="true" />
       </button>
 
       <Dialog open={open} onOpenChange={(v) => (v ? setOpen(true) : close())}>
