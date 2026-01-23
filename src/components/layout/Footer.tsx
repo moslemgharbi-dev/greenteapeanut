@@ -101,9 +101,9 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Jovoy & vous */}
+          {/* Maison Wael Ben Yaghlane & vous */}
           <div>
-            <h4 className="font-medium text-sm uppercase tracking-wider mb-4">Jovoy & Vous</h4>
+            <h4 className="font-medium text-sm uppercase tracking-wider mb-4">Maison Wael Ben Yaghlane &amp; vous</h4>
             <ul className="space-y-3">
               <li>
                 <Link to="/shipping" className="text-sm text-background/70 hover:text-background transition-colors">
@@ -124,13 +124,13 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Informations générales */}
+        {/* Informations légales */}
         <div className="mt-10 grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="hidden md:block" />
           <div className="hidden md:block" />
           <div className="hidden md:block" />
           <div>
-            <h4 className="font-medium text-sm uppercase tracking-wider mb-4">Informations générales</h4>
+            <h4 className="font-medium text-sm uppercase tracking-wider mb-4">Informations légales</h4>
             <ul className="space-y-3">
               <li>
                 <Link to="/mentions-legales" className="text-sm text-background/70 hover:text-background transition-colors">
