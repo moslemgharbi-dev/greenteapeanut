@@ -131,7 +131,7 @@
   }
 
   .animate-marquee-ltr {
-    animation: marquee-ltr 28s linear infinite;
+    animation: marquee-ltr 45s linear infinite;
   }
 
   @keyframes marquee-rtl {
@@ -144,6 +144,6 @@
   }
 
   .animate-marquee-rtl {
-    animation: marquee-rtl 28s linear infinite;
+    animation: marquee-rtl 45s linear infinite;
   }
 }
