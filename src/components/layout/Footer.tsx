@@ -205,7 +205,7 @@ export function Footer() {
           </div>
 
           {/* Desktop: Grid layout */}
-          <div className="hidden md:grid grid-cols-4 gap-8">
+          <div className="hidden md:grid grid-cols-5 gap-8">
             {/* Brand */}
             <div>
               <Link to="/" className="font-serif text-xl font-semibold tracking-tight">
@@ -252,6 +252,33 @@ export function Footer() {
                   <WhatsAppIcon className="h-5 w-5" />
                 </a>
               </div>
+            </div>
+
+            {/* Boutique */}
+            <div>
+              <h4 className="font-medium text-sm uppercase tracking-wider mb-4">Boutique</h4>
+              <ul className="space-y-3">
+                <li>
+                  <Link to="/shop" className="text-sm text-background/70 hover:text-background transition-colors">
+                    Tous les Parfums
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/shop?category=women" className="text-sm text-background/70 hover:text-background transition-colors">
+                    Pour Elle
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/shop?category=men" className="text-sm text-background/70 hover:text-background transition-colors">
+                    Pour Lui
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/shop?category=new" className="text-sm text-background/70 hover:text-background transition-colors">
+                    Nouveautés
+                  </Link>
+                </li>
+              </ul>
             </div>
 
             {/* À propos */}
