@@ -4,11 +4,10 @@ import { Heart, Menu, Search, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { CartDrawer } from '@/components/cart/CartDrawer';
 import { InlineSearch } from '@/components/search/InlineSearch';
-import { SearchDialog } from '@/components/search/SearchDialog';
 
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
 
   const navItems = useMemo(
     () => [
@@ -77,10 +76,10 @@ export function Header() {
             variant="ghost"
             size="icon"
             className="md:hidden"
-            onClick={() => setIsSearchOpen(true)}
+            onClick={() => setIsMobileSearchOpen(!isMobileSearchOpen)}
             aria-label="Rechercher"
           >
-            <Search className="h-5 w-5" />
+            {isMobileSearchOpen ? <X className="h-5 w-5" /> : <Search className="h-5 w-5" />}
           </Button>
 
           <Button
@@ -193,8 +192,12 @@ export function Header() {
         </nav>
       )}
 
-      {/* Search Dialog */}
-      <SearchDialog open={isSearchOpen} onOpenChange={setIsSearchOpen} />
+      {/* Mobile Search Bar */}
+      {isMobileSearchOpen && (
+        <div className="md:hidden border-t border-border bg-background px-4 py-3">
+          <InlineSearch />
+        </div>
+      )}
     </header>
   );
 }
