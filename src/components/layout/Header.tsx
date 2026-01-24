@@ -13,9 +13,7 @@ export function Header() {
     () => [
       { label: 'Marques', to: '/shop' },
       { label: 'Parfums', to: '/shop' },
-      { label: 'Nos collaborations exclusives', to: '/about' },
       { label: 'Nos best-sellers', to: '/shop' },
-      { label: 'Offres exclusives', to: '/shop' },
       { label: 'Consultation parfumée', to: '/about' },
     ],
     []
@@ -142,25 +140,11 @@ export function Header() {
                 Parfums
               </Link>
               <Link
-                to="/about"
-                className="text-sm font-medium py-2"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Nos collaborations exclusives
-              </Link>
-              <Link
                 to="/shop"
                 className="text-sm font-medium py-2"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Nos best-sellers
-              </Link>
-              <Link
-                to="/shop"
-                className="text-sm font-medium py-2"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Offres exclusives
               </Link>
               <Link
                 to="/about"
