@@ -10,18 +10,6 @@ import valentino from '@/assets/brands/valentino.png';
 import burberry from '@/assets/brands/burberry.png';
 import montale from '@/assets/brands/montale.png';
 import versace from '@/assets/brands/versace.png';
-import giorgioArmani from '@/assets/brands/giorgio-armani.png';
-import tizianaTerenzi from '@/assets/brands/tiziana-terenzi.png';
-import dolceGabbana from '@/assets/brands/dolce-gabbana.png';
-import essentialParfums from '@/assets/brands/essential-parfums.png';
-import guerlain from '@/assets/brands/guerlain.png';
-import hermes from '@/assets/brands/hermes.png';
-import azzaro from '@/assets/brands/azzaro.png';
-import chopard from '@/assets/brands/chopard.png';
-import viktorRolf from '@/assets/brands/viktor-rolf.png';
-import kenzo from '@/assets/brands/kenzo.png';
-import isseyMiyake from '@/assets/brands/issey-miyake.png';
-import jeanPaulGaultier from '@/assets/brands/jean-paul-gaultier.png';
 
 export function BrandHighlights() {
   const brands = [
@@ -37,18 +25,6 @@ export function BrandHighlights() {
     { name: 'Burberry', logo: burberry },
     { name: 'Montale', logo: montale },
     { name: 'Versace', logo: versace },
-    { name: 'Giorgio Armani', logo: giorgioArmani },
-    { name: 'Tiziana Terenzi', logo: tizianaTerenzi },
-    { name: 'Dolce & Gabbana', logo: dolceGabbana },
-    { name: 'Essential Parfums', logo: essentialParfums },
-    { name: 'Guerlain', logo: guerlain },
-    { name: 'Hermès', logo: hermes },
-    { name: 'Azzaro', logo: azzaro },
-    { name: 'Chopard', logo: chopard },
-    { name: 'Viktor & Rolf', logo: viktorRolf },
-    { name: 'Kenzo', logo: kenzo },
-    { name: 'Issey Miyake', logo: isseyMiyake },
-    { name: 'Jean Paul Gaultier', logo: jeanPaulGaultier },
   ];
 
   return (
