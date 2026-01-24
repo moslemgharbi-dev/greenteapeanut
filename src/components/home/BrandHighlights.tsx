@@ -34,13 +34,13 @@ export function BrandHighlights() {
           <div className="pointer-events-none absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-secondary/20 to-transparent z-10" />
           <div className="pointer-events-none absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-secondary/20 to-transparent z-10" />
           <div
-            className="flex w-max items-center gap-4 md:gap-6 px-4 animate-marquee-rtl motion-reduce:animate-none"
+            className="flex w-max items-center gap-0 animate-marquee-rtl motion-reduce:animate-none"
             aria-label="Marques"
           >
             {[...brands, ...brands].map((brand, idx) => (
               <div
                 key={`${brand.name}-${idx}`}
-                className="flex items-center justify-center h-20 md:h-24 w-36 md:w-44 flex-shrink-0"
+                className="flex items-center justify-center h-28 md:h-32 w-40 md:w-48 flex-shrink-0"
               >
                 <img
                   src={brand.logo}
