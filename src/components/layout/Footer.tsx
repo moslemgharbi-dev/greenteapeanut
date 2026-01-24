@@ -113,6 +113,31 @@ export function Footer() {
 
           {/* Mobile: Accordion menus */}
           <div className="md:hidden">
+            <FooterAccordion title="Boutique">
+              <ul className="space-y-3">
+                <li>
+                  <Link to="/shop" className="text-sm text-background/70 hover:text-background transition-colors">
+                    Tous les Parfums
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/shop?category=women" className="text-sm text-background/70 hover:text-background transition-colors">
+                    Pour Elle
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/shop?category=men" className="text-sm text-background/70 hover:text-background transition-colors">
+                    Pour Lui
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/shop?category=new" className="text-sm text-background/70 hover:text-background transition-colors">
+                    Nouveautés
+                  </Link>
+                </li>
+              </ul>
+            </FooterAccordion>
+
             <FooterAccordion title="À Propos">
               <ul className="space-y-3">
                 <li>
