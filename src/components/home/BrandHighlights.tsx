@@ -29,7 +29,7 @@ export function BrandHighlights() {
 
   return (
     <section className="border-y border-border bg-secondary/20">
-      <div className="container py-8 md:py-10">
+      <div className="py-4">
         <div className="relative overflow-hidden">
           <div className="pointer-events-none absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-secondary/20 to-transparent z-10" />
           <div className="pointer-events-none absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-secondary/20 to-transparent z-10" />
@@ -40,7 +40,7 @@ export function BrandHighlights() {
             {[...brands, ...brands].map((brand, idx) => (
               <div
                 key={`${brand.name}-${idx}`}
-                className="flex items-center justify-center h-28 md:h-32 w-40 md:w-48 flex-shrink-0"
+                className="flex items-center justify-center h-16 w-44 md:w-52 flex-shrink-0"
               >
                 <img
                   src={brand.logo}
