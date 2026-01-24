@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Instagram, Facebook } from 'lucide-react';
+import { Instagram, Facebook, Plus, Minus } from 'lucide-react';
 import { TrustBadges } from '@/components/layout/TrustBadges';
 
 const TikTokIcon = ({ className }: { className?: string }) => (
@@ -24,22 +25,170 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
+interface FooterAccordionProps {
+  title: string;
+  children: React.ReactNode;
+}
+
+function FooterAccordion({ title, children }: FooterAccordionProps) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="border-b border-background/20 md:border-none">
+      {/* Mobile: Accordion */}
+      <button
+        className="md:hidden flex items-center justify-between w-full py-4 text-left"
+        onClick={() => setIsOpen(!isOpen)}
+        aria-expanded={isOpen}
+      >
+        <h4 className="font-medium text-sm uppercase tracking-wider">{title}</h4>
+        {isOpen ? <Minus className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+      </button>
+      <div className={`md:hidden overflow-hidden transition-all duration-300 ${isOpen ? 'max-h-96 pb-4' : 'max-h-0'}`}>
+        {children}
+      </div>
+
+      {/* Desktop: Always visible */}
+      <div className="hidden md:block">
+        <h4 className="font-medium text-sm uppercase tracking-wider mb-4">{title}</h4>
+        {children}
+      </div>
+    </div>
+  );
+}
+
 export function Footer() {
   return (
     <>
       <TrustBadges />
       <footer className="border-t border-border bg-foreground text-background">
         <div className="container py-12 md:py-16">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          {/* Brand section - always visible */}
+          <div className="mb-8 md:hidden">
+            <Link to="/" className="font-serif text-xl font-semibold tracking-tight">
+              WAEL BEN YAGHLANE
+            </Link>
+            <p className="mt-4 text-sm text-background/70 leading-relaxed">
+              Là où chaque fragrance raconte une histoire.
+            </p>
+            <div className="flex gap-4 mt-6">
+              <a 
+                href="https://www.instagram.com/ben_yaghlane_fragrance/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-background/70 hover:text-background transition-colors"
+                aria-label="Instagram"
+              >
+                <Instagram className="h-5 w-5" />
+              </a>
+              <a 
+                href="https://www.facebook.com/benyaghlanefragrance.24433702" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-background/70 hover:text-background transition-colors"
+                aria-label="Facebook"
+              >
+                <Facebook className="h-5 w-5" />
+              </a>
+              <a 
+                href="https://www.tiktok.com/@ben_yaghlanefragrance01" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-background/70 hover:text-background transition-colors"
+                aria-label="TikTok"
+              >
+                <TikTokIcon className="h-5 w-5" />
+              </a>
+              <a
+                href="https://wa.me/21624433702"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-background/70 hover:text-background transition-colors"
+                aria-label="WhatsApp"
+              >
+                <WhatsAppIcon className="h-5 w-5" />
+              </a>
+            </div>
+          </div>
+
+          {/* Mobile: Accordion menus */}
+          <div className="md:hidden">
+            <FooterAccordion title="À Propos">
+              <ul className="space-y-3">
+                <li>
+                  <Link to="/maison" className="text-sm text-background/70 hover:text-background transition-colors">
+                    La Maison
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/about" className="text-sm text-background/70 hover:text-background transition-colors">
+                    Notre histoire
+                  </Link>
+                </li>
+              </ul>
+            </FooterAccordion>
+
+            <FooterAccordion title="Maison Wael Ben Yaghlane & vous">
+              <ul className="space-y-3">
+                <li>
+                  <Link to="/shipping" className="text-sm text-background/70 hover:text-background transition-colors">
+                    Livraison
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/contact" className="text-sm text-background/70 hover:text-background transition-colors">
+                    Contactez-nous
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/faq" className="text-sm text-background/70 hover:text-background transition-colors">
+                    FAQ
+                  </Link>
+                </li>
+              </ul>
+            </FooterAccordion>
+
+            <FooterAccordion title="Informations légales">
+              <ul className="space-y-3">
+                <li>
+                  <Link to="/mentions-legales" className="text-sm text-background/70 hover:text-background transition-colors">
+                    Mentions légales
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/cgv" className="text-sm text-background/70 hover:text-background transition-colors">
+                    CGV
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/cgu" className="text-sm text-background/70 hover:text-background transition-colors">
+                    CGU
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/confidentialite-cookies" className="text-sm text-background/70 hover:text-background transition-colors">
+                    Confidentialité & Cookies
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/parametres-cookies" className="text-sm text-background/70 hover:text-background transition-colors">
+                    Paramètres cookies
+                  </Link>
+                </li>
+              </ul>
+            </FooterAccordion>
+          </div>
+
+          {/* Desktop: Grid layout */}
+          <div className="hidden md:grid grid-cols-4 gap-8">
             {/* Brand */}
-            <div className="md:col-span-1">
+            <div>
               <Link to="/" className="font-serif text-xl font-semibold tracking-tight">
                 WAEL BEN YAGHLANE
               </Link>
               <p className="mt-4 text-sm text-background/70 leading-relaxed">
                 Là où chaque fragrance raconte une histoire.
               </p>
-              {/* Social Media Icons */}
               <div className="flex gap-4 mt-6">
                 <a 
                   href="https://www.instagram.com/ben_yaghlane_fragrance/" 
@@ -80,34 +229,7 @@ export function Footer() {
               </div>
             </div>
 
-            {/* Shop */}
-            <div>
-              <h4 className="font-medium text-sm uppercase tracking-wider mb-4">Boutique</h4>
-              <ul className="space-y-3">
-                <li>
-                  <Link to="/shop" className="text-sm text-background/70 hover:text-background transition-colors">
-                    Tous les Parfums
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/shop?category=women" className="text-sm text-background/70 hover:text-background transition-colors">
-                    Pour Elle
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/shop?category=men" className="text-sm text-background/70 hover:text-background transition-colors">
-                    Pour Lui
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/shop?category=new" className="text-sm text-background/70 hover:text-background transition-colors">
-                    Nouveautés
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            {/* À propos (sans Blog) */}
+            {/* À propos */}
             <div>
               <h4 className="font-medium text-sm uppercase tracking-wider mb-4">À Propos</h4>
               <ul className="space-y-3">
@@ -145,13 +267,8 @@ export function Footer() {
                 </li>
               </ul>
             </div>
-          </div>
 
-          {/* Informations légales */}
-          <div className="mt-10 grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="hidden md:block" />
-            <div className="hidden md:block" />
-            <div className="hidden md:block" />
+            {/* Informations légales */}
             <div>
               <h4 className="font-medium text-sm uppercase tracking-wider mb-4">Informations légales</h4>
               <ul className="space-y-3">
@@ -172,19 +289,19 @@ export function Footer() {
                 </li>
                 <li>
                   <Link to="/confidentialite-cookies" className="text-sm text-background/70 hover:text-background transition-colors">
-                    Politique de confidentialité & Cookies
+                    Confidentialité & Cookies
                   </Link>
                 </li>
                 <li>
                   <Link to="/parametres-cookies" className="text-sm text-background/70 hover:text-background transition-colors">
-                    Paramètres des cookies
+                    Paramètres cookies
                   </Link>
                 </li>
               </ul>
             </div>
           </div>
 
-          <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="mt-12 pt-8 border-t border-background/20 flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-xs text-background/70">
               © {new Date().getFullYear()} Wael Ben Yaghlane. Tous droits réservés.
             </p>
