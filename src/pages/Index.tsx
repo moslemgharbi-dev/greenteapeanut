@@ -12,10 +12,10 @@ export default function Index() {
       <Header />
       <main className="flex-1">
         <Hero />
-        <BrandHighlights />
         <FeaturedProducts />
         <AboutSection />
         <Newsletter />
+        <BrandHighlights />
       </main>
       <Footer />
     </div>
