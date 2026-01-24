@@ -92,6 +92,7 @@ export function Header() {
             variant="ghost"
             size="icon"
             aria-label="Favoris"
+            className="hidden md:flex"
             onClick={() => {
               // Placeholder: pas de fonctionnalité demandée
             }}
@@ -124,19 +125,7 @@ export function Header() {
       {isMobileMenuOpen && (
         <nav className="md:hidden border-t border-border bg-background">
           <div className="container py-4 flex flex-col gap-2">
-            <button
-              type="button"
-              onClick={() => {
-                setIsMobileMenuOpen(false);
-                setIsSearchOpen(true);
-              }}
-              className="flex items-center gap-2 rounded-md border border-input bg-background px-3 py-2 text-sm text-muted-foreground"
-            >
-              <Search className="h-4 w-4" />
-              <span className="truncate">Rechercher une marque, un produit…</span>
-            </button>
-
-            <div className="pt-2 flex flex-col">
+            <div className="flex flex-col">
               <Link
                 to="/shop"
                 className="text-sm font-medium py-2"
@@ -182,6 +171,14 @@ export function Header() {
             </div>
 
             <div className="pt-2 border-t border-border flex flex-col">
+              <button
+                type="button"
+                className="flex items-center gap-2 text-sm font-medium py-2"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <Heart className="h-4 w-4" />
+                Favoris
+              </button>
               <Link
                 to="/contact"
                 className="text-sm font-medium py-2"
