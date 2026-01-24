@@ -23,7 +23,14 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      {/* Top bar */}
+      {/* Mobile slogan bar */}
+      <div className="md:hidden bg-foreground text-background">
+        <div className="flex h-8 items-center justify-center text-xs tracking-widest uppercase">
+          Une signature, un parcours
+        </div>
+      </div>
+
+      {/* Top bar (desktop) */}
       <div className="hidden md:block bg-foreground text-background">
         <div className="container flex h-9 items-center justify-start gap-6 text-xs tracking-wide">
           <Link to="/contact" className="hover:opacity-80 transition-opacity">
