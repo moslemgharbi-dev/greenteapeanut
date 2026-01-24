@@ -4,7 +4,11 @@ import { Search, Loader2, X } from 'lucide-react';
 import { fetchProducts, ShopifyProduct } from '@/lib/shopify';
 import { cn } from '@/lib/utils';
 
-export function InlineSearch() {
+interface InlineSearchProps {
+  onSelect?: () => void;
+}
+
+export function InlineSearch({ onSelect }: InlineSearchProps) {
   const navigate = useNavigate();
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<ShopifyProduct[]>([]);
@@ -48,6 +52,7 @@ export function InlineSearch() {
     navigate(`/product/${handle}`);
     setQuery('');
     setIsFocused(false);
+    onSelect?.();
   };
 
   const showDropdown = isFocused && (query.trim() || isLoading);

@@ -195,7 +195,7 @@ export function Header() {
       {/* Mobile Search Bar */}
       {isMobileSearchOpen && (
         <div className="md:hidden border-t border-border bg-background px-4 py-3">
-          <InlineSearch />
+          <InlineSearch onSelect={() => setIsMobileSearchOpen(false)} />
         </div>
       )}
     </header>
