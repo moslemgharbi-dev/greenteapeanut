@@ -40,7 +40,7 @@ export function BrandHighlights() {
             {[...brands, ...brands].map((brand, idx) => (
               <div
                 key={`${brand.name}-${idx}`}
-                className="flex items-center justify-center h-[96px] w-48 md:w-56 flex-shrink-0"
+                className="flex items-center justify-center h-[120px] w-52 md:w-60 flex-shrink-0 -mx-2"
               >
                 <img
                   src={brand.logo}
