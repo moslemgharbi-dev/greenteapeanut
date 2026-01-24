@@ -64,12 +64,12 @@ export function BrandHighlights() {
             {[...brands, ...brands].map((brand, idx) => (
               <div
                 key={`${brand.name}-${idx}`}
-                className="flex items-center justify-center h-[250px] w-72 md:w-80 flex-shrink-0"
+                className="flex items-center justify-center h-24 w-72 md:w-80 flex-shrink-0"
               >
                 <img
                   src={brand.logo}
                   alt={brand.name}
-                  className="max-h-full max-w-full object-contain"
+                  className="h-16 w-auto object-contain"
                   loading="lazy"
                 />
               </div>
