@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Heart, Menu, Search, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { CartDrawer } from '@/components/cart/CartDrawer';
+import { InlineSearch } from '@/components/search/InlineSearch';
 import { SearchDialog } from '@/components/search/SearchDialog';
 
 export function Header() {
@@ -49,15 +50,9 @@ export function Header() {
         </Button>
 
         {/* Search (desktop) */}
-        <button
-          type="button"
-          onClick={() => setIsSearchOpen(true)}
-          className="hidden md:flex w-full max-w-md items-center gap-2 rounded-md border border-input bg-background px-3 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-          aria-label="Rechercher"
-        >
-          <Search className="h-4 w-4" />
-          <span className="truncate">Rechercher une marque, un produit…</span>
-        </button>
+        <div className="hidden md:block">
+          <InlineSearch />
+        </div>
 
         {/* Brand (center) */}
         <Link to="/" className="justify-self-center text-center">
