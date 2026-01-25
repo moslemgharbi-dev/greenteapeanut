@@ -59,9 +59,9 @@ export function Header() {
         </div>
 
         {/* Brand (center) */}
-        <Link to="/" className="justify-self-center text-center">
-          <span className="font-serif text-xl md:text-3xl font-semibold tracking-tight">
-            WAEL BEN YAGHLANE
+        <Link to="/" className="justify-self-center text-center group">
+          <span className="font-brand text-xl md:text-3xl font-medium tracking-[0.15em] uppercase transition-opacity group-hover:opacity-80">
+            Wael Ben Yaghlane
           </span>
           <span className="sr-only">Accueil</span>
         </Link>
