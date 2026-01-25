@@ -65,8 +65,8 @@ export function Footer() {
         <div className="container py-12 md:py-16">
           {/* Brand section - always visible */}
           <div className="mb-8 md:hidden">
-            <Link to="/" className="font-serif text-xl font-semibold tracking-tight">
-              WAEL BEN YAGHLANE
+            <Link to="/" className="font-brand text-xl font-medium tracking-[0.15em]">
+              Wael Ben Yaghlane
             </Link>
             <p className="mt-4 text-sm text-background/70 leading-relaxed">
               Là où chaque fragrance raconte une histoire.
@@ -208,8 +208,8 @@ export function Footer() {
           <div className="hidden md:grid grid-cols-5 gap-8">
             {/* Brand */}
             <div>
-              <Link to="/" className="font-serif text-xl font-semibold tracking-tight">
-                WAEL BEN YAGHLANE
+              <Link to="/" className="font-brand text-xl font-medium tracking-[0.15em]">
+                Wael Ben Yaghlane
               </Link>
               <p className="mt-4 text-sm text-background/70 leading-relaxed">
                 Là où chaque fragrance raconte une histoire.
