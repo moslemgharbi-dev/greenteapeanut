@@ -15,6 +15,7 @@ const PRODUCTS_QUERY = `
           title
           description
           handle
+          vendor
           priceRange {
             minVariantPrice {
               amount
@@ -63,6 +64,7 @@ const PRODUCT_BY_HANDLE_QUERY = `
       title
       description
       handle
+      vendor
       priceRange {
         minVariantPrice {
           amount
