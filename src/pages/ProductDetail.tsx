@@ -131,16 +131,19 @@ export default function ProductDetail() {
             {/* Details */}
             <div className="space-y-6">
               <div>
-                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4 mb-3">
+                <div className="flex items-start justify-between gap-4 mb-3">
                   <h1 className="font-serif text-2xl sm:text-3xl md:text-4xl font-medium">
                     {product.title}
                   </h1>
-                  <ShareButtons 
-                    productHandle={product.handle}
-                    productTitle={product.title}
-                    productImage={images[0]?.node?.url}
-                    variant="icon"
-                  />
+                  {/* Desktop: dropdown menu */}
+                  <div className="hidden sm:block">
+                    <ShareButtons 
+                      productHandle={product.handle}
+                      productTitle={product.title}
+                      productImage={images[0]?.node?.url}
+                      variant="icon"
+                    />
+                  </div>
                 </div>
                 <p className="text-xl sm:text-2xl font-semibold">
                   {selectedVariant?.price.currencyCode} {parseFloat(selectedVariant?.price.amount || '0').toFixed(2)}
@@ -208,6 +211,16 @@ export default function ProductDetail() {
                   'Ajouter au panier'
                 )}
               </Button>
+
+              {/* Mobile: inline share buttons */}
+              <div className="sm:hidden">
+                <ShareButtons 
+                  productHandle={product.handle}
+                  productTitle={product.title}
+                  productImage={images[0]?.node?.url}
+                  variant="inline"
+                />
+              </div>
 
               {/* Description */}
               {product.description && (
