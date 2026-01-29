@@ -39,12 +39,12 @@ export function Header() {
       </div>
 
       {/* Main row */}
-      <div className="container grid h-20 grid-cols-[auto,1fr,auto] items-center gap-4">
+      <div className="container grid h-16 md:h-20 grid-cols-[auto,1fr,auto] items-center gap-2 md:gap-4">
         {/* Mobile Menu Button */}
         <Button
           variant="ghost"
           size="icon"
-          className="md:hidden"
+          className="md:hidden h-9 w-9"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-label={isMobileMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
         >
@@ -57,8 +57,8 @@ export function Header() {
         </div>
 
         {/* Brand (center) */}
-        <Link to="/" className="justify-self-center text-center group">
-          <span className="font-brand text-xl md:text-3xl font-medium tracking-[0.15em] uppercase transition-opacity group-hover:opacity-80">
+        <Link to="/" className="justify-self-center text-center group min-w-0">
+          <span className="font-brand text-base sm:text-lg md:text-3xl font-medium tracking-[0.1em] md:tracking-[0.15em] uppercase transition-opacity group-hover:opacity-80 whitespace-nowrap">
             Wael Ben Yaghlane
           </span>
           <span className="sr-only">Accueil</span>
