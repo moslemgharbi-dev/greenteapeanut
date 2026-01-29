@@ -32,6 +32,10 @@ const collectionLabels: Record<string, string> = {
   'femme': 'Pour Elle',
   'men': 'Pour Lui',
   'women': 'Pour Elle',
+  'frontpage': 'Pour Lui',
+  'page-d-accueil': 'Pour Lui',
+  'fragrance-example-products': 'Pour Elle',
+  'exemples-de-produits-parfum': 'Pour Elle',
 };
 
 interface FooterAccordionProps {
