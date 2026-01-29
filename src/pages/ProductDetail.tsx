@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { TrustBadges } from '@/components/layout/TrustBadges';
 import { useProduct } from '@/hooks/useProducts';
 import { useCartStore } from '@/stores/cartStore';
 import { Button } from '@/components/ui/button';
@@ -264,6 +265,9 @@ export default function ProductDetail() {
             </div>
           </div>
         </div>
+        
+        {/* Trust Badges */}
+        <TrustBadges />
       </main>
       <Footer />
     </div>
