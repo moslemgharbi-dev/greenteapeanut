@@ -7,6 +7,7 @@ import { useCartStore } from '@/stores/cartStore';
 import { Button } from '@/components/ui/button';
 import { Loader2, Minus, Plus, ArrowLeft } from 'lucide-react';
 import { toast } from 'sonner';
+import { ShareButtons } from '@/components/products/ShareButtons';
 
 export default function ProductDetail() {
   const { handle } = useParams<{ handle: string }>();
@@ -130,9 +131,17 @@ export default function ProductDetail() {
             {/* Details */}
             <div className="space-y-6">
               <div>
-                <h1 className="font-serif text-3xl md:text-4xl font-medium mb-3">
-                  {product.title}
-                </h1>
+                <div className="flex items-start justify-between gap-4">
+                  <h1 className="font-serif text-3xl md:text-4xl font-medium mb-3">
+                    {product.title}
+                  </h1>
+                  <ShareButtons 
+                    productHandle={product.handle}
+                    productTitle={product.title}
+                    productImage={images[0]?.node?.url}
+                    variant="full"
+                  />
+                </div>
                 <p className="text-2xl font-semibold">
                   {selectedVariant?.price.currencyCode} {parseFloat(selectedVariant?.price.amount || '0').toFixed(2)}
                 </p>

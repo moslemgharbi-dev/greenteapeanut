@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { useCartStore } from '@/stores/cartStore';
 import { Loader2, Plus } from 'lucide-react';
 import { toast } from 'sonner';
+import { ShareButtons } from './ShareButtons';
 
 interface ProductCardProps {
   product: ShopifyProduct;
@@ -57,6 +58,15 @@ export function ProductCard({ product }: ProductCardProps) {
           </div>
         )}
         
+        {/* Share Button */}
+        <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <ShareButtons 
+            productHandle={node.handle}
+            productTitle={node.title}
+            productImage={firstImage?.url}
+          />
+        </div>
+
         {/* Quick Add Button */}
         <div className="absolute bottom-0 left-0 right-0 p-4 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
           <Button 
