@@ -1,10 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchProducts, fetchProductByHandle, ShopifyProduct } from '@/lib/shopify';
+import { fetchAllProducts, fetchProductByHandle } from '@/lib/shopify/products';
+import { ShopifyProduct } from '@/lib/shopify/types';
 
 export function useProducts(query?: string) {
   return useQuery({
     queryKey: ['products', query],
-    queryFn: () => fetchProducts(50, query),
+    queryFn: () => fetchAllProducts(query),
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 }

@@ -1,13 +1,13 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
+import { ShopifyProduct } from '@/lib/shopify/types';
 import { 
-  ShopifyProduct, 
   createShopifyCart, 
   addLineToShopifyCart, 
   updateShopifyCartLine, 
   removeLineFromShopifyCart,
   verifyShopifyCart
-} from '@/lib/shopify';
+} from '@/lib/shopify/cart';
 
 export interface CartItem {
   lineId: string | null;

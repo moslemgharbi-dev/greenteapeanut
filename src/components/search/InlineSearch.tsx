@@ -1,9 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Loader2, X } from 'lucide-react';
-import { fetchProducts, ShopifyProduct } from '@/lib/shopify';
-import { cn } from '@/lib/utils';
-
+import { fetchProducts } from '@/lib/shopify/products';
+import { ShopifyProduct } from '@/lib/shopify/types';
 interface InlineSearchProps {
   onSelect?: () => void;
 }
@@ -26,8 +25,8 @@ export function InlineSearch({ onSelect }: InlineSearchProps) {
     const timer = setTimeout(async () => {
       setIsLoading(true);
       try {
-        const products = await fetchProducts(10, `title:*${query}*`);
-        setResults(products);
+        const result = await fetchProducts(10, `title:*${query}*`);
+        setResults(result.products);
       } catch (error) {
         console.error('Search failed:', error);
       } finally {
