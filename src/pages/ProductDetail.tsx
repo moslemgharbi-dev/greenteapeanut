@@ -139,7 +139,7 @@ export default function ProductDetail() {
                     productHandle={product.handle}
                     productTitle={product.title}
                     productImage={images[0]?.node?.url}
-                    variant="full"
+                    variant="icon"
                   />
                 </div>
                 <p className="text-xl sm:text-2xl font-semibold">
