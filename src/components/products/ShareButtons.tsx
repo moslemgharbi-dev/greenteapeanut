@@ -1,4 +1,4 @@
-import { Facebook, Share2 } from 'lucide-react';
+import { Facebook, Instagram, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -6,7 +6,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { toast } from 'sonner';
 
 interface ShareButtonsProps {
   productHandle: string;
@@ -19,26 +18,21 @@ export function ShareButtons({ productHandle, productTitle, productImage, varian
   const productUrl = `${window.location.origin}/product/${productHandle}`;
   const encodedUrl = encodeURIComponent(productUrl);
   const encodedTitle = encodeURIComponent(productTitle);
-  const encodedImage = productImage ? encodeURIComponent(productImage) : '';
 
   const shareLinks = {
     facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
     twitter: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`,
     whatsapp: `https://wa.me/?text=${encodedTitle}%20${encodedUrl}`,
-    pinterest: `https://pinterest.com/pin/create/button/?url=${encodedUrl}&media=${encodedImage}&description=${encodedTitle}`,
   };
 
   const handleShare = (platform: keyof typeof shareLinks) => {
     window.open(shareLinks[platform], '_blank', 'width=600,height=400');
   };
 
-  const handleCopyLink = async () => {
-    try {
-      await navigator.clipboard.writeText(productUrl);
-      toast.success('Lien copié !');
-    } catch {
-      toast.error('Impossible de copier le lien');
-    }
+  // Instagram ne supporte pas le partage direct via URL, on redirige vers le profil ou l'app
+  const handleInstagram = () => {
+    // Ouvre l'app Instagram si disponible, sinon le site web
+    window.open('https://www.instagram.com/', '_blank');
   };
 
   return (
@@ -59,11 +53,9 @@ export function ShareButtons({ productHandle, productTitle, productImage, varian
           <Facebook className="h-4 w-4 mr-2 text-[#1877F2]" />
           Facebook
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleShare('twitter')} className="cursor-pointer">
-          <svg className="h-4 w-4 mr-2" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-          </svg>
-          X (Twitter)
+        <DropdownMenuItem onClick={handleInstagram} className="cursor-pointer">
+          <Instagram className="h-4 w-4 mr-2 text-[#E4405F]" />
+          Instagram
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => handleShare('whatsapp')} className="cursor-pointer">
           <svg className="h-4 w-4 mr-2 text-[#25D366]" viewBox="0 0 24 24" fill="currentColor">
@@ -71,18 +63,11 @@ export function ShareButtons({ productHandle, productTitle, productImage, varian
           </svg>
           WhatsApp
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleShare('pinterest')} className="cursor-pointer">
-          <svg className="h-4 w-4 mr-2 text-[#E60023]" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 0a12 12 0 00-4.373 23.178c-.07-.937-.134-2.377.028-3.401.146-.926.944-3.999.944-3.999s-.241-.482-.241-1.193c0-1.117.648-1.951 1.454-1.951.686 0 1.017.515 1.017 1.132 0 .69-.439 1.72-.665 2.676-.189.8.401 1.451 1.19 1.451 1.428 0 2.525-1.506 2.525-3.679 0-1.924-1.382-3.267-3.357-3.267-2.287 0-3.629 1.715-3.629 3.489 0 .691.266 1.431.598 1.834a.24.24 0 01.056.23c-.061.254-.197.8-.223.912-.035.146-.115.177-.266.107-1.177-.547-1.913-2.268-1.913-3.651 0-2.972 2.159-5.699 6.227-5.699 3.269 0 5.809 2.329 5.809 5.442 0 3.246-2.046 5.858-4.884 5.858-.954 0-1.849-.495-2.156-1.08l-.586 2.235c-.212.817-.785 1.841-1.168 2.465A12 12 0 1012 0z"/>
+        <DropdownMenuItem onClick={() => handleShare('twitter')} className="cursor-pointer">
+          <svg className="h-4 w-4 mr-2" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
           </svg>
-          Pinterest
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={handleCopyLink} className="cursor-pointer">
-          <svg className="h-4 w-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
-            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
-          </svg>
-          Copier le lien
+          X
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
