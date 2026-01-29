@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Search, Loader2 } from 'lucide-react';
-import { fetchProducts, ShopifyProduct } from '@/lib/shopify';
+import { fetchProducts } from '@/lib/shopify/products';
+import { ShopifyProduct } from '@/lib/shopify/types';
 
 interface SearchDialogProps {
   open: boolean;
@@ -25,8 +26,8 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
     const timer = setTimeout(async () => {
       setIsLoading(true);
       try {
-        const products = await fetchProducts(10, `title:*${query}*`);
-        setResults(products);
+        const result = await fetchProducts(10, `title:*${query}*`);
+        setResults(result.products);
       } catch (error) {
         console.error('Search failed:', error);
       } finally {

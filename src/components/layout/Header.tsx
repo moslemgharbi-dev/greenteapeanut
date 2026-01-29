@@ -4,20 +4,41 @@ import { Heart, Menu, Search, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { CartDrawer } from '@/components/cart/CartDrawer';
 import { InlineSearch } from '@/components/search/InlineSearch';
+import { useCollections } from '@/hooks/useCollections';
+
+// Map collection handles to custom labels
+const collectionLabels: Record<string, string> = {
+  'homme': 'Pour Lui',
+  'femme': 'Pour Elle',
+  'men': 'Pour Lui',
+  'women': 'Pour Elle',
+};
 
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
+  const { data: collections } = useCollections();
 
-  const navItems = useMemo(
-    () => [
+  // Build navigation items dynamically from collections
+  const navItems = useMemo(() => {
+    const items: { label: string; to: string }[] = [
       { label: 'Marques', to: '/shop' },
-      { label: 'Parfums', to: '/shop' },
-      { label: 'Nos best-sellers', to: '/shop' },
-      { label: 'Consultation parfumée', to: '/about' },
-    ],
-    []
-  );
+    ];
+
+    if (collections) {
+      collections.forEach(({ node }) => {
+        const handle = node.handle.toLowerCase();
+        // Map homme/femme to Pour Lui/Pour Elle
+        const label = collectionLabels[handle] || node.title;
+        items.push({ label, to: `/collection/${node.handle}` });
+      });
+    }
+
+    // Add static items
+    items.push({ label: 'Nos best-sellers', to: '/shop' });
+
+    return items;
+  }, [collections]);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -116,34 +137,16 @@ export function Header() {
         <nav className="md:hidden border-t border-border bg-background">
           <div className="container py-4 flex flex-col gap-2">
             <div className="flex flex-col">
-              <Link
-                to="/shop"
-                className="text-sm font-medium py-2"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Marques
-              </Link>
-              <Link
-                to="/shop"
-                className="text-sm font-medium py-2"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Parfums
-              </Link>
-              <Link
-                to="/shop"
-                className="text-sm font-medium py-2"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Nos best-sellers
-              </Link>
-              <Link
-                to="/about"
-                className="text-sm font-medium py-2"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Consultation parfumée
-              </Link>
+              {navItems.map((item) => (
+                <Link
+                  key={item.label}
+                  to={item.to}
+                  className="text-sm font-medium py-2"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              ))}
             </div>
 
             <div className="pt-2 border-t border-border flex flex-col">
