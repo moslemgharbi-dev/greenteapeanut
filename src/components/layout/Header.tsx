@@ -4,45 +4,18 @@ import { Heart, Menu, Search, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { CartDrawer } from '@/components/cart/CartDrawer';
 import { InlineSearch } from '@/components/search/InlineSearch';
-import { useCollections } from '@/hooks/useCollections';
-
-// Map collection handles to custom labels
-const collectionLabels: Record<string, string> = {
-  'homme': 'Pour Lui',
-  'femme': 'Pour Elle',
-  'men': 'Pour Lui',
-  'women': 'Pour Elle',
-  'frontpage': 'Pour Lui',
-  'page-d-accueil': 'Pour Lui',
-  'fragrance-example-products': 'Pour Elle',
-  'exemples-de-produits-parfum': 'Pour Elle',
-};
 
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
-  const { data: collections } = useCollections();
 
-  // Build navigation items dynamically from collections
-  const navItems = useMemo(() => {
-    const items: { label: string; to: string }[] = [
-      { label: 'Marques', to: '/shop' },
-    ];
-
-    if (collections) {
-      collections.forEach(({ node }) => {
-        const handle = node.handle.toLowerCase();
-        // Map homme/femme to Pour Lui/Pour Elle
-        const label = collectionLabels[handle] || node.title;
-        items.push({ label, to: `/collection/${node.handle}` });
-      });
-    }
-
-    // Add static items
-    items.push({ label: 'Nos best-sellers', to: '/shop' });
-
-    return items;
-  }, [collections]);
+  // Static navigation items with Pour Lui/Pour Elle linking to homme/femme collections
+  const navItems = useMemo(() => [
+    { label: 'Marques', to: '/shop' },
+    { label: 'Pour Lui', to: '/collection/homme' },
+    { label: 'Pour Elle', to: '/collection/femme' },
+    { label: 'Nos best-sellers', to: '/shop' },
+  ], []);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
