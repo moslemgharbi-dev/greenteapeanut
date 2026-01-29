@@ -131,8 +131,8 @@ export default function ProductDetail() {
             {/* Details */}
             <div className="space-y-6">
               <div>
-                <div className="flex items-start justify-between gap-4">
-                  <h1 className="font-serif text-3xl md:text-4xl font-medium mb-3">
+                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4 mb-3">
+                  <h1 className="font-serif text-2xl sm:text-3xl md:text-4xl font-medium">
                     {product.title}
                   </h1>
                   <ShareButtons 
@@ -142,7 +142,7 @@ export default function ProductDetail() {
                     variant="full"
                   />
                 </div>
-                <p className="text-2xl font-semibold">
+                <p className="text-xl sm:text-2xl font-semibold">
                   {selectedVariant?.price.currencyCode} {parseFloat(selectedVariant?.price.amount || '0').toFixed(2)}
                 </p>
               </div>
