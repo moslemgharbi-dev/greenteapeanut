@@ -196,21 +196,51 @@ export default function ProductDetail() {
                 </div>
               </div>
 
-              {/* Add to Cart */}
-              <Button
-                onClick={handleAddToCart}
-                disabled={cartLoading || !selectedVariant?.availableForSale}
-                size="lg"
-                className="w-full"
-              >
-                {cartLoading ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : !selectedVariant?.availableForSale ? (
-                  'Rupture de stock'
-                ) : (
-                  'Ajouter au panier'
-                )}
-              </Button>
+              {/* Add to Cart & Buy Now */}
+              <div className="flex flex-col gap-3">
+                <Button
+                  onClick={handleAddToCart}
+                  disabled={cartLoading || !selectedVariant?.availableForSale}
+                  size="lg"
+                  className="w-full"
+                >
+                  {cartLoading ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : !selectedVariant?.availableForSale ? (
+                    'Rupture de stock'
+                  ) : (
+                    'Ajouter au panier'
+                  )}
+                </Button>
+                
+                <Button
+                  onClick={async () => {
+                    if (!selectedVariant) return;
+                    await addItem({
+                      product: { node: product },
+                      variantId: selectedVariant.id,
+                      variantTitle: selectedVariant.title,
+                      price: selectedVariant.price,
+                      quantity,
+                      selectedOptions: selectedVariant.selectedOptions || []
+                    });
+                    const checkoutUrl = useCartStore.getState().getCheckoutUrl();
+                    if (checkoutUrl) {
+                      window.open(checkoutUrl, '_blank');
+                    }
+                  }}
+                  disabled={cartLoading || !selectedVariant?.availableForSale}
+                  size="lg"
+                  variant="outline"
+                  className="w-full"
+                >
+                  {cartLoading ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    'Acheter maintenant'
+                  )}
+                </Button>
+              </div>
 
               {/* Mobile: inline share buttons */}
               <div className="sm:hidden">
