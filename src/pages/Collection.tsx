@@ -4,7 +4,7 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { ProductGrid } from '@/components/products/ProductGrid';
 import { useCollection } from '@/hooks/useCollections';
-import { Loader2, ArrowUpDown } from 'lucide-react';
+import { Loader2, ArrowUpDown, Filter } from 'lucide-react';
 import {
   Select,
   SelectContent,
@@ -14,31 +14,37 @@ import {
 } from '@/components/ui/select';
 import { ShopifyProduct } from '@/lib/shopify/types';
 
-type SortOption = 'default' | 'price-asc' | 'price-desc' | 'name-asc' | 'name-desc';
+type SortOption = 'default' | 'name-asc' | 'name-desc';
 
 export default function Collection() {
   const { handle } = useParams<{ handle: string }>();
   const { data: collection, isLoading, error } = useCollection(handle || '');
   const [sortBy, setSortBy] = useState<SortOption>('default');
+  const [selectedVendor, setSelectedVendor] = useState<string>('all');
 
-  const sortedProducts = useMemo(() => {
+  // Extract unique vendors from products
+  const vendors = useMemo(() => {
+    if (!collection?.products) return [];
+    const uniqueVendors = new Set<string>();
+    collection.products.forEach((product: ShopifyProduct) => {
+      if (product.node.vendor) {
+        uniqueVendors.add(product.node.vendor);
+      }
+    });
+    return Array.from(uniqueVendors).sort((a, b) => a.localeCompare(b, 'fr'));
+  }, [collection?.products]);
+
+  const filteredAndSortedProducts = useMemo(() => {
     if (!collection?.products) return [];
     
-    const products = [...collection.products];
+    // Filter by vendor
+    let products = [...collection.products];
+    if (selectedVendor !== 'all') {
+      products = products.filter((p: ShopifyProduct) => p.node.vendor === selectedVendor);
+    }
     
+    // Sort
     switch (sortBy) {
-      case 'price-asc':
-        return products.sort((a: ShopifyProduct, b: ShopifyProduct) => {
-          const priceA = parseFloat(a.node.priceRange.minVariantPrice.amount);
-          const priceB = parseFloat(b.node.priceRange.minVariantPrice.amount);
-          return priceA - priceB;
-        });
-      case 'price-desc':
-        return products.sort((a: ShopifyProduct, b: ShopifyProduct) => {
-          const priceA = parseFloat(a.node.priceRange.minVariantPrice.amount);
-          const priceB = parseFloat(b.node.priceRange.minVariantPrice.amount);
-          return priceB - priceA;
-        });
       case 'name-asc':
         return products.sort((a: ShopifyProduct, b: ShopifyProduct) => 
           a.node.title.localeCompare(b.node.title, 'fr')
@@ -50,7 +56,7 @@ export default function Collection() {
       default:
         return products;
     }
-  }, [collection?.products, sortBy]);
+  }, [collection?.products, sortBy, selectedVendor]);
 
   if (!handle) {
     return (
@@ -97,27 +103,47 @@ export default function Collection() {
                 {/* Filters row */}
                 <div className="flex flex-wrap items-center justify-between gap-4 mb-8 pb-6 border-b">
                   <p className="text-sm text-muted-foreground">
-                    {collection.products.length} produit{collection.products.length > 1 ? 's' : ''}
+                    {filteredAndSortedProducts.length} produit{filteredAndSortedProducts.length > 1 ? 's' : ''} 
+                    {selectedVendor !== 'all' && ` • ${selectedVendor}`}
                   </p>
                   
-                  <div className="flex items-center gap-2">
-                    <ArrowUpDown className="h-4 w-4 text-muted-foreground" />
-                    <Select value={sortBy} onValueChange={(value: SortOption) => setSortBy(value)}>
-                      <SelectTrigger className="w-[180px] h-9 text-sm">
-                        <SelectValue placeholder="Trier par" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="default">Par défaut</SelectItem>
-                        <SelectItem value="name-asc">Nom A-Z</SelectItem>
-                        <SelectItem value="name-desc">Nom Z-A</SelectItem>
-                        <SelectItem value="price-asc">Prix croissant</SelectItem>
-                        <SelectItem value="price-desc">Prix décroissant</SelectItem>
-                      </SelectContent>
-                    </Select>
+                  <div className="flex flex-wrap items-center gap-3">
+                    {/* Brand filter */}
+                    <div className="flex items-center gap-2">
+                      <Filter className="h-4 w-4 text-muted-foreground" />
+                      <Select value={selectedVendor} onValueChange={setSelectedVendor}>
+                        <SelectTrigger className="w-[180px] h-9 text-sm">
+                          <SelectValue placeholder="Marque" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">Toutes les marques</SelectItem>
+                          {vendors.map((vendor) => (
+                            <SelectItem key={vendor} value={vendor}>
+                              {vendor}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    {/* Sort */}
+                    <div className="flex items-center gap-2">
+                      <ArrowUpDown className="h-4 w-4 text-muted-foreground" />
+                      <Select value={sortBy} onValueChange={(value: SortOption) => setSortBy(value)}>
+                        <SelectTrigger className="w-[150px] h-9 text-sm">
+                          <SelectValue placeholder="Trier par" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="default">Par défaut</SelectItem>
+                          <SelectItem value="name-asc">Nom A-Z</SelectItem>
+                          <SelectItem value="name-desc">Nom Z-A</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
                   </div>
                 </div>
 
-                <ProductGrid products={sortedProducts} />
+                <ProductGrid products={filteredAndSortedProducts} />
               </>
             )}
           </div>
