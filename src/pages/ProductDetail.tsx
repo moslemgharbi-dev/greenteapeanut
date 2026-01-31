@@ -196,23 +196,8 @@ export default function ProductDetail() {
                 </div>
               </div>
 
-              {/* Add to Cart & Buy Now */}
-              <div className="flex flex-col gap-3">
-                <Button
-                  onClick={handleAddToCart}
-                  disabled={cartLoading || !selectedVariant?.availableForSale}
-                  size="lg"
-                  className="w-full"
-                >
-                  {cartLoading ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : !selectedVariant?.availableForSale ? (
-                    'Rupture de stock'
-                  ) : (
-                    'Ajouter au panier'
-                  )}
-                </Button>
-                
+              {/* Buy Now & Add to Cart */}
+              <div className="flex flex-col gap-2 sm:gap-3">
                 <Button
                   onClick={async () => {
                     if (!selectedVariant) return;
@@ -230,14 +215,27 @@ export default function ProductDetail() {
                     }
                   }}
                   disabled={cartLoading || !selectedVariant?.availableForSale}
-                  size="lg"
-                  variant="outline"
-                  className="w-full"
+                  className="w-full h-10 sm:h-11 text-sm sm:text-base"
                 >
                   {cartLoading ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
                   ) : (
                     'Acheter maintenant'
+                  )}
+                </Button>
+                
+                <Button
+                  onClick={handleAddToCart}
+                  disabled={cartLoading || !selectedVariant?.availableForSale}
+                  variant="outline"
+                  className="w-full h-10 sm:h-11 text-sm sm:text-base"
+                >
+                  {cartLoading ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : !selectedVariant?.availableForSale ? (
+                    'Rupture de stock'
+                  ) : (
+                    'Ajouter au panier'
                   )}
                 </Button>
               </div>
