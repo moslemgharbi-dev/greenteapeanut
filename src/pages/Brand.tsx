@@ -23,7 +23,7 @@ export default function Brand() {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-1">
-        <section className="py-12 md:py-16">
+        <section className="py-20 md:py-28">
           <div className="container">
             <div className="mb-10">
               <span className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-3 block">
