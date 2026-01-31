@@ -74,7 +74,7 @@ export default function Collection() {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-1">
-        <section className="py-20 md:py-28">
+        <section className="pt-12 md:pt-16 pb-20 md:pb-28">
           <div className="container">
             {isLoading ? (
               <div className="flex items-center justify-center py-16">

@@ -78,7 +78,7 @@ export default function ProductDetail() {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-1">
-        <div className="container py-20 md:py-28">
+        <div className="container pt-8 md:pt-12 pb-20 md:pb-28">
           {/* Breadcrumb */}
           <nav className="mb-8">
             <Link 
