@@ -27,7 +27,7 @@ export default function Shop() {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-1">
-        <section className="py-20 md:py-28">
+        <section className="pt-12 md:pt-16 pb-20 md:pb-28">
           <div className="container">
             <div className="mb-10">
               <span className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-3 block">
