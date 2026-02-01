@@ -108,7 +108,7 @@ export default function ProductDetail() {
               </div>
               
               {images.length > 1 && (
-                <div className="flex gap-2 overflow-x-auto pb-2 -mx-1 px-1">
+                <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
                   {images.map((image, index) => (
                     <button
                       key={index}
