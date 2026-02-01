@@ -90,9 +90,9 @@ export default function ProductDetail() {
             </Link>
           </nav>
 
-          <div className="grid md:grid-cols-2 gap-8 lg:gap-16">
+          <div className="grid md:grid-cols-2 gap-8 lg:gap-16 overflow-hidden">
             {/* Images */}
-            <div className="space-y-4">
+            <div className="space-y-4 min-w-0">
               <div className="aspect-[3/4] bg-secondary/30 rounded-sm overflow-hidden">
                 {images[selectedImage]?.node ? (
                   <img
@@ -108,12 +108,12 @@ export default function ProductDetail() {
               </div>
               
               {images.length > 1 && (
-                <div className="flex gap-3 overflow-x-auto pb-2">
+                <div className="flex gap-2 overflow-x-auto pb-2 -mx-1 px-1">
                   {images.map((image, index) => (
                     <button
                       key={index}
                       onClick={() => setSelectedImage(index)}
-                      className={`flex-shrink-0 w-20 h-20 rounded-sm overflow-hidden border-2 transition-colors ${
+                      className={`flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-sm overflow-hidden border-2 transition-colors ${
                         selectedImage === index ? 'border-accent' : 'border-transparent'
                       }`}
                     >
