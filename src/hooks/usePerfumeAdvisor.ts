@@ -108,6 +108,7 @@ export function usePerfumeAdvisor() {
         let toolCallArguments = "";
         let isCollectingToolCall = false;
         let recommendedHandles: string[] = [];
+        let toolCallReason = "";
 
         while (true) {
           const { done, value } = await reader.read();
@@ -142,7 +143,7 @@ export function usePerfumeAdvisor() {
                 );
               }
 
-              // Handle tool calls
+              // Handle tool calls - check for complete tool call in one chunk
               if (delta?.tool_calls) {
                 for (const toolCall of delta.tool_calls) {
                   if (toolCall.function?.name === "recommend_products") {
@@ -154,13 +155,25 @@ export function usePerfumeAdvisor() {
                 }
               }
 
-              // Check for finish reason
+              // Check for finish reason - process tool calls
               const finishReason = parsed.choices?.[0]?.finish_reason;
-              if (finishReason === "tool_calls" && isCollectingToolCall) {
+              if ((finishReason === "tool_calls" || finishReason === "stop") && isCollectingToolCall && toolCallArguments) {
                 try {
                   const toolArgs = JSON.parse(toolCallArguments);
                   if (toolArgs.handles && Array.isArray(toolArgs.handles)) {
                     recommendedHandles = toolArgs.handles;
+                  }
+                  if (toolArgs.reason) {
+                    toolCallReason = toolArgs.reason;
+                    // If no text content yet, use the reason as content
+                    if (!fullContent.trim()) {
+                      fullContent = toolCallReason;
+                      setMessages((prev) =>
+                        prev.map((m) =>
+                          m.id === assistantId ? { ...m, content: fullContent } : m
+                        )
+                      );
+                    }
                   }
                 } catch (e) {
                   console.error("Failed to parse tool call arguments:", e);
@@ -172,6 +185,11 @@ export function usePerfumeAdvisor() {
               break;
             }
           }
+        }
+
+        // If we only got tool call with reason but no content, use the reason
+        if (!fullContent.trim() && toolCallReason) {
+          fullContent = toolCallReason;
         }
 
         // Final update with recommendations
