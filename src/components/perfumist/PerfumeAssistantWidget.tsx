@@ -1,217 +1,249 @@
 import * as React from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
-import { MessageCircleHeart } from "lucide-react";
-import { useProducts, type ShopifyProduct } from "@/hooks/useProducts";
-import { ProductCard } from "@/components/products/ProductCard";
-
-type Msg = { role: "user" | "assistant"; content: string };
-
-function normalize(s: string) {
-  return s
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/\p{Diacritic}/gu, "")
-    .replace(/[^a-z0-9\s-]/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-function pickRecommendations({
-  products,
-  userText,
-  limit = 3,
-}: {
-  products: ShopifyProduct[];
-  userText: string;
-  limit?: number;
-}): ShopifyProduct[] {
-  const q = normalize(userText);
-  if (!products.length) return [];
-
-  // Simple keyword mapping (basic rule-based)
-  const keywordGroups: Record<string, string[]> = {
-    vanille: ["vanille", "vanilla", "gourmand", "caramel", "sucre"],
-    boise: ["boise", "bois", "cedre", "santal", "oud", "ambre"],
-    frais: ["frais", "fresh", "agrume", "citrus", "bergamote", "marine"],
-    floral: ["floral", "fleur", "rose", "jasmin", "iris", "tubereuse"],
-    epice: ["epice", "epices", "poivre", "cannelle", "cardamome"],
-  };
-
-  const desired = Object.entries(keywordGroups)
-    .filter(([, kws]) => kws.some((k) => q.includes(k)))
-    .map(([k]) => k);
-
-  const scored = products
-    .map((p) => {
-      const text = normalize(`${p.node.title} ${p.node.description ?? ""}`);
-      let score = 0;
-      // direct contains user words
-      for (const token of q.split(" ")) {
-        if (token.length < 4) continue;
-        if (text.includes(token)) score += 2;
-      }
-      // mapped keywords boost
-      for (const group of desired) {
-        for (const kw of keywordGroups[group] ?? []) {
-          if (text.includes(normalize(kw))) score += 3;
-        }
-      }
-      return { p, score };
-    })
-    .sort((a, b) => b.score - a.score);
-
-  const top = scored.filter((x) => x.score > 0).slice(0, limit).map((x) => x.p);
-  if (top.length) return top;
-  return scored.slice(0, limit).map((x) => x.p);
-}
+import { MessageCircleHeart, Send, X, RotateCcw } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { usePerfumeAdvisor } from "@/hooks/usePerfumeAdvisor";
+import { ChatMessage } from "./ChatMessage";
+import { TypingIndicator } from "./TypingIndicator";
+import { RecommendedProduct } from "./RecommendedProduct";
 
 export function PerfumeAssistantWidget() {
   const [open, setOpen] = React.useState(false);
   const [input, setInput] = React.useState("");
-  const [messages, setMessages] = React.useState<Msg[]>([]);
-  const [recommended, setRecommended] = React.useState<ShopifyProduct[]>([]);
+  const scrollRef = React.useRef<HTMLDivElement>(null);
+  const textareaRef = React.useRef<HTMLTextAreaElement>(null);
 
-  const { data: products = [] } = useProducts();
-  const hasProducts = products.length > 0;
+  const {
+    messages,
+    streamingState,
+    sendMessage,
+    resetConversation,
+    getProductsByHandles,
+    hasProducts,
+  } = usePerfumeAdvisor();
 
-  const close = React.useCallback(() => {
-    setOpen(false);
-  }, []);
+  const isStreaming = streamingState === "streaming";
 
-  const send = React.useCallback(async () => {
+  // Auto-scroll to bottom when new messages arrive
+  React.useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [messages]);
+
+  // Focus textarea when dialog opens
+  React.useEffect(() => {
+    if (open && textareaRef.current) {
+      setTimeout(() => textareaRef.current?.focus(), 100);
+    }
+  }, [open]);
+
+  const handleSend = React.useCallback(() => {
     const text = input.trim();
-    if (!text) return;
-
+    if (!text || isStreaming) return;
     setInput("");
-    setRecommended([]);
+    sendMessage(text);
+  }, [input, isStreaming, sendMessage]);
 
-    const userMsg: Msg = { role: "user", content: text };
-    setMessages((prev) => [...prev, userMsg]);
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
+  };
 
-    const recos = pickRecommendations({ products, userText: text, limit: 3 });
-    setRecommended(recos);
-
-    const assistant: Msg = {
-      role: "assistant",
-      content:
-        `Très bien. Pour affiner :\n` +
-        `1) Occasion (quotidien / bureau / soirée) ?\n` +
-        `2) Plutôt (frais / floral / boisé / vanillé / épicé) ?\n` +
-        `3) Intensité (discrète / marquée) ?` +
-        (!hasProducts
-          ? `\n\nJe ne vois pas encore de produits dans la boutique pour te recommander une sélection.`
-          : `\n\nVoici une première sélection selon ce que tu as écrit :`),
-    };
-    setMessages((prev) => [...prev, assistant]);
-  }, [hasProducts, input, products]);
-
-  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") send();
+  const handleNewConversation = () => {
+    resetConversation();
+    setInput("");
   };
 
   return (
     <>
-      <button
+      {/* Floating button */}
+      <motion.button
         type="button"
         onClick={() => setOpen(true)}
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
         className={cn(
           "fixed bottom-6 left-6 z-50",
-          "h-14 w-14 rounded-full bg-primary text-primary-foreground shadow-xl",
-          "ring-2 ring-ring ring-offset-2 ring-offset-background",
+          "h-14 w-14 rounded-full shadow-xl",
+          "bg-gradient-to-br from-primary to-primary/80",
+          "text-primary-foreground",
           "grid place-items-center",
-          "hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+          "ring-2 ring-primary/20 ring-offset-2 ring-offset-background",
+          "hover:shadow-2xl hover:shadow-primary/25",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+          "transition-shadow duration-300"
         )}
         aria-label="Ouvrir le Conseiller Parfum"
       >
         <MessageCircleHeart className="h-6 w-6" aria-hidden="true" />
-      </button>
+      </motion.button>
 
-      <Dialog open={open} onOpenChange={(v) => (v ? setOpen(true) : close())}>
-        <DialogContent className="p-0 sm:max-w-md">
-          <header className="flex items-center gap-3 rounded-t-lg bg-primary px-4 py-3 text-primary-foreground">
-            <div className="text-sm font-medium">Conseiller Parfum PERFUMIST®</div>
-          </header>
-
-          <div className="p-4">
-            <div className="flex gap-2">
-              <Input
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={onKeyDown}
-                placeholder="Dites-nous, quel est votre parfum favori ?"
-                aria-label="Votre message"
-              />
-              <Button type="button" onClick={send} disabled={!input.trim()}>
-                Envoyer
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="flex h-[85vh] max-h-[700px] flex-col gap-0 overflow-hidden p-0 sm:max-w-md">
+          {/* Header */}
+          <header className="relative flex items-center justify-between border-b border-border bg-gradient-to-r from-primary/10 via-primary/5 to-transparent px-4 py-3">
+            <div className="flex items-center gap-3">
+              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                <MessageCircleHeart className="h-4 w-4" />
+              </div>
+              <div>
+                <h2 className="text-sm font-semibold text-foreground">Conseiller Parfum</h2>
+                <p className="text-xs text-muted-foreground">PERFUMIST®</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-1">
+              {messages.length > 0 && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8"
+                  onClick={handleNewConversation}
+                  aria-label="Nouvelle conversation"
+                >
+                  <RotateCcw className="h-4 w-4" />
+                </Button>
+              )}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8"
+                onClick={() => setOpen(false)}
+                aria-label="Fermer"
+              >
+                <X className="h-4 w-4" />
               </Button>
             </div>
+          </header>
 
-            {messages.length === 0 ? (
-              <div className="py-10 text-center">
-                <p className="text-xs tracking-[0.25em] text-muted-foreground">DÉCOUVREZ</p>
-                <h2 className="mt-2 text-sm font-medium">VOTRE PARFUM IDÉAL</h2>
-                <p className="mt-1 text-xs text-muted-foreground">EN QUELQUES CLICS</p>
-
-                <div className="mx-auto mt-8 max-w-xs space-y-6 text-xs">
-                  <div className="flex items-center justify-center gap-3 text-muted-foreground">
-                    <div className="h-9 w-9 rounded-full border border-border grid place-items-center text-foreground/80">♥</div>
-                    <div className="text-left">ÉCRIVEZ LE NOM DE VOTRE PARFUM PRÉFÉRÉ…</div>
-                  </div>
-                  <div className="flex items-center justify-center gap-3 text-muted-foreground">
-                    <div className="h-9 w-9 rounded-full border border-border grid place-items-center text-foreground/80">✦</div>
-                    <div className="text-left">LAISSEZ LA MAGIE OPÉRER…</div>
-                  </div>
-                  <div className="flex items-center justify-center gap-3 text-muted-foreground">
-                    <div className="h-9 w-9 rounded-full border border-border grid place-items-center text-foreground/80">⌁</div>
-                    <div className="text-left">ET DÉCOUVREZ VOTRE SÉLECTION PERSONNALISÉE !</div>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="mt-4 space-y-3">
-                <div className="max-h-[40vh] overflow-auto rounded-md border border-border p-3">
-                  <div className="space-y-3 text-sm">
-                    {messages.map((m, idx) => (
-                      <div
-                        key={idx}
-                        className={cn(
-                          "flex",
-                          m.role === "user" ? "justify-end" : "justify-start",
-                        )}
-                      >
-                        <div
-                          className={cn(
-                            "max-w-[85%] rounded-lg px-3 py-2",
-                            m.role === "user"
-                              ? "bg-primary text-primary-foreground"
-                              : "bg-muted text-foreground",
-                          )}
-                        >
-                          {m.content}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {recommended.length > 0 && (
-                  <section aria-label="Recommandations" className="pt-2">
-                    <p className="text-sm font-medium">Sélection recommandée</p>
-                    <div className="mt-3 grid gap-4 sm:grid-cols-2">
-                      {recommended.map((p) => (
-                        <ProductCard key={p.node.id} product={p} />
-                      ))}
+          {/* Messages area */}
+          <ScrollArea className="flex-1" ref={scrollRef}>
+            <div className="p-4">
+              <AnimatePresence mode="wait">
+                {messages.length === 0 ? (
+                  <motion.div
+                    key="welcome"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="flex flex-col items-center py-8 text-center"
+                  >
+                    <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-primary/20 to-primary/5">
+                      <MessageCircleHeart className="h-7 w-7 text-primary" />
                     </div>
-                  </section>
+                    <p className="text-xs font-medium uppercase tracking-[0.25em] text-muted-foreground">
+                      Découvrez
+                    </p>
+                    <h3 className="mt-2 text-lg font-semibold text-foreground">
+                      Votre parfum idéal
+                    </h3>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      en quelques échanges
+                    </p>
+
+                    <div className="mt-8 space-y-4 text-left">
+                      <WelcomeStep icon="♥" text="Parlez-moi de vos parfums préférés..." />
+                      <WelcomeStep icon="✦" text="Décrivez l'ambiance recherchée..." />
+                      <WelcomeStep icon="⌁" text="Recevez des recommandations personnalisées !" />
+                    </div>
+
+                    {!hasProducts && (
+                      <p className="mt-6 text-xs text-muted-foreground/80">
+                        Chargement du catalogue en cours...
+                      </p>
+                    )}
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="conversation"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="space-y-4"
+                  >
+                    {messages.map((msg, idx) => (
+                      <React.Fragment key={msg.id}>
+                        <ChatMessage
+                          role={msg.role}
+                          content={msg.content}
+                          isStreaming={
+                            isStreaming &&
+                            idx === messages.length - 1 &&
+                            msg.role === "assistant"
+                          }
+                        />
+                        {/* Show recommended products after assistant message */}
+                        {msg.role === "assistant" &&
+                          msg.recommendedHandles &&
+                          msg.recommendedHandles.length > 0 && (
+                            <div className="ml-2 space-y-2 pt-2">
+                              {getProductsByHandles(msg.recommendedHandles).map(
+                                (product, pIdx) => (
+                                  <RecommendedProduct
+                                    key={product.node.id}
+                                    product={product}
+                                    index={pIdx}
+                                  />
+                                )
+                              )}
+                            </div>
+                          )}
+                      </React.Fragment>
+                    ))}
+                    {isStreaming && messages[messages.length - 1]?.content === "" && (
+                      <TypingIndicator />
+                    )}
+                  </motion.div>
                 )}
-              </div>
-            )}
+              </AnimatePresence>
+            </div>
+          </ScrollArea>
+
+          {/* Input area */}
+          <div className="border-t border-border bg-background p-3">
+            <div className="flex gap-2">
+              <Textarea
+                ref={textareaRef}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder="Décrivez vos envies olfactives..."
+                className="min-h-[44px] max-h-[120px] resize-none"
+                rows={1}
+                disabled={isStreaming}
+                aria-label="Votre message"
+              />
+              <Button
+                type="button"
+                size="icon"
+                onClick={handleSend}
+                disabled={!input.trim() || isStreaming}
+                className="h-11 w-11 shrink-0"
+              >
+                <Send className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
         </DialogContent>
       </Dialog>
     </>
+  );
+}
+
+function WelcomeStep({ icon, text }: { icon: string; text: string }) {
+  return (
+    <div className="flex items-center gap-3">
+      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border text-sm">
+        {icon}
+      </div>
+      <p className="text-sm text-muted-foreground">{text}</p>
+    </div>
   );
 }
