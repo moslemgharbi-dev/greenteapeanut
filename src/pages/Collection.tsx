@@ -204,7 +204,7 @@ export default function Collection() {
                         <PaginationItem>
                           <PaginationLink
                             onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
-                            className={`gap-1 pl-2.5 cursor-pointer ${currentPage === 1 ? 'pointer-events-none opacity-50' : ''}`}
+                            className={`gap-1 pl-2.5 mr-2 cursor-pointer ${currentPage === 1 ? 'pointer-events-none opacity-50' : ''}`}
                             aria-disabled={currentPage === 1}
                           >
                             <ChevronLeft className="h-4 w-4" />
@@ -233,7 +233,7 @@ export default function Collection() {
                         <PaginationItem>
                           <PaginationLink
                             onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
-                            className={`gap-1 pr-2.5 cursor-pointer ${currentPage === totalPages ? 'pointer-events-none opacity-50' : ''}`}
+                            className={`gap-1 pr-2.5 ml-2 cursor-pointer ${currentPage === totalPages ? 'pointer-events-none opacity-50' : ''}`}
                             aria-disabled={currentPage === totalPages}
                           >
                             <span className="hidden sm:inline">Suivant</span>
