@@ -199,12 +199,12 @@ export default function Collection() {
                 {totalPages > 1 && (
                   <div className="mt-12">
                     <Pagination>
-                      <PaginationContent>
+                      <PaginationContent className="gap-1 sm:gap-2">
                         {/* Previous button */}
-                        <PaginationItem>
+                        <PaginationItem className="mr-3 sm:mr-6">
                           <PaginationLink
                             onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
-                            className={`gap-1 pl-2.5 mr-4 cursor-pointer ${currentPage === 1 ? 'pointer-events-none opacity-50' : ''}`}
+                            className={`gap-1 pl-2.5 cursor-pointer ${currentPage === 1 ? 'pointer-events-none opacity-50' : ''}`}
                             aria-disabled={currentPage === 1}
                           >
                             <ChevronLeft className="h-4 w-4" />
@@ -230,10 +230,10 @@ export default function Collection() {
                         ))}
 
                         {/* Next button */}
-                        <PaginationItem>
+                        <PaginationItem className="ml-3 sm:ml-6">
                           <PaginationLink
                             onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
-                            className={`gap-1 pr-2.5 ml-4 cursor-pointer ${currentPage === totalPages ? 'pointer-events-none opacity-50' : ''}`}
+                            className={`gap-1 pr-2.5 cursor-pointer ${currentPage === totalPages ? 'pointer-events-none opacity-50' : ''}`}
                             aria-disabled={currentPage === totalPages}
                           >
                             <span className="hidden sm:inline">Suivant</span>
