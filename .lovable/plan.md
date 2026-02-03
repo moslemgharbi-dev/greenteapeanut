@@ -1,89 +1,32 @@
 
-# Pagination des collections - 12 produits par page
 
-## Objectif
-Afficher les produits des collections "Pour Lui" et "Pour Elle" avec une pagination de 12 produits par page.
+# Correction du problème visuel de pagination
 
-## Modifications à effectuer
+## Problème identifié
 
-### 1. Page Collection (`src/pages/Collection.tsx`)
+Les numéros de page sont collés aux boutons "Précédent" et "Suivant" car :
+1. L'espacement (`gap-1`) dans `PaginationContent` est insuffisant
+2. Les boutons Précédent/Suivant personnalisés n'ont pas assez de marge
 
-Ajouter la logique de pagination :
+## Solution
 
-- **Nouveau state** : `currentPage` initialisé à 1
-- **Constante** : `PRODUCTS_PER_PAGE = 12`
-- **Calcul des produits paginés** : extraire uniquement les 12 produits de la page courante
-- **Réinitialisation** : remettre la page à 1 quand les filtres changent (vendor, tri)
-- **Affichage du compteur** : montrer "X-Y sur Z produits"
+Ajouter des marges aux boutons Précédent et Suivant dans `Collection.tsx` pour créer une séparation visuelle claire.
 
-### 2. Composant de pagination
+## Modification à effectuer
 
-Utiliser le composant `Pagination` existant avec :
-- Boutons "Précédent" / "Suivant" traduits en français
-- Numéros de page cliquables
-- Ellipsis (...) pour les longues listes de pages
-- Style cohérent avec le reste du site
+**Fichier : `src/pages/Collection.tsx`**
 
-### 3. Comportement utilisateur
-
-- Scroll automatique vers le haut de la grille lors du changement de page
-- La pagination n'apparaît que s'il y a plus de 12 produits
-- Navigation fluide entre les pages
-
----
-
-## Détails techniques
-
-```text
-┌─────────────────────────────────────────┐
-│  Collection: Pour Lui                   │
-│  Affichage 1-12 sur 156 produits        │
-├─────────────────────────────────────────┤
-│  [Filtre Marque ▼]  [Tri ▼]             │
-├─────────────────────────────────────────┤
-│  ┌────┐ ┌────┐ ┌────┐ ┌────┐            │
-│  │ P1 │ │ P2 │ │ P3 │ │ P4 │            │
-│  └────┘ └────┘ └────┘ └────┘            │
-│  ┌────┐ ┌────┐ ┌────┐ ┌────┐            │
-│  │ P5 │ │ P6 │ │ P7 │ │ P8 │            │
-│  └────┘ └────┘ └────┘ └────┘            │
-│  ┌────┐ ┌────┐ ┌────┐ ┌────┐            │
-│  │ P9 │ │P10 │ │P11 │ │P12 │            │
-│  └────┘ └────┘ └────┘ └────┘            │
-├─────────────────────────────────────────┤
-│  ◄ Précédent  1 2 3 ... 13  Suivant ►   │
-└─────────────────────────────────────────┘
-```
-
-### Fichiers modifiés
-
-| Fichier | Modification |
-|---------|--------------|
-| `src/pages/Collection.tsx` | Ajout state pagination + logique de découpage + composant pagination |
-
-### Code pagination (aperçu)
-
-```typescript
-const PRODUCTS_PER_PAGE = 12;
-const [currentPage, setCurrentPage] = useState(1);
-
-// Reset page when filters change
-useEffect(() => {
-  setCurrentPage(1);
-}, [selectedVendor, sortBy]);
-
-// Calculate paginated products
-const paginatedProducts = useMemo(() => {
-  const startIndex = (currentPage - 1) * PRODUCTS_PER_PAGE;
-  return filteredAndSortedProducts.slice(startIndex, startIndex + PRODUCTS_PER_PAGE);
-}, [filteredAndSortedProducts, currentPage]);
-
-const totalPages = Math.ceil(filteredAndSortedProducts.length / PRODUCTS_PER_PAGE);
-```
+| Élément | Avant | Après |
+|---------|-------|-------|
+| Bouton Précédent | `className="gap-1 pl-2.5 cursor-pointer..."` | `className="gap-1 pl-2.5 mr-2 cursor-pointer..."` |
+| Bouton Suivant | `className="gap-1 pr-2.5 cursor-pointer..."` | `className="gap-1 pr-2.5 ml-2 cursor-pointer..."` |
 
 ## Résultat attendu
 
-- Les pages "Pour Lui" et "Pour Elle" afficheront exactement 12 produits par page
-- Navigation intuitive avec boutons précédent/suivant
-- Le compteur indique la position actuelle (ex: "13-24 sur 156 produits")
-- Les filtres et le tri fonctionnent correctement avec la pagination
+```text
+Avant:  < Précéden1  2  ...  12Suivant >
+Après:  < Précédent   1  2  ...  12   Suivant >
+```
+
+Les numéros de page seront correctement séparés des boutons de navigation.
+
