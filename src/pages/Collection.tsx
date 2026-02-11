@@ -3,8 +3,9 @@ import { useState, useMemo, useEffect, useRef } from 'react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { ProductGrid } from '@/components/products/ProductGrid';
+import { BrandFilterDropdown } from '@/components/products/BrandFilterDropdown';
 import { useCollection } from '@/hooks/useCollections';
-import { Loader2, ArrowUpDown, Filter, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Loader2, ArrowUpDown, ChevronLeft, ChevronRight } from 'lucide-react';
 import {
   Select,
   SelectContent,
@@ -157,22 +158,11 @@ export default function Collection() {
                   
                   <div className="flex flex-wrap items-center gap-3">
                     {/* Brand filter */}
-                    <div className="flex items-center gap-2">
-                      <Filter className="h-4 w-4 text-muted-foreground" />
-                      <Select value={selectedVendor} onValueChange={setSelectedVendor}>
-                        <SelectTrigger className="w-[180px] h-9 text-sm">
-                          <SelectValue placeholder="Marque" />
-                        </SelectTrigger>
-                        <SelectContent onCloseAutoFocus={(e) => e.preventDefault()}>
-                          <SelectItem value="all">Toutes les marques</SelectItem>
-                          {vendors.map((vendor) => (
-                            <SelectItem key={vendor} value={vendor}>
-                              {vendor}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
+                    <BrandFilterDropdown
+                      vendors={vendors}
+                      selectedVendor={selectedVendor}
+                      onVendorChange={setSelectedVendor}
+                    />
 
                     {/* Sort */}
                     <div className="flex items-center gap-2">
