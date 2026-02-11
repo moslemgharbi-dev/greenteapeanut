@@ -25,7 +25,7 @@ export function Hero() {
           Wael Ben Yaghlane
         </span>
         
-        <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl font-medium tracking-tight mb-6 animate-fade-in text-white" style={{ animationDelay: '0.1s' }}>
+        <h1 className="font-serif text-3xl md:text-5xl lg:text-6xl font-medium tracking-tight mb-6 animate-fade-in text-white" style={{ animationDelay: '0.1s' }}>
           Une trace invisible.
           <br />
           <span className="italic">Une émotion éternelle.</span>
