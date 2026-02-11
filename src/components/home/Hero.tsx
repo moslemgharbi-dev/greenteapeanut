@@ -26,9 +26,9 @@ export function Hero() {
         </span>
         
         <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl font-medium tracking-tight mb-6 animate-fade-in text-white" style={{ animationDelay: '0.1s' }}>
-          Là où chaque fragrance
+          Une trace invisible.
           <br />
-          <span className="italic">raconte une histoire</span>
+          <span className="italic">Une émotion éternelle.</span>
         </h1>
         
         <p className="max-w-xl mx-auto text-white/80 text-lg mb-10 animate-fade-in" style={{ animationDelay: '0.2s' }}>
