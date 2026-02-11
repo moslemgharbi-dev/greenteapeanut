@@ -24,6 +24,14 @@ export function BrandFilterDropdown({ vendors, selectedVendor, onVendorChange }:
     return () => document.removeEventListener('mousedown', handler);
   }, [open]);
 
+  // Close on scroll
+  useEffect(() => {
+    if (!open) return;
+    const handler = () => setOpen(false);
+    window.addEventListener('scroll', handler, true);
+    return () => window.removeEventListener('scroll', handler, true);
+  }, [open]);
+
   // Close on Escape
   useEffect(() => {
     if (!open) return;
