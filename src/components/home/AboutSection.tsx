@@ -4,7 +4,7 @@ import aboutImage from '@/assets/about-section.jpg';
 
 export function AboutSection() {
   return (
-    <section className="relative py-20 md:py-28 overflow-hidden">
+    <section className="relative py-14 md:py-20 overflow-hidden">
       {/* Background image */}
       <img
         src={aboutImage}
