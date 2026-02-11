@@ -14,17 +14,10 @@ export function SimilarProducts({ currentHandle, vendor }: SimilarProductsProps)
   const similarProducts = useMemo(() => {
     if (!products) return [];
     
-    const sameVendor = products
-      .filter((p: ShopifyProduct) => p.node.vendor === vendor && p.node.handle !== currentHandle)
-      .sort(() => Math.random() - 0.5)
-      .slice(0, 2);
-    
-    const others = products
+    return products
       .filter((p: ShopifyProduct) => p.node.vendor !== vendor && p.node.handle !== currentHandle)
       .sort(() => Math.random() - 0.5)
-      .slice(0, 2);
-    
-    return [...sameVendor, ...others];
+      .slice(0, 4);
   }, [products, vendor, currentHandle]);
 
   if (similarProducts.length === 0) return null;
