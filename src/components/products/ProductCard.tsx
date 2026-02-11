@@ -17,6 +17,7 @@ export function ProductCard({ product }: ProductCardProps) {
   
   const firstVariant = node.variants.edges[0]?.node;
   const firstImage = node.images?.edges?.[0]?.node;
+  const secondImage = node.images?.edges?.[1]?.node;
   const price = node.priceRange.minVariantPrice;
 
   const handleAddToCart = async (e: React.MouseEvent) => {
@@ -47,11 +48,26 @@ export function ProductCard({ product }: ProductCardProps) {
     >
       <div className="relative aspect-[3/4] bg-secondary/30 overflow-hidden rounded-sm mb-4">
         {firstImage ? (
-          <img
-            src={firstImage.url}
-            alt={firstImage.altText || node.title}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-          />
+          <div className="relative w-full h-full">
+            <img
+              src={firstImage.url}
+              alt={firstImage.altText || node.title}
+              className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0"
+            />
+            {secondImage ? (
+              <img
+                src={secondImage.url}
+                alt={secondImage.altText || node.title}
+                className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+              />
+            ) : (
+              <img
+                src={firstImage.url}
+                alt={firstImage.altText || node.title}
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+            )}
+          </div>
         ) : (
           <div className="w-full h-full flex items-center justify-center text-muted-foreground">
             No image
