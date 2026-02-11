@@ -88,7 +88,7 @@ export function PerfumeAssistantWidget() {
       </motion.button>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="flex h-[85vh] max-h-[700px] flex-col gap-0 overflow-hidden p-0 sm:max-w-xs">
+        <DialogContent className="flex h-[85vh] max-h-[700px] flex-col gap-0 overflow-hidden p-0 sm:max-w-[280px]">
           {/* Header */}
           <header className="relative flex items-center justify-between border-b border-border bg-gradient-to-r from-primary/10 via-primary/5 to-transparent px-4 py-3">
             <div className="flex items-center gap-3">
