@@ -163,7 +163,7 @@ export default function Collection() {
                         <SelectTrigger className="w-[180px] h-9 text-sm">
                           <SelectValue placeholder="Marque" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent onCloseAutoFocus={(e) => e.preventDefault()}>
                           <SelectItem value="all">Toutes les marques</SelectItem>
                           {vendors.map((vendor) => (
                             <SelectItem key={vendor} value={vendor}>
@@ -181,7 +181,7 @@ export default function Collection() {
                         <SelectTrigger className="w-[150px] h-9 text-sm">
                           <SelectValue placeholder="Trier par" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent onCloseAutoFocus={(e) => e.preventDefault()}>
                           <SelectItem value="default">Par défaut</SelectItem>
                           <SelectItem value="name-asc">Nom A-Z</SelectItem>
                           <SelectItem value="name-desc">Nom Z-A</SelectItem>
