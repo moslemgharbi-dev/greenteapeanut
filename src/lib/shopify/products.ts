@@ -65,6 +65,14 @@ const PRODUCT_BY_HANDLE_QUERY = `
       description
       handle
       vendor
+      collections(first: 10) {
+        edges {
+          node {
+            handle
+            title
+          }
+        }
+      }
       priceRange {
         minVariantPrice {
           amount

@@ -85,7 +85,21 @@ export default function ProductDetail() {
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Link to="/" className="hover:text-foreground transition-colors">Accueil</Link>
               <span>/</span>
-              <Link to="/shop" className="hover:text-foreground transition-colors">Collection</Link>
+              {(() => {
+                const collections = (product as any).collections?.edges || [];
+                const hommeCollection = collections.find((c: any) => c.node.handle === 'homme');
+                const femmeCollection = collections.find((c: any) => c.node.handle === 'femme');
+                const collectionHandle = hommeCollection ? 'homme' : femmeCollection ? 'femme' : null;
+                const collectionLabel = hommeCollection ? 'Pour Lui' : femmeCollection ? 'Pour Elle' : 'Collection';
+                return (
+                  <Link 
+                    to={collectionHandle ? `/collection/${collectionHandle}` : '/shop'} 
+                    className="hover:text-foreground transition-colors"
+                  >
+                    {collectionLabel}
+                  </Link>
+                );
+              })()}
               <span>/</span>
               <span className="text-foreground">{product.vendor || 'Marque'}</span>
             </div>
