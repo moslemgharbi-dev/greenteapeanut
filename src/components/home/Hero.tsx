@@ -37,7 +37,7 @@ export function Hero() {
         </p>
         
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in" style={{ animationDelay: '0.3s' }}>
-          <Button asChild size="lg" className="min-w-[200px]">
+          <Button asChild size="lg" className="min-w-[200px] border-white text-white bg-white/10 hover:bg-white/20" variant="outline">
             <Link to="/shop">
               Découvrir la collection
               <ArrowRight className="ml-2 h-4 w-4" />
