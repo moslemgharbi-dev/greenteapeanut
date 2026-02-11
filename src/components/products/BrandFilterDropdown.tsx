@@ -11,6 +11,7 @@ interface BrandFilterDropdownProps {
 export function BrandFilterDropdown({ vendors, selectedVendor, onVendorChange }: BrandFilterDropdownProps) {
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Close on click outside
   useEffect(() => {
@@ -24,10 +25,13 @@ export function BrandFilterDropdown({ vendors, selectedVendor, onVendorChange }:
     return () => document.removeEventListener('mousedown', handler);
   }, [open]);
 
-  // Close on scroll
+  // Close on page scroll (but not on scroll inside the dropdown list)
   useEffect(() => {
     if (!open) return;
-    const handler = () => setOpen(false);
+    const handler = (e: Event) => {
+      if (dropdownRef.current && dropdownRef.current.contains(e.target as Node)) return;
+      setOpen(false);
+    };
     window.addEventListener('scroll', handler, true);
     return () => window.removeEventListener('scroll', handler, true);
   }, [open]);
@@ -58,7 +62,7 @@ export function BrandFilterDropdown({ vendors, selectedVendor, onVendorChange }:
         </button>
 
         {open && (
-          <div className="absolute top-full left-0 z-50 mt-1 w-[200px] rounded-md border bg-popover text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95">
+          <div ref={dropdownRef} className="absolute top-full left-0 z-50 mt-1 w-[200px] rounded-md border bg-popover text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95">
             <div className="max-h-60 overflow-y-auto select-scrollbar p-1">
               <button
                 type="button"
