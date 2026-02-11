@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Loader2, Minus, Plus, ArrowLeft } from 'lucide-react';
 import { toast } from 'sonner';
 import { ShareButtons } from '@/components/products/ShareButtons';
+import { SimilarProducts } from '@/components/products/SimilarProducts';
 
 export default function ProductDetail() {
   const { handle } = useParams<{ handle: string }>();
@@ -263,6 +264,7 @@ export default function ProductDetail() {
           </div>
         </div>
       </main>
+      <SimilarProducts currentHandle={product.handle} vendor={product.vendor} />
       <Footer />
     </div>
   );
