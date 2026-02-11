@@ -1,39 +1,43 @@
 
-# Ajout d'une image Hero Banner
 
 ## Objectif
-Ajouter une image de fond au hero banner pour donner un rendu visuel luxueux et immersif, tout en conservant la lisibilité du texte grâce a un overlay sombre.
 
-## Approche
+Deux corrections sur le filtre par marque des pages "Pour Lui" et "Pour Elle" :
 
-### Generation d'image
-Utiliser le modele d'IA image (google/gemini-2.5-flash-image) via une edge function pour generer une photo de hero banner style luxe parfumerie : flacons elegants, ambiance doree/sombre, esthetique editoriale.
+1. **Permettre le scroll de la page meme quand la liste du filtre est ouverte** -- actuellement Radix UI bloque le scroll du body quand le Select est ouvert.
+2. **Ajouter un petit scrollbar visible dans la liste des marques** -- pour que l'utilisateur voie qu'il peut faire defiler la liste.
 
-L'image sera stockee dans le storage Lovable Cloud (bucket public) et referencee par URL dans le composant.
+---
 
-### Modification du composant Hero.tsx
-- Ajouter une balise `<img>` en position absolue couvrant toute la section
-- Superposer un overlay gradient sombre (noir vers transparent) pour garantir la lisibilite du texte blanc/clair
-- Conserver les elements decoratifs dores existants par-dessus
-- Adapter la couleur du texte si necessaire pour le contraste
+## Approche technique
 
-### Structure visuelle resultante
+Le probleme principal vient du composant Radix `Select` qui, via son `Portal`, ajoute un overlay invisible qui bloque les interactions avec la page. La solution est de **remplacer le Radix Select par un dropdown custom** uniquement pour le filtre marque sur les pages collection, ou bien de modifier le composant Select global.
 
-```text
-┌──────────────────────────────────┐
-│  Image de fond (cover)           │
-│  ┌────────────────────────────┐  │
-│  │  Overlay gradient sombre   │  │
-│  │  ┌──────────────────────┐  │  │
-│  │  │  Texte + CTA buttons │  │  │
-│  │  └──────────────────────┘  │  │
-│  └────────────────────────────┘  │
-└──────────────────────────────────┘
-```
+### Solution retenue : modifier le `SelectContent` global
 
-## Fichiers concernes
-- `supabase/functions/generate-hero-image/index.ts` -- nouvelle edge function pour generer l'image
-- `src/components/home/Hero.tsx` -- ajout de l'image de fond avec overlay
+On va modifier `src/components/ui/select.tsx` pour :
 
-## Alternative plus simple
-Si la generation IA prend trop de temps ou ne donne pas le resultat souhaite, on peut utiliser une image libre de droits (Unsplash) d'ambiance parfumerie directement via URL, sans edge function.
+1. **Supprimer le blocage du scroll** :
+   - Ajouter `modal={false}` sur `SelectPrimitive.Content` pour desactiver le comportement modal de Radix (qui bloque le scroll de la page).
+   - Retirer le `Portal` pour eviter l'overlay bloquant, ou le garder avec `modal={false}`.
+
+2. **Ajouter un scrollbar visible dans la liste** :
+   - Utiliser le composant `ScrollArea` de Radix (deja installe dans le projet) a l'interieur du `SelectPrimitive.Viewport`, ou simplement ajouter des styles CSS pour rendre le scrollbar visible avec une hauteur max limitee.
+   - Ajouter `max-h-60 overflow-y-auto` sur le Viewport avec des styles de scrollbar fins via Tailwind (`scrollbar-thin` ou des styles CSS custom).
+
+### Fichiers modifies
+
+| Fichier | Modification |
+|---------|-------------|
+| `src/components/ui/select.tsx` | Ajouter `modal={false}` au `SelectPrimitive.Content` pour permettre le scroll de la page. Ajouter des styles de scrollbar visible sur le Viewport. |
+| `src/index.css` | Ajouter des styles CSS pour un scrollbar fin et elegant dans les dropdowns select (`::-webkit-scrollbar` etc.). |
+
+### Details des changements
+
+**select.tsx** :
+- `SelectPrimitive.Content` recevra la prop `modal={false}` -- cela empeche Radix de bloquer le focus et le scroll en arriere-plan.
+- Le `Viewport` gardera `max-h-60` (ou similaire) et recevra `overflow-y-auto` avec une classe custom pour le scrollbar.
+
+**index.css** :
+- Ajout d'une classe `.select-scrollbar` avec des regles `::-webkit-scrollbar` pour un scrollbar fin (4px de large), discret, avec un thumb arrondi et une couleur subtile.
+
