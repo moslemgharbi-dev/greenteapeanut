@@ -8,7 +8,7 @@ function StarRating({ count, filled }: { count: number; filled: number }) {
       {Array.from({ length: count }, (_, i) => (
         <Star
           key={i}
-          className={`h-4 w-4 ${i < filled ? 'fill-yellow-400 text-yellow-400' : 'fill-none text-muted-foreground/40'}`}
+          className={`h-4 w-4 ${i < filled ? 'fill-foreground text-foreground' : 'fill-none text-foreground/30'}`}
         />
       ))}
     </div>
