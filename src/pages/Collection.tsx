@@ -133,6 +133,16 @@ export default function Collection() {
               </div>
             ) : (
               <>
+                {collection.image && (
+                  <div className="mb-10 w-full overflow-hidden rounded-lg">
+                    <img
+                      src={collection.image.url}
+                      alt={collection.image.altText || collection.title}
+                      className="w-full h-48 md:h-72 object-cover"
+                    />
+                  </div>
+                )}
+
                 <div className="mb-10">
                   <span className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-3 block">
                     Collection
