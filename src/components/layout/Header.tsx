@@ -114,19 +114,19 @@ export function Header() {
                     {item.label}
                   </Link>
                   {hoverData && (
-                    <div className="absolute left-1/2 -translate-x-1/2 top-full pt-2 opacity-0 invisible group-hover/nav:opacity-100 group-hover/nav:visible transition-all duration-300 z-50 pointer-events-none group-hover/nav:pointer-events-auto">
-                      <Link to={item.to} className="block w-[320px] rounded-md overflow-hidden shadow-lg border border-border bg-popover">
-                        <div className="relative aspect-[5/3] overflow-hidden">
+                    <div className="absolute left-1/2 -translate-x-1/2 top-full pt-2 opacity-0 invisible translate-y-2 group-hover/nav:opacity-100 group-hover/nav:visible group-hover/nav:translate-y-0 transition-all duration-500 ease-out z-50 pointer-events-none group-hover/nav:pointer-events-auto">
+                      <Link to={item.to} className="block w-[420px] rounded-lg overflow-hidden shadow-2xl border border-border/50 bg-popover group/card">
+                        <div className="relative aspect-[16/9] overflow-hidden">
                           <img
                             src={hoverData.src}
                             alt={hoverData.label}
-                            className="w-full h-full object-cover transition-transform duration-500 group-hover/nav:scale-105"
+                            className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover/card:scale-110"
                           />
                         </div>
-                        <div className="p-4 text-center">
+                        <div className="p-5 text-center">
                           <p className="text-sm font-medium tracking-wider text-foreground normal-case">{hoverData.label}</p>
-                          <p className="text-xs text-muted-foreground mt-1 normal-case">{hoverData.subtitle}</p>
-                          <span className="inline-block mt-3 text-xs font-medium tracking-widest uppercase text-foreground border-b border-foreground pb-0.5">
+                          <p className="text-xs text-muted-foreground mt-1.5 normal-case">{hoverData.subtitle}</p>
+                          <span className="inline-block mt-3.5 text-xs font-medium tracking-widest uppercase text-foreground border-b border-foreground pb-0.5 transition-all duration-300 group-hover/card:tracking-[0.25em]">
                             Découvrir
                           </span>
                         </div>
