@@ -336,7 +336,7 @@ export function Footer() {
 
           <div className="mt-12 pt-8 border-t border-background/20 flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-xs text-background/70">
-              © {new Date().getFullYear()} Wael Ben Yaghlane. Tous droits réservés.
+              © {new Date().getFullYear()} Automind Studio. Tous droits réservés.
             </p>
           </div>
         </div>
