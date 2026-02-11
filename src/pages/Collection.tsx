@@ -138,7 +138,7 @@ export default function Collection() {
                     <img
                       src={collection.image.url}
                       alt={collection.image.altText || collection.title}
-                      className="w-full h-48 md:h-72 object-cover"
+                      className="w-full h-64 md:h-96 lg:h-[28rem] object-cover"
                     />
                   </div>
                 )}
