@@ -29,7 +29,7 @@ export function AboutSection() {
             sillage invisible qui laisse une impression durable. Nous sélectionnons 
             uniquement des fragrances d'exception.
           </p>
-          <Button asChild variant="outline" size="lg" className="border-white/30 text-white hover:bg-white/10">
+          <Button asChild variant="outline" size="lg" className="border-white text-white bg-white/10 hover:bg-white/20">
             <Link to="/about">
               Découvrir notre histoire
             </Link>
