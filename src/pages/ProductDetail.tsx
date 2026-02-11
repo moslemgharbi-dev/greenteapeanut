@@ -101,7 +101,7 @@ export default function ProductDetail() {
                 );
               })()}
               <span>/</span>
-              <span className="text-foreground">{product.vendor || 'Marque'}</span>
+              <Link to={`/marque/${encodeURIComponent(product.vendor || '')}`} className="text-foreground hover:text-foreground/80 transition-colors">{product.vendor || 'Marque'}</Link>
             </div>
           </nav>
 
