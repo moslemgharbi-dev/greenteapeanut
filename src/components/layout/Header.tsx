@@ -106,7 +106,7 @@ export function Header() {
             {navItems.map((item) => {
               const hoverData = collectionHoverImages[item.to];
               return (
-                <div key={item.label} className="relative group/nav">
+                <div key={item.label} className="relative group/nav pb-4 -mb-4">
                   <Link
                     to={item.to}
                     className="text-muted-foreground hover:text-foreground transition-colors"
@@ -114,7 +114,7 @@ export function Header() {
                     {item.label}
                   </Link>
                   {hoverData && (
-                    <div className="absolute left-1/2 -translate-x-1/2 top-full mt-3 opacity-0 invisible group-hover/nav:opacity-100 group-hover/nav:visible transition-all duration-300 z-50 pointer-events-none group-hover/nav:pointer-events-auto">
+                    <div className="absolute left-1/2 -translate-x-1/2 top-full pt-2 opacity-0 invisible group-hover/nav:opacity-100 group-hover/nav:visible transition-all duration-300 z-50 pointer-events-none group-hover/nav:pointer-events-auto">
                       <Link to={item.to} className="block w-[320px] rounded-md overflow-hidden shadow-lg border border-border bg-popover">
                         <div className="relative aspect-[5/3] overflow-hidden">
                           <img
