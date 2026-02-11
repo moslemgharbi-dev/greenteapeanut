@@ -62,7 +62,6 @@ const SelectContent = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Content>
 >(({ className, children, position = "popper", ...props }, ref) => (
-  <SelectPrimitive.Portal>
     <SelectPrimitive.Content
       ref={ref}
       className={cn(
@@ -72,6 +71,7 @@ const SelectContent = React.forwardRef<
         className,
       )}
       position={position}
+      {...props}
       onPointerDownOutside={(e) => {
         e.preventDefault();
       }}
@@ -80,7 +80,7 @@ const SelectContent = React.forwardRef<
       <SelectScrollUpButton />
       <SelectPrimitive.Viewport
         className={cn(
-          "p-1",
+          "p-1 max-h-60 overflow-y-auto select-scrollbar",
           position === "popper" &&
             "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]",
         )}
@@ -89,7 +89,6 @@ const SelectContent = React.forwardRef<
       </SelectPrimitive.Viewport>
       <SelectScrollDownButton />
     </SelectPrimitive.Content>
-  </SelectPrimitive.Portal>
 ));
 SelectContent.displayName = SelectPrimitive.Content.displayName;
 
