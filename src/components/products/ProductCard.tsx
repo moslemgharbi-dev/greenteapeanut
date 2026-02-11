@@ -2,7 +2,8 @@ import { Link } from 'react-router-dom';
 import { ShopifyProduct } from '@/lib/shopify';
 import { Button } from '@/components/ui/button';
 import { useCartStore } from '@/stores/cartStore';
-import { Loader2, Plus } from 'lucide-react';
+import { useFavoritesStore } from '@/stores/favoritesStore';
+import { Loader2, Plus, Heart } from 'lucide-react';
 import { toast } from 'sonner';
 import { ShareButtons } from './ShareButtons';
 
@@ -14,6 +15,8 @@ export function ProductCard({ product }: ProductCardProps) {
   const { node } = product;
   const addItem = useCartStore(state => state.addItem);
   const isLoading = useCartStore(state => state.isLoading);
+  const toggleFavorite = useFavoritesStore(state => state.toggleFavorite);
+  const isFavorite = useFavoritesStore(state => state.isFavorite)(node.id);
   
   const firstVariant = node.variants.edges[0]?.node;
   const firstImage = node.images?.edges?.[0]?.node;
@@ -61,13 +64,28 @@ export function ProductCard({ product }: ProductCardProps) {
           </div>
         )}
         
-        {/* Share Button */}
-        <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <ShareButtons 
-            productHandle={node.handle}
-            productTitle={node.title}
-            productImage={firstImage?.url}
-          />
+        {/* Favorite & Share Buttons */}
+        <div className="absolute top-3 right-3 flex flex-col gap-1.5">
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              toggleFavorite(node.id);
+            }}
+            className="w-8 h-8 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center hover:bg-background transition-colors"
+            aria-label={isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris'}
+          >
+            <Heart 
+              className={`h-4 w-4 transition-colors ${isFavorite ? 'fill-red-500 text-red-500' : 'text-foreground'}`} 
+            />
+          </button>
+          <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <ShareButtons 
+              productHandle={node.handle}
+              productTitle={node.title}
+              productImage={firstImage?.url}
+            />
+          </div>
         </div>
 
         {/* Quick Add Button */}
