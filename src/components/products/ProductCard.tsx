@@ -52,21 +52,8 @@ export function ProductCard({ product }: ProductCardProps) {
             <img
               src={firstImage.url}
               alt={firstImage.altText || node.title}
-              className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0"
+              className="absolute inset-0 w-full h-full object-cover"
             />
-            {secondImage ? (
-              <img
-                src={secondImage.url}
-                alt={secondImage.altText || node.title}
-                className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-              />
-            ) : (
-              <img
-                src={firstImage.url}
-                alt={firstImage.altText || node.title}
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-            )}
           </div>
         ) : (
           <div className="w-full h-full flex items-center justify-center text-muted-foreground">
