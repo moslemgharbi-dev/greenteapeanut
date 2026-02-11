@@ -4,6 +4,13 @@ import { Heart, Menu, Search, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { CartDrawer } from '@/components/cart/CartDrawer';
 import { InlineSearch } from '@/components/search/InlineSearch';
+import collectionHommeImg from '@/assets/collection-homme-hover.jpg';
+import collectionFemmeImg from '@/assets/collection-femme-hover.jpg';
+
+const collectionHoverImages: Record<string, { src: string; label: string; subtitle: string }> = {
+  '/collection/homme': { src: collectionHommeImg, label: 'Collection Pour Lui', subtitle: 'Découvrez nos fragrances masculines' },
+  '/collection/femme': { src: collectionFemmeImg, label: 'Collection Pour Elle', subtitle: 'Découvrez nos fragrances féminines' },
+};
 
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -96,15 +103,39 @@ export function Header() {
       <div className="hidden md:block border-t border-border">
         <div className="container">
           <nav className="flex items-center justify-between gap-6 py-4 text-xs font-medium uppercase tracking-[0.16em]">
-            {navItems.map((item) => (
-              <Link
-                key={item.label}
-                to={item.to}
-                className="text-muted-foreground hover:text-foreground transition-colors"
-              >
-                {item.label}
-              </Link>
-            ))}
+            {navItems.map((item) => {
+              const hoverData = collectionHoverImages[item.to];
+              return (
+                <div key={item.label} className="relative group/nav">
+                  <Link
+                    to={item.to}
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                  {hoverData && (
+                    <div className="absolute left-1/2 -translate-x-1/2 top-full mt-3 opacity-0 invisible group-hover/nav:opacity-100 group-hover/nav:visible transition-all duration-300 z-50 pointer-events-none group-hover/nav:pointer-events-auto">
+                      <Link to={item.to} className="block w-[320px] rounded-md overflow-hidden shadow-lg border border-border bg-popover">
+                        <div className="relative aspect-[5/3] overflow-hidden">
+                          <img
+                            src={hoverData.src}
+                            alt={hoverData.label}
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover/nav:scale-105"
+                          />
+                        </div>
+                        <div className="p-4 text-center">
+                          <p className="text-sm font-medium tracking-wider text-foreground normal-case">{hoverData.label}</p>
+                          <p className="text-xs text-muted-foreground mt-1 normal-case">{hoverData.subtitle}</p>
+                          <span className="inline-block mt-3 text-xs font-medium tracking-widest uppercase text-foreground border-b border-foreground pb-0.5">
+                            Découvrir
+                          </span>
+                        </div>
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </nav>
         </div>
       </div>
