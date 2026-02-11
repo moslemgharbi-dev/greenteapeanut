@@ -39,15 +39,6 @@ export function CustomerReviews() {
         ))}
       </div>
 
-      <p className="text-sm text-muted-foreground mb-8 max-w-2xl mx-auto">
-        Seuls les clients connectés ayant acheté ce produit ont la possibilité de laisser un avis.
-      </p>
-
-      {/* Empty reviews placeholder */}
-      <div className="max-w-2xl mx-auto">
-        <h3 className="font-semibold text-sm uppercase tracking-wide mb-4">Avis</h3>
-        <p className="text-sm text-muted-foreground italic">Aucun avis pour le moment.</p>
-      </div>
     </section>
   );
 }
