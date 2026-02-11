@@ -18,36 +18,31 @@ export function Newsletter() {
   };
 
   return (
-    <section className="py-14 md:py-20">
+    <section className="py-8 md:py-10">
       <div className="container">
-        <div className="max-w-md mx-auto text-center">
-          <span className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground mb-3 block">
-            Restez connecté
-          </span>
-          <h2 className="font-serif text-2xl md:text-3xl font-medium mb-3">
+        <div className="max-w-sm mx-auto text-center">
+          <h2 className="font-serif text-lg md:text-xl font-medium mb-2">
             Rejoignez notre univers
           </h2>
-          <p className="text-sm text-muted-foreground mb-6">
-            Inscrivez-vous pour recevoir un accès exclusif aux nouveautés,
-            aux offres spéciales et à nos conseils fragrance.
+          <p className="text-xs text-muted-foreground mb-4">
+            Recevez en avant-première nos nouveautés et offres exclusives.
           </p>
           
-          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2.5">
+          <form onSubmit={handleSubmit} className="flex gap-2">
             <Input
               type="email"
-              placeholder="Entrez votre email"
+              placeholder="Votre email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="flex-1 h-9 text-sm"
+              className="flex-1 h-8 text-xs"
               required
             />
-            <Button type="submit" size="sm" className="px-6">
+            <Button type="submit" size="sm" className="h-8 px-4 text-xs">
               S'inscrire
             </Button>
           </form>
           
-          <p className="text-[10px] text-muted-foreground mt-3">
-            En vous inscrivant, vous acceptez de recevoir des communications marketing.
+          <p className="text-[9px] text-muted-foreground mt-2">
             Désinscription à tout moment.
           </p>
         </div>
