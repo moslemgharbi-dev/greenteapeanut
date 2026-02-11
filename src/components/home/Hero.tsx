@@ -43,11 +43,6 @@ export function Hero() {
               <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>
-          <Button asChild variant="outline" size="lg" className="min-w-[200px] border-white/30 text-white hover:bg-white/10">
-            <Link to="/about">
-              Notre histoire
-            </Link>
-          </Button>
         </div>
       </div>
     </section>
