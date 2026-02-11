@@ -85,9 +85,9 @@ export default function ProductDetail() {
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Link to="/" className="hover:text-foreground transition-colors">Accueil</Link>
               <span>/</span>
-              <Link to="/shop" className="hover:text-foreground transition-colors">Boutique</Link>
+              <Link to="/shop" className="hover:text-foreground transition-colors">Collection</Link>
               <span>/</span>
-              <span className="text-foreground">{product.title}</span>
+              <span className="text-foreground">{product.vendor || 'Marque'}</span>
             </div>
           </nav>
 
