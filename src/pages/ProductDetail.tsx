@@ -82,13 +82,13 @@ export default function ProductDetail() {
         <div className="container pt-8 md:pt-12 pb-20 md:pb-28">
           {/* Breadcrumb */}
           <nav className="mb-8">
-            <Link 
-              to="/shop" 
-              className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Retour à la collection
-            </Link>
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Link to="/" className="hover:text-foreground transition-colors">Accueil</Link>
+              <span>/</span>
+              <Link to="/shop" className="hover:text-foreground transition-colors">Boutique</Link>
+              <span>/</span>
+              <span className="text-foreground">{product.title}</span>
+            </div>
           </nav>
 
           <div className="grid md:grid-cols-2 gap-8 lg:gap-16 overflow-hidden">
