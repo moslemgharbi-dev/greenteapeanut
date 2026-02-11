@@ -20,6 +20,7 @@ import ConfidentialiteCookies from "./pages/ConfidentialiteCookies";
 import ParametresCookies from "./pages/ParametresCookies";
 import NotFound from "./pages/NotFound";
 import { PerfumeAssistantWidget } from "@/components/perfumist/PerfumeAssistantWidget";
+import { ScrollToTop } from "@/components/layout/ScrollToTop";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +29,7 @@ function AppContent() {
   
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <PerfumeAssistantWidget />
       <Routes>
         <Route path="/" element={<Index />} />
