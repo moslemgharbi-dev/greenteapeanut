@@ -20,6 +20,7 @@ import ConfidentialiteCookies from "./pages/ConfidentialiteCookies";
 import ParametresCookies from "./pages/ParametresCookies";
 import NotFound from "./pages/NotFound";
 import { PerfumeAssistantWidget } from "@/components/perfumist/PerfumeAssistantWidget";
+import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
 import { ScrollToTop } from "@/components/layout/ScrollToTop";
 
 const queryClient = new QueryClient();
@@ -31,6 +32,7 @@ function AppContent() {
     <BrowserRouter>
       <ScrollToTop />
       <PerfumeAssistantWidget />
+      <WhatsAppButton />
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/shop" element={<Shop />} />
