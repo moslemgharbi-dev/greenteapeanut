@@ -1,116 +1,64 @@
 
 
-# Avis Clients Interactifs et Profils Clients
+## Sélecteur de Gouvernorats Tunisiens avec intégration Shopify
 
-## Objectif
-Deux fonctionnalités complémentaires :
-1. Permettre aux clients de cliquer sur les étoiles pour laisser un avis sur un produit
-2. Créer un système de compte client (inscription / connexion / profil)
+### Objectif
+Creer un composant de selection des 24 gouvernorats de Tunisie, integre dans le panier (CartDrawer). La selection est obligatoire avant le checkout et sera envoyee a Shopify via la mutation `cartAttributesUpdate`.
 
----
+### Composants a creer / modifier
 
-## 1. Système d'authentification et profils
+#### 1. Nouveau composant : `src/components/cart/GouvernoratSelector.tsx`
+- Grille de badges cliquables affichant les 24 gouvernorats
+- Animations Framer Motion au clic (scale, couleur)
+- Un seul gouvernorat selectionnable a la fois
+- Etat visuel clair pour le badge selectionne (couleur primaire, bordure)
+- Liste : Ariana, Beja, Ben Arous, Bizerte, Gabes, Gafsa, Jendouba, Kairouan, Kasserine, Kebili, Le Kef, Mahdia, La Manouba, Medenine, Monastir, Nabeul, Sfax, Sidi Bouzid, Siliana, Sousse, Tataouine, Tozeur, Tunis, Zaghouan
 
-### Pages et composants
-- **Page `/auth`** : formulaire d'inscription et de connexion (email + mot de passe), avec onglets "Créer un compte" / "Se connecter"
-- **Page `/profil`** : page de profil affichant le nom, l'email, et les avis laissés par le client
-- **Header** : ajout d'une icone "Compte" (User icon) dans la barre d'actions, qui redirige vers `/auth` si non connecté ou `/profil` si connecté
-- **Hook `useAuth`** : gestion de l'état d'authentification via `onAuthStateChange`
+#### 2. Nouvelle fonction Shopify : `src/lib/shopify/cart.ts`
+- Ajouter une mutation `cartAttributesUpdate` pour enregistrer l'attribut "Gouvernorat" sur le panier Shopify
+- GraphQL :
+  ```graphql
+  mutation cartAttributesUpdate($cartId: ID!, $attributes: [AttributeInput!]!) {
+    cartAttributesUpdate(cartId: $cartId, attributes: $attributes) {
+      cart { id }
+      userErrors { field message }
+    }
+  }
+  ```
+- Nouvelle fonction exportee `updateShopifyCartAttributes(cartId, attributes)`
 
-### Base de données
-- **Table `profiles`** : `id (uuid, FK auth.users)`, `full_name (text)`, `created_at`
-  - Trigger automatique pour créer un profil à l'inscription
-  - RLS : chaque utilisateur ne peut lire/modifier que son propre profil
+#### 3. Mise a jour du store : `src/stores/cartStore.ts`
+- Ajouter `selectedGouvernorat: string | null` au state
+- Ajouter `setGouvernorat(gouvernorat: string)` qui :
+  - Met a jour le state local
+  - Appelle `updateShopifyCartAttributes` avec `{ key: "Gouvernorat", value: gouvernorat }`
+- Persister `selectedGouvernorat` dans le localStorage
+- Vider `selectedGouvernorat` lors du `clearCart()`
 
----
+#### 4. Mise a jour du CartDrawer : `src/components/cart/CartDrawer.tsx`
+- Integrer le `GouvernoratSelector` entre la liste des articles et le bouton de paiement
+- Afficher un label "Gouvernorat de livraison" au-dessus du selecteur
+- Desactiver le bouton "Proceder au paiement" si aucun gouvernorat n'est selectionne
+- Afficher un message d'erreur si l'utilisateur tente de payer sans selection
 
-## 2. Avis clients interactifs
+### Details techniques
 
-### Base de données
-- **Table `reviews`** : `id`, `user_id (FK auth.users)`, `product_handle (text)`, `rating (int 1-5)`, `comment (text, nullable)`, `created_at`
-  - RLS : lecture publique, insertion/modification limitée au propriétaire
-  - Contrainte d'unicité sur `(user_id, product_handle)` (un seul avis par client par produit)
+**Design du GouvernoratSelector :**
+- Grille responsive : `grid-cols-3` sur mobile, `grid-cols-4` sur desktop
+- Chaque badge utilise `motion.button` de Framer Motion
+- Animation : `whileTap={{ scale: 0.95 }}`, transition de couleur avec `animate`
+- Badge selectionne : fond primaire, texte blanc
+- Badge non selectionne : fond secondary/30, texte foreground
 
-### Composant `CustomerReviews` amélioré
-- **Etoiles cliquables** : au survol, les étoiles se remplissent dynamiquement ; au clic, la note est sélectionnée
-- **Formulaire d'avis** : champ de commentaire optionnel + bouton "Soumettre"
-- Si le client n'est pas connecté, un message l'invite à se connecter
-- Si le client a déjà laissé un avis, il voit son avis existant avec possibilité de le modifier
-- **Calcul dynamique** : la note moyenne et la répartition par étoile sont calculées à partir des avis réels en base
+**Validation checkout :**
+- Le bouton checkout est `disabled` quand `!selectedGouvernorat`
+- Un texte rouge "Veuillez selectionner un gouvernorat" apparait si tentative sans selection
 
----
-
-## Parcours utilisateur
-
-1. Le client visite une page produit et voit la section "Avis Clients"
-2. Il clique sur les étoiles pour choisir sa note
-3. S'il n'est pas connecté, il est redirigé vers la page de connexion/inscription
-4. Une fois connecté, il peut soumettre son avis (note + commentaire optionnel)
-5. L'avis apparait immédiatement dans la liste et les statistiques se mettent à jour
-
----
-
-## Details techniques
-
-### Migrations SQL (2 migrations)
-
-**Migration 1 - Profiles :**
-```sql
-CREATE TABLE public.profiles (
-  id uuid PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
-  full_name text,
-  created_at timestamptz DEFAULT now()
-);
-ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
-
--- Trigger auto-creation
-CREATE OR REPLACE FUNCTION public.handle_new_user()
-RETURNS trigger AS $$
-BEGIN
-  INSERT INTO public.profiles (id, full_name)
-  VALUES (NEW.id, NEW.raw_user_meta_data->>'full_name');
-  RETURN NEW;
-END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
-
-CREATE TRIGGER on_auth_user_created
-  AFTER INSERT ON auth.users
-  FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
-
--- RLS policies
-CREATE POLICY "Users read own profile" ON public.profiles FOR SELECT USING (auth.uid() = id);
-CREATE POLICY "Users update own profile" ON public.profiles FOR UPDATE USING (auth.uid() = id);
-```
-
-**Migration 2 - Reviews :**
-```sql
-CREATE TABLE public.reviews (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id uuid REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
-  product_handle text NOT NULL,
-  rating integer NOT NULL CHECK (rating >= 1 AND rating <= 5),
-  comment text,
-  created_at timestamptz DEFAULT now(),
-  UNIQUE(user_id, product_handle)
-);
-ALTER TABLE public.reviews ENABLE ROW LEVEL SECURITY;
-
-CREATE POLICY "Anyone can read reviews" ON public.reviews FOR SELECT USING (true);
-CREATE POLICY "Auth users insert own review" ON public.reviews FOR INSERT WITH CHECK (auth.uid() = user_id);
-CREATE POLICY "Users update own review" ON public.reviews FOR UPDATE USING (auth.uid() = user_id);
-CREATE POLICY "Users delete own review" ON public.reviews FOR DELETE USING (auth.uid() = user_id);
-```
-
-### Fichiers a creer/modifier
-
-| Fichier | Action |
-|---------|--------|
-| `src/hooks/useAuth.ts` | Creer - hook authentification |
-| `src/pages/Auth.tsx` | Creer - page connexion/inscription |
-| `src/pages/Profile.tsx` | Creer - page profil client |
-| `src/hooks/useReviews.ts` | Creer - hook CRUD avis |
-| `src/components/products/CustomerReviews.tsx` | Modifier - etoiles cliquables + formulaire |
-| `src/components/products/InteractiveStarRating.tsx` | Creer - composant etoiles cliquables |
-| `src/components/layout/Header.tsx` | Modifier - ajout icone compte |
-| `src/App.tsx` | Modifier - ajout routes `/auth` et `/profil` |
+**Flux complet :**
+1. L'utilisateur ajoute des articles au panier
+2. Il ouvre le CartDrawer
+3. Il selectionne un gouvernorat dans la grille
+4. La mutation `cartAttributesUpdate` envoie le choix a Shopify
+5. Le bouton "Proceder au paiement" devient actif
+6. Redirection vers le checkout Shopify
 
