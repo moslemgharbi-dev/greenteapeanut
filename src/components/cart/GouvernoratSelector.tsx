@@ -64,7 +64,7 @@ export function GouvernoratSelector({ selected, onSelect, disabled }: Gouvernora
       </button>
 
       {open && (
-        <div ref={dropdownRef} className="absolute bottom-full left-0 z-50 mb-1 w-full rounded-md border bg-popover text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95">
+        <div ref={dropdownRef} className="absolute top-full left-0 z-[100] mt-1 w-full rounded-md border bg-popover text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95">
           <div className="max-h-48 overflow-y-auto select-scrollbar p-1">
             {GOUVERNORATS.map((gov) => (
               <button
