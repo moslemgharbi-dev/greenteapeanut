@@ -60,9 +60,9 @@ function FooterAccordion({ title, children }: FooterAccordionProps) {
 // Static boutique links with Pour Lui/Pour Elle linking to homme/femme collections
 const boutiqueLinks = [
   { label: 'Marques', to: '/shop' },
-  { label: 'Parfum De Niche', to: '/collection/parfum-de-niche' },
   { label: 'Pour Lui', to: '/collection/homme' },
   { label: 'Pour Elle', to: '/collection/femme' },
+  { label: 'Parfum De Niche', to: '/collection/parfum-de-niche' },
 ];
 
 export function Footer() {
