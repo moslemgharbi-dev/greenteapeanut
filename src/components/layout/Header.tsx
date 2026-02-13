@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Heart, Menu, Search, X } from 'lucide-react';
+import { Heart, Menu, Search, User, X } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { CartDrawer } from '@/components/cart/CartDrawer';
 import { InlineSearch } from '@/components/search/InlineSearch';
@@ -17,6 +18,7 @@ const collectionHoverImages: Record<string, { src: string; label: string; subtit
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
+  const { user } = useAuth();
 
   // Static navigation items with Pour Lui/Pour Elle linking to homme/femme collections
   const navItems = useMemo(() => [
@@ -90,11 +92,21 @@ export function Header() {
             size="icon"
             aria-label="Favoris"
             className="hidden md:flex"
-            onClick={() => {
-              // Placeholder: pas de fonctionnalité demandée
-            }}
+            onClick={() => {}}
           >
             <Heart className="h-5 w-5" />
+          </Button>
+
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label="Mon compte"
+            className="hidden md:flex"
+            asChild
+          >
+            <Link to={user ? '/profil' : '/auth'}>
+              <User className="h-5 w-5" />
+            </Link>
           </Button>
 
           <CartDrawer />
@@ -160,6 +172,14 @@ export function Header() {
             </div>
 
             <div className="pt-2 border-t border-border flex flex-col">
+              <Link
+                to={user ? '/profil' : '/auth'}
+                className="flex items-center gap-2 text-sm font-medium py-2"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <User className="h-4 w-4" />
+                {user ? 'Mon compte' : 'Connexion'}
+              </Link>
               <button
                 type="button"
                 className="flex items-center gap-2 text-sm font-medium py-2"

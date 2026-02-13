@@ -279,7 +279,7 @@ export default function ProductDetail() {
           </div>
 
           {/* Customer Reviews */}
-          <CustomerReviews />
+          <CustomerReviews productHandle={handle || ''} />
         </div>
       </main>
       <SimilarProducts currentHandle={product.handle} vendor={product.vendor} />
