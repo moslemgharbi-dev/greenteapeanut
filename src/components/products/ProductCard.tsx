@@ -21,7 +21,7 @@ export function ProductCard({ product }: ProductCardProps) {
   const firstVariant = node.variants.edges[0]?.node;
   const firstImage = node.images?.edges?.[0]?.node;
   const secondImage = node.images?.edges?.[1]?.node;
-  const price = node.priceRange.minVariantPrice;
+  const price = node.priceRange.maxVariantPrice;
 
   const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault();

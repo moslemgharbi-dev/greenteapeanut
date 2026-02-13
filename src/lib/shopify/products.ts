@@ -21,6 +21,10 @@ const PRODUCTS_QUERY = `
               amount
               currencyCode
             }
+            maxVariantPrice {
+              amount
+              currencyCode
+            }
           }
           images(first: 5) {
             edges {
@@ -75,6 +79,10 @@ const PRODUCT_BY_HANDLE_QUERY = `
       }
       priceRange {
         minVariantPrice {
+          amount
+          currencyCode
+        }
+        maxVariantPrice {
           amount
           currencyCode
         }

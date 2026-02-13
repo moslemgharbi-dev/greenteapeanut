@@ -12,6 +12,10 @@ export interface ShopifyProduct {
         amount: string;
         currencyCode: string;
       };
+      maxVariantPrice: {
+        amount: string;
+        currencyCode: string;
+      };
     };
     images: {
       edges: Array<{
