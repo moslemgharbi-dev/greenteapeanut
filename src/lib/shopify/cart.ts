@@ -54,6 +54,15 @@ const CART_ATTRIBUTES_UPDATE_MUTATION = `
   }
 `;
 
+const CART_BUYER_IDENTITY_UPDATE_MUTATION = `
+  mutation cartBuyerIdentityUpdate($cartId: ID!, $buyerIdentity: CartBuyerIdentityInput!) {
+    cartBuyerIdentityUpdate(cartId: $cartId, buyerIdentity: $buyerIdentity) {
+      cart { id }
+      userErrors { field message }
+    }
+  }
+`;
+
 const CART_QUERY = `
   query cart($id: ID!) {
     cart(id: $id) { id totalQuantity }
@@ -157,6 +166,23 @@ export async function updateShopifyCartAttributes(cartId: string, attributes: Ar
   if (isCartNotFoundError(userErrors)) return { success: false, cartNotFound: true };
   if (userErrors.length > 0) {
     console.error('Cart attributes update failed:', userErrors);
+    return { success: false };
+  }
+  return { success: true };
+}
+
+export async function updateShopifyCartBuyerCity(cartId: string, city: string): Promise<{ success: boolean; cartNotFound?: boolean }> {
+  const data = await storefrontApiRequest(CART_BUYER_IDENTITY_UPDATE_MUTATION, {
+    cartId,
+    buyerIdentity: {
+      deliveryAddressPreferences: [{ deliveryAddress: { city, country: "TN" } }],
+    },
+  });
+
+  const userErrors = data?.data?.cartBuyerIdentityUpdate?.userErrors || [];
+  if (isCartNotFoundError(userErrors)) return { success: false, cartNotFound: true };
+  if (userErrors.length > 0) {
+    console.error('Cart buyer identity update failed:', userErrors);
     return { success: false };
   }
   return { success: true };
