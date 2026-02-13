@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import { useCollection } from '@/hooks/useCollections';
+import { useProducts } from '@/hooks/useProducts';
 import { ProductCard } from '@/components/products/ProductCard';
 import { Loader2 } from 'lucide-react';
 
 export function FeaturedProducts() {
-  const { data: collection, isLoading } = useCollection('parfum-de-niche');
+  const { data: products, isLoading } = useProducts();
 
   return (
     <section className="py-20 md:py-28">
@@ -13,14 +13,14 @@ export function FeaturedProducts() {
         <div className="flex items-end justify-between mb-12">
           <div>
             <span className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-3 block">
-              Notre sélection
+              Notre collection
             </span>
             <h2 className="font-serif text-3xl md:text-4xl font-medium">
-              Parfum De Niche
+              Parfums en vedette
             </h2>
           </div>
           <Link 
-            to="/collection/parfum-de-niche" 
+            to="/shop" 
             className="hidden sm:flex items-center gap-2 text-sm font-medium hover:text-accent transition-colors"
           >
             Voir tout
@@ -32,9 +32,9 @@ export function FeaturedProducts() {
           <div className="flex items-center justify-center py-16">
             <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
           </div>
-        ) : collection?.products && collection.products.length > 0 ? (
+        ) : products && products.length > 0 ? (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
-            {collection.products.slice(0, 8).map((product) => (
+            {products.slice(0, 8).map((product) => (
               <ProductCard key={product.node.id} product={product} />
             ))}
           </div>
@@ -49,10 +49,10 @@ export function FeaturedProducts() {
 
         <div className="sm:hidden mt-8 text-center">
           <Link 
-            to="/collection/parfum-de-niche" 
+            to="/shop" 
             className="inline-flex items-center gap-2 text-sm font-medium hover:text-accent transition-colors"
           >
-            Voir toute la collection
+            Voir tous les produits
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
