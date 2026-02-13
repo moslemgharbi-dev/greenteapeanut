@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Check, ChevronDown, MapPin } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { motion, AnimatePresence } from "framer-motion";
 
 const GOUVERNORATS = [
   "Ariana", "Béja", "Ben Arous", "Bizerte", "Gabès", "Gafsa",
@@ -17,39 +18,18 @@ interface GouvernoratSelectorProps {
 
 export function GouvernoratSelector({ selected, onSelect, disabled }: GouvernoratSelectorProps) {
   const [open, setOpen] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
 
+  // Scroll selected item into view when opening
   useEffect(() => {
-    if (!open) return;
-    const handler = (e: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) setOpen(false);
-    };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, [open]);
-
-  useEffect(() => {
-    if (!open) return;
-    const handler = (e: Event) => {
-      if (dropdownRef.current && dropdownRef.current.contains(e.target as Node)) return;
-      setOpen(false);
-    };
-    window.addEventListener("scroll", handler, true);
-    return () => window.removeEventListener("scroll", handler, true);
-  }, [open]);
-
-  useEffect(() => {
-    if (!open) return;
-    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
-    document.addEventListener("keydown", handler);
-    return () => document.removeEventListener("keydown", handler);
-  }, [open]);
-
-  const displayLabel = selected || "Sélectionner un gouvernorat";
+    if (open && selected && listRef.current) {
+      const el = listRef.current.querySelector(`[data-gov="${selected}"]`);
+      el?.scrollIntoView({ block: "center", behavior: "smooth" });
+    }
+  }, [open, selected]);
 
   return (
-    <div ref={containerRef} className="relative">
+    <div className="w-full">
       <button
         type="button"
         disabled={disabled}
@@ -58,33 +38,45 @@ export function GouvernoratSelector({ selected, onSelect, disabled }: Gouvernora
       >
         <span className="flex items-center gap-2 truncate">
           <MapPin className="h-3.5 w-3.5 text-muted-foreground" />
-          {displayLabel}
+          {selected || "Sélectionner un gouvernorat"}
         </span>
         <ChevronDown className={cn("h-4 w-4 opacity-50 transition-transform", open && "rotate-180")} />
       </button>
 
-      {open && (
-        <div ref={dropdownRef} className="absolute top-full left-0 z-[100] mt-1 w-full rounded-md border bg-popover text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95">
-          <div className="max-h-48 overflow-y-auto select-scrollbar p-1">
-            {GOUVERNORATS.map((gov) => (
-              <button
-                key={gov}
-                type="button"
-                onClick={() => { onSelect(gov); setOpen(false); }}
-                className={cn(
-                  "relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none hover:bg-accent hover:text-accent-foreground",
-                  selected === gov && "bg-accent text-accent-foreground"
-                )}
-              >
-                <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
-                  {selected === gov && <Check className="h-4 w-4" />}
-                </span>
-                {gov}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="overflow-hidden"
+          >
+            <div
+              ref={listRef}
+              className="mt-1 max-h-48 overflow-y-auto select-scrollbar rounded-md border bg-popover p-1"
+            >
+              {GOUVERNORATS.map((gov) => (
+                <button
+                  key={gov}
+                  type="button"
+                  data-gov={gov}
+                  onClick={() => { onSelect(gov); setOpen(false); }}
+                  className={cn(
+                    "relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none hover:bg-accent hover:text-accent-foreground",
+                    selected === gov && "bg-accent text-accent-foreground"
+                  )}
+                >
+                  <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
+                    {selected === gov && <Check className="h-4 w-4" />}
+                  </span>
+                  {gov}
+                </button>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
