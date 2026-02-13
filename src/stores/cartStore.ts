@@ -7,7 +7,8 @@ import {
   updateShopifyCartLine, 
   removeLineFromShopifyCart,
   verifyShopifyCart,
-  updateShopifyCartAttributes
+  updateShopifyCartAttributes,
+  updateShopifyCartBuyerCity
 } from '@/lib/shopify/cart';
 
 export interface CartItem {
@@ -146,7 +147,10 @@ export const useCartStore = create<CartStore>()(
         const { cartId } = get();
         set({ selectedGouvernorat: gouvernorat });
         if (cartId) {
-          await updateShopifyCartAttributes(cartId, [{ key: "Gouvernorat", value: gouvernorat }]);
+          await Promise.all([
+            updateShopifyCartAttributes(cartId, [{ key: "Gouvernorat", value: gouvernorat }]),
+            updateShopifyCartBuyerCity(cartId, gouvernorat),
+          ]);
         }
       },
       
