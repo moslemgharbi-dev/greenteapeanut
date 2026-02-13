@@ -21,7 +21,7 @@ export function Header() {
     { label: 'Marques', to: '/shop' },
     { label: 'Pour Lui', to: '/collection/homme' },
     { label: 'Pour Elle', to: '/collection/femme' },
-    { label: 'Nos best-sellers', to: '/shop' },
+    { label: 'Parfum De Niche', to: '/collection/parfum-de-niche' },
   ], []);
 
   return (
