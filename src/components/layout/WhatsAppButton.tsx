@@ -30,8 +30,7 @@ export function WhatsAppButton() {
         "ring-2 ring-[#25D366]/20 ring-offset-2 ring-offset-background",
         "hover:shadow-2xl hover:shadow-[#25D366]/25",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-        "transition-shadow duration-300",
-        "after:absolute after:inset-0 after:rounded-full after:bg-[#25D366] after:animate-ping after:opacity-30"
+        "transition-shadow duration-300"
       )}
       aria-label="Nous contacter sur WhatsApp"
     >
