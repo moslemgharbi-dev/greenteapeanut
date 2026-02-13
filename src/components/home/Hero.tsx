@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
-import heroBanner from '@/assets/hero-banner.jpg';
+import heroBanner from '@/assets/hero-banner.jpg?format=avif&quality=80';
 
 export function Hero() {
   return (

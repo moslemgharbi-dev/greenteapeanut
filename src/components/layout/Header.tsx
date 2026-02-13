@@ -4,9 +4,9 @@ import { Heart, Menu, Search, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { CartDrawer } from '@/components/cart/CartDrawer';
 import { InlineSearch } from '@/components/search/InlineSearch';
-import collectionHommeImg from '@/assets/collection-homme-hover.jpg';
-import collectionFemmeImg from '@/assets/collection-femme-hover.jpg';
-import collectionNicheImg from '@/assets/collection-niche-hover.png';
+import collectionHommeImg from '@/assets/collection-homme-hover.jpg?format=avif&quality=80';
+import collectionFemmeImg from '@/assets/collection-femme-hover.jpg?format=avif&quality=80';
+import collectionNicheImg from '@/assets/collection-niche-hover.png?format=avif&quality=80';
 
 const collectionHoverImages: Record<string, { src: string; label: string; subtitle: string }> = {
   '/collection/homme': { src: collectionHommeImg, label: 'Collection Pour Lui', subtitle: 'Découvrez nos fragrances masculines' },
