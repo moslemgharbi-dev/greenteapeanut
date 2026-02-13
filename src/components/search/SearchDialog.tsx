@@ -85,8 +85,8 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                   <div className="flex-1 min-w-0">
                     <p className="font-medium text-sm truncate">{product.node.title}</p>
                     <p className="text-sm text-muted-foreground">
-                      {product.node.priceRange.minVariantPrice.currencyCode}{' '}
-                      {parseFloat(product.node.priceRange.minVariantPrice.amount).toFixed(2)}
+                      {product.node.priceRange.maxVariantPrice.currencyCode}{' '}
+                      {parseFloat(product.node.priceRange.maxVariantPrice.amount).toFixed(2)}
                     </p>
                   </div>
                 </button>

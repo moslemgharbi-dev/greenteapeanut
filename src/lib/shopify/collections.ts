@@ -49,6 +49,10 @@ const COLLECTION_BY_HANDLE_QUERY = `
                 amount
                 currencyCode
               }
+              maxVariantPrice {
+                amount
+                currencyCode
+              }
             }
             images(first: 5) {
               edges {

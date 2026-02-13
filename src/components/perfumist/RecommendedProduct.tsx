@@ -16,7 +16,7 @@ export function RecommendedProduct({ product, index = 0 }: RecommendedProductPro
   const addItem = useCartStore((s) => s.addItem);
 
   const imageUrl = node.images.edges[0]?.node.url;
-  const priceData = node.priceRange.minVariantPrice;
+  const priceData = node.priceRange.maxVariantPrice;
   const price = parseFloat(priceData.amount);
   const currency = priceData.currencyCode;
   const firstVariant = node.variants.edges[0]?.node;
