@@ -212,34 +212,8 @@ export default function ProductDetail() {
                 </div>
               </div>
 
-              {/* Buy Now & Add to Cart */}
+              {/* Add to Cart */}
               <div className="flex flex-col gap-2 sm:gap-3">
-                <Button
-                  onClick={async () => {
-                    if (!selectedVariant) return;
-                    await addItem({
-                      product: { node: product },
-                      variantId: selectedVariant.id,
-                      variantTitle: selectedVariant.title,
-                      price: selectedVariant.price,
-                      quantity,
-                      selectedOptions: selectedVariant.selectedOptions || []
-                    });
-                    const checkoutUrl = useCartStore.getState().getCheckoutUrl();
-                    if (checkoutUrl) {
-                      window.open(checkoutUrl, '_blank');
-                    }
-                  }}
-                  disabled={cartLoading || !selectedVariant?.availableForSale}
-                  className="w-full h-10 sm:h-11 text-sm sm:text-base"
-                >
-                  {cartLoading ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : (
-                    'Acheter maintenant'
-                  )}
-                </Button>
-                
                 <Button
                   onClick={handleAddToCart}
                   disabled={cartLoading || !selectedVariant?.availableForSale}
