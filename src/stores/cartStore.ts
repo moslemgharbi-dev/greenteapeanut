@@ -6,7 +6,8 @@ import {
   addLineToShopifyCart, 
   updateShopifyCartLine, 
   removeLineFromShopifyCart,
-  verifyShopifyCart
+  verifyShopifyCart,
+  updateShopifyCartAttributes
 } from '@/lib/shopify/cart';
 
 export interface CartItem {
@@ -23,12 +24,14 @@ interface CartStore {
   items: CartItem[];
   cartId: string | null;
   checkoutUrl: string | null;
+  selectedGouvernorat: string | null;
   isLoading: boolean;
   isSyncing: boolean;
   addItem: (item: Omit<CartItem, 'lineId'>) => Promise<void>;
   updateQuantity: (variantId: string, quantity: number) => Promise<void>;
   removeItem: (variantId: string) => Promise<void>;
   clearCart: () => void;
+  setGouvernorat: (gouvernorat: string) => Promise<void>;
   syncCart: () => Promise<void>;
   getCheckoutUrl: () => string | null;
   getTotalItems: () => number;
@@ -41,6 +44,7 @@ export const useCartStore = create<CartStore>()(
       items: [],
       cartId: null,
       checkoutUrl: null,
+      selectedGouvernorat: null,
       isLoading: false,
       isSyncing: false,
 
@@ -136,7 +140,15 @@ export const useCartStore = create<CartStore>()(
         }
       },
 
-      clearCart: () => set({ items: [], cartId: null, checkoutUrl: null }),
+      clearCart: () => set({ items: [], cartId: null, checkoutUrl: null, selectedGouvernorat: null }),
+
+      setGouvernorat: async (gouvernorat: string) => {
+        const { cartId } = get();
+        set({ selectedGouvernorat: gouvernorat });
+        if (cartId) {
+          await updateShopifyCartAttributes(cartId, [{ key: "Gouvernorat", value: gouvernorat }]);
+        }
+      },
       
       getCheckoutUrl: () => get().checkoutUrl,
       
@@ -162,7 +174,7 @@ export const useCartStore = create<CartStore>()(
     {
       name: 'parfum-cart',
       storage: createJSONStorage(() => localStorage),
-      partialize: (state) => ({ items: state.items, cartId: state.cartId, checkoutUrl: state.checkoutUrl }),
+      partialize: (state) => ({ items: state.items, cartId: state.cartId, checkoutUrl: state.checkoutUrl, selectedGouvernorat: state.selectedGouvernorat }),
     }
   )
 );

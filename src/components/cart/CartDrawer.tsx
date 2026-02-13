@@ -4,10 +4,12 @@ import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { ShoppingBag, Minus, Plus, Trash2, ExternalLink, Loader2 } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
+import { GouvernoratSelector } from "./GouvernoratSelector";
 
 export function CartDrawer() {
   const [isOpen, setIsOpen] = useState(false);
-  const { items, isLoading, isSyncing, updateQuantity, removeItem, getCheckoutUrl, syncCart, getTotalItems, getTotalPrice } = useCartStore();
+  const [showGovError, setShowGovError] = useState(false);
+  const { items, isLoading, isSyncing, selectedGouvernorat, setGouvernorat, updateQuantity, removeItem, getCheckoutUrl, syncCart, getTotalItems, getTotalPrice } = useCartStore();
   const totalItems = getTotalItems();
   const totalPrice = getTotalPrice();
 
@@ -16,11 +18,20 @@ export function CartDrawer() {
   }, [isOpen, syncCart]);
 
   const handleCheckout = () => {
+    if (!selectedGouvernorat) {
+      setShowGovError(true);
+      return;
+    }
     const checkoutUrl = getCheckoutUrl();
     if (checkoutUrl) {
       window.open(checkoutUrl, '_blank');
       setIsOpen(false);
     }
+  };
+
+  const handleSelectGouvernorat = (gov: string) => {
+    setShowGovError(false);
+    setGouvernorat(gov);
   };
 
   return (
@@ -110,6 +121,19 @@ export function CartDrawer() {
                     </div>
                   ))}
                 </div>
+
+                {/* Gouvernorat Selector */}
+                <div className="mt-6 pt-4 border-t border-border">
+                  <p className="text-sm font-medium mb-3">Gouvernorat de livraison</p>
+                  <GouvernoratSelector
+                    selected={selectedGouvernorat}
+                    onSelect={handleSelectGouvernorat}
+                    disabled={isLoading}
+                  />
+                  {showGovError && !selectedGouvernorat && (
+                    <p className="text-xs text-destructive mt-2">Veuillez sélectionner un gouvernorat</p>
+                  )}
+                </div>
               </div>
               
               <div className="flex-shrink-0 space-y-4 pt-6 border-t border-border mt-4">
@@ -124,7 +148,7 @@ export function CartDrawer() {
                   onClick={handleCheckout} 
                   className="w-full" 
                   size="lg" 
-                  disabled={items.length === 0 || isLoading || isSyncing}
+                  disabled={items.length === 0 || isLoading || isSyncing || !selectedGouvernorat}
                 >
                   {isLoading || isSyncing ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
