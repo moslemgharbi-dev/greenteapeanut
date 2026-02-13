@@ -46,7 +46,7 @@ export function CartDrawer() {
           )}
         </Button>
       </SheetTrigger>
-      <SheetContent className="w-full sm:max-w-md flex flex-col h-full">
+      <SheetContent className="w-[88%] max-w-[360px] sm:max-w-md flex flex-col h-[92vh] mt-[4vh] rounded-l-2xl sm:h-full sm:mt-0 sm:rounded-none sm:w-full">
         <SheetHeader className="flex-shrink-0">
           <SheetTitle className="font-serif text-xl">Panier</SheetTitle>
           <SheetDescription>
