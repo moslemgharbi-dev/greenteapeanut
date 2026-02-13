@@ -6,7 +6,7 @@ import { CartDrawer } from '@/components/cart/CartDrawer';
 import { InlineSearch } from '@/components/search/InlineSearch';
 import collectionHommeImg from '@/assets/collection-homme-hover.jpg';
 import collectionFemmeImg from '@/assets/collection-femme-hover.jpg';
-import collectionNicheImg from '@/assets/collection-niche-hover.jpg';
+import collectionNicheImg from '@/assets/collection-niche-hover.png';
 
 const collectionHoverImages: Record<string, { src: string; label: string; subtitle: string }> = {
   '/collection/homme': { src: collectionHommeImg, label: 'Collection Pour Lui', subtitle: 'Découvrez nos fragrances masculines' },
