@@ -19,6 +19,8 @@ import Cgu from "./pages/Cgu";
 import ConfidentialiteCookies from "./pages/ConfidentialiteCookies";
 import ParametresCookies from "./pages/ParametresCookies";
 import NotFound from "./pages/NotFound";
+import Auth from "./pages/Auth";
+import Profile from "./pages/Profile";
 import { PerfumeAssistantWidget } from "@/components/perfumist/PerfumeAssistantWidget";
 import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
 import { ScrollToTop } from "@/components/layout/ScrollToTop";
@@ -49,6 +51,8 @@ function AppContent() {
         <Route path="/cgu" element={<Cgu />} />
         <Route path="/confidentialite-cookies" element={<ConfidentialiteCookies />} />
         <Route path="/parametres-cookies" element={<ParametresCookies />} />
+        <Route path="/auth" element={<Auth />} />
+        <Route path="/profil" element={<Profile />} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />
       </Routes>
