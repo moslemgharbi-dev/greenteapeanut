@@ -45,6 +45,15 @@ const CART_LINES_REMOVE_MUTATION = `
   }
 `;
 
+const CART_ATTRIBUTES_UPDATE_MUTATION = `
+  mutation cartAttributesUpdate($cartId: ID!, $attributes: [AttributeInput!]!) {
+    cartAttributesUpdate(cartId: $cartId, attributes: $attributes) {
+      cart { id }
+      userErrors { field message }
+    }
+  }
+`;
+
 const CART_QUERY = `
   query cart($id: ID!) {
     cart(id: $id) { id totalQuantity }
@@ -138,9 +147,24 @@ export async function removeLineFromShopifyCart(cartId: string, lineId: string):
   return { success: true };
 }
 
+export async function updateShopifyCartAttributes(cartId: string, attributes: Array<{ key: string; value: string }>): Promise<{ success: boolean; cartNotFound?: boolean }> {
+  const data = await storefrontApiRequest(CART_ATTRIBUTES_UPDATE_MUTATION, {
+    cartId,
+    attributes,
+  });
+
+  const userErrors = data?.data?.cartAttributesUpdate?.userErrors || [];
+  if (isCartNotFoundError(userErrors)) return { success: false, cartNotFound: true };
+  if (userErrors.length > 0) {
+    console.error('Cart attributes update failed:', userErrors);
+    return { success: false };
+  }
+  return { success: true };
+}
+
 export async function verifyShopifyCart(cartId: string): Promise<boolean> {
   const data = await storefrontApiRequest(CART_QUERY, { id: cartId });
-  if (!data) return true; // API error - preserve local cart
+  if (!data) return true;
   const cart = data?.data?.cart;
   return cart && cart.totalQuantity > 0;
 }
