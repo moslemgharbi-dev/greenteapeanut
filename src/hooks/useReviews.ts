@@ -1,29 +1,50 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 
-export interface Review {
+export interface PublicReview {
   id: string;
-  user_id: string;
   product_handle: string;
   rating: number;
   comment: string | null;
   created_at: string;
 }
 
+export interface Review extends PublicReview {
+  user_id: string;
+}
+
 export function useReviews(productHandle: string) {
   const queryClient = useQueryClient();
   const queryKey = ['reviews', productHandle];
 
+  // Fetch public reviews (no user_id exposed)
   const { data: reviews = [], isLoading } = useQuery({
     queryKey,
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('reviews')
+        .from('reviews_public' as any)
         .select('*')
         .eq('product_handle', productHandle)
         .order('created_at', { ascending: false });
       if (error) throw error;
-      return data as Review[];
+      return data as unknown as PublicReview[];
+    },
+  });
+
+  // Fetch current user's own review (auth-gated, from base table)
+  const { data: userReview = null } = useQuery({
+    queryKey: ['my-review', productHandle],
+    queryFn: async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return null;
+      const { data, error } = await supabase
+        .from('reviews')
+        .select('*')
+        .eq('product_handle', productHandle)
+        .eq('user_id', user.id)
+        .maybeSingle();
+      if (error) throw error;
+      return data as Review | null;
     },
   });
 
@@ -37,7 +58,10 @@ export function useReviews(productHandle: string) {
         );
       if (error) throw error;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey });
+      queryClient.invalidateQueries({ queryKey: ['my-review', productHandle] });
+    },
   });
 
   const deleteReview = useMutation({
@@ -45,7 +69,10 @@ export function useReviews(productHandle: string) {
       const { error } = await supabase.from('reviews').delete().eq('id', reviewId);
       if (error) throw error;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey });
+      queryClient.invalidateQueries({ queryKey: ['my-review', productHandle] });
+    },
   });
 
   const averageRating = reviews.length > 0
@@ -57,5 +84,5 @@ export function useReviews(productHandle: string) {
     count: reviews.filter(r => r.rating === stars).length,
   }));
 
-  return { reviews, isLoading, upsertReview, deleteReview, averageRating, ratingDistribution };
+  return { reviews, isLoading, upsertReview, deleteReview, averageRating, ratingDistribution, userReview };
 }
