@@ -69,7 +69,7 @@ export function CartDrawer() {
             <>
               <div className="flex-1 overflow-y-auto pr-2 min-h-0">
                 <div className="space-y-4">
-                  {items.map((item) => (
+                {items.map((item) => (
                     <div key={item.variantId} className="flex gap-4 p-3 bg-secondary/30 rounded-sm">
                       <div className="w-20 h-20 bg-muted rounded-sm overflow-hidden flex-shrink-0">
                         {item.product.node.images?.edges?.[0]?.node && (
@@ -121,22 +121,21 @@ export function CartDrawer() {
                     </div>
                   ))}
                 </div>
-
+              </div>
+              
+              <div className="flex-shrink-0 space-y-3 pt-4 border-t border-border mt-4">
                 {/* Gouvernorat Selector */}
-                <div className="mt-6 pt-4 border-t border-border">
-                  <p className="text-sm font-medium mb-3">Gouvernorat de livraison</p>
+                <div>
+                  <p className="text-sm font-medium mb-2">Gouvernorat de livraison</p>
                   <GouvernoratSelector
                     selected={selectedGouvernorat}
                     onSelect={handleSelectGouvernorat}
                     disabled={isLoading}
                   />
                   {showGovError && !selectedGouvernorat && (
-                    <p className="text-xs text-destructive mt-2">Veuillez sélectionner un gouvernorat</p>
+                    <p className="text-xs text-destructive mt-1">Veuillez sélectionner un gouvernorat</p>
                   )}
                 </div>
-              </div>
-              
-              <div className="flex-shrink-0 space-y-4 pt-6 border-t border-border mt-4">
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-muted-foreground">Sous-total</span>
                   <span className="text-lg font-semibold">
