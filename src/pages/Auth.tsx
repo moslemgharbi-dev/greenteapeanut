@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Eye, EyeOff } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
@@ -15,6 +16,7 @@ export default function Auth() {
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const { signIn, signUp, user } = useAuth();
   const navigate = useNavigate();
 
@@ -45,7 +47,7 @@ export default function Auth() {
       if (error) {
         toast({ title: 'Erreur', description: error.message, variant: 'destructive' });
       } else {
-        toast({ title: 'Inscription réussie', description: 'Vérifiez votre email pour confirmer votre compte.' });
+        toast({ title: 'Inscription réussie', description: 'Un email de confirmation a été envoyé. Vérifiez votre boîte de réception ainsi que vos spams/indésirables.' });
       }
     }
     setLoading(false);
@@ -80,7 +82,17 @@ export default function Auth() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="password" className="text-xs tracking-wide uppercase">Mot de passe</Label>
-              <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} className="h-12" />
+              <div className="relative">
+                <Input id="password" type={showPassword ? 'text' : 'password'} value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} className="h-12 pr-12" />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                  aria-label={showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
             </div>
 
             <Button type="submit" className="w-full h-12 text-sm tracking-widest uppercase" disabled={loading}>
