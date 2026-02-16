@@ -2,3 +2,6 @@ project_id = "hvkpjxffgwiyljphotdq"
 
 [functions.perfume-advisor]
 verify_jwt = false
+
+[functions.create-shopify-customer]
+verify_jwt = false

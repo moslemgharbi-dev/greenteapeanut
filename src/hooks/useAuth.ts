@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import type { User, Session } from '@supabase/supabase-js';
 
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
@@ -32,6 +34,20 @@ export function useAuth() {
         emailRedirectTo: window.location.origin,
       },
     });
+
+    // Sync with Shopify (fire-and-forget)
+    if (!error) {
+      const nameParts = fullName.trim().split(/\s+/);
+      const firstName = nameParts[0] || '';
+      const lastName = nameParts.slice(1).join(' ') || '';
+      
+      fetch(`${SUPABASE_URL}/functions/v1/create-shopify-customer`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, firstName, lastName }),
+      }).catch((err) => console.error('Shopify sync error:', err));
+    }
+
     return { error };
   };
 
