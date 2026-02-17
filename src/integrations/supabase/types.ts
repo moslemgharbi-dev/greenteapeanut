@@ -37,19 +37,46 @@ export type Database = {
       }
       profiles: {
         Row: {
+          address: string | null
+          civility: string | null
           created_at: string | null
+          first_name: string | null
           full_name: string | null
           id: string
+          last_name: string | null
+          notify_email: boolean
+          notify_sms: boolean
+          onboarding_completed: boolean
+          phone: string | null
+          privacy_accepted: boolean
         }
         Insert: {
+          address?: string | null
+          civility?: string | null
           created_at?: string | null
+          first_name?: string | null
           full_name?: string | null
           id: string
+          last_name?: string | null
+          notify_email?: boolean
+          notify_sms?: boolean
+          onboarding_completed?: boolean
+          phone?: string | null
+          privacy_accepted?: boolean
         }
         Update: {
+          address?: string | null
+          civility?: string | null
           created_at?: string | null
+          first_name?: string | null
           full_name?: string | null
           id?: string
+          last_name?: string | null
+          notify_email?: boolean
+          notify_sms?: boolean
+          onboarding_completed?: boolean
+          phone?: string | null
+          privacy_accepted?: boolean
         }
         Relationships: []
       }

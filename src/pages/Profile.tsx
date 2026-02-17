@@ -25,15 +25,19 @@ export default function Profile() {
 
   useEffect(() => {
     if (!user) return;
-    // Fetch profile
-    supabase.from('profiles').select('full_name').eq('id', user.id).maybeSingle().then(({ data }) => {
+    // Check onboarding + fetch profile
+    supabase.from('profiles').select('full_name, onboarding_completed').eq('id', user.id).maybeSingle().then(({ data }) => {
+      if (data?.onboarding_completed === false) {
+        navigate('/onboarding', { replace: true });
+        return;
+      }
       if (data?.full_name) setFullName(data.full_name);
     });
     // Fetch user reviews
     supabase.from('reviews').select('product_handle, rating, comment, created_at').eq('user_id', user.id).order('created_at', { ascending: false }).then(({ data }) => {
       if (data) setReviews(data);
     });
-  }, [user]);
+  }, [user, navigate]);
 
   const handleSave = async () => {
     if (!user) return;

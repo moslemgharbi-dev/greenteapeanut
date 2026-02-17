@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 
 
@@ -23,11 +24,17 @@ export default function Auth() {
   const { signIn, signUp, resetPassword, user } = useAuth();
   const navigate = useNavigate();
 
-  // Redirect if already logged in
-  if (user) {
-    navigate('/profil', { replace: true });
-    return null;
-  }
+  useEffect(() => {
+    if (!user) return;
+    // Check onboarding status then redirect
+    supabase.from('profiles').select('onboarding_completed').eq('id', user.id).maybeSingle().then(({ data }) => {
+      if (data?.onboarding_completed === false) {
+        navigate('/onboarding', { replace: true });
+      } else {
+        navigate('/profil', { replace: true });
+      }
+    });
+  }, [user, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,7 +61,13 @@ export default function Auth() {
         } else {
           sessionStorage.removeItem('session-only');
         }
-        navigate('/profil');
+        // Check onboarding status
+        const { data: profile } = await supabase.from('profiles').select('onboarding_completed').eq('id', (await supabase.auth.getUser()).data.user?.id ?? '').maybeSingle();
+        if (profile?.onboarding_completed === false) {
+          navigate('/onboarding');
+        } else {
+          navigate('/profil');
+        }
       }
     } else {
       if (!fullName.trim()) {
