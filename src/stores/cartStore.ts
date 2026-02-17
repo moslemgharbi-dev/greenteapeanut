@@ -177,7 +177,7 @@ export const useCartStore = create<CartStore>()(
     }),
     {
       name: 'parfum-cart',
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() => sessionStorage),
       partialize: (state) => ({ items: state.items, cartId: state.cartId, checkoutUrl: state.checkoutUrl }),
     }
   )
