@@ -12,12 +12,13 @@ import { toast } from '@/hooks/use-toast';
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const { signIn, signUp, user } = useAuth();
+  const { signIn, signUp, resetPassword, user } = useAuth();
   const navigate = useNavigate();
 
   // Redirect if already logged in
@@ -29,6 +30,17 @@ export default function Auth() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+
+    if (isForgotPassword) {
+      const { error } = await resetPassword(email);
+      if (error) {
+        toast({ title: 'Erreur', description: error.message, variant: 'destructive' });
+      } else {
+        toast({ title: 'Email envoyé', description: 'Si un compte existe avec cet email, vous recevrez un lien de réinitialisation. Vérifiez vos spams.' });
+      }
+      setLoading(false);
+      return;
+    }
 
     if (isLogin) {
       const { error } = await signIn(email, password);
@@ -64,13 +76,13 @@ export default function Auth() {
               Wael Ben Yaghlane
             </h1>
             <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground">
-              {isLogin ? 'Connexion à votre compte' : 'Créer votre compte'}
+              {isForgotPassword ? 'Réinitialiser votre mot de passe' : isLogin ? 'Connexion à votre compte' : 'Créer votre compte'}
             </p>
           </div>
 
           {/* Email form */}
           <form onSubmit={handleSubmit} className="space-y-4">
-            {!isLogin && (
+            {!isLogin && !isForgotPassword && (
               <div className="space-y-2">
                 <Label htmlFor="fullName" className="text-xs tracking-wide uppercase">Nom complet</Label>
                 <Input id="fullName" value={fullName} onChange={(e) => setFullName(e.target.value)} required maxLength={100} className="h-12" />
@@ -80,31 +92,52 @@ export default function Auth() {
               <Label htmlFor="email" className="text-xs tracking-wide uppercase">Email</Label>
               <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required maxLength={255} className="h-12" />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="password" className="text-xs tracking-wide uppercase">Mot de passe</Label>
-              <div className="relative">
-                <Input id="password" type={showPassword ? 'text' : 'password'} value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} className="h-12 pr-12" />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-                  aria-label={showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
-                >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
+            {!isForgotPassword && (
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="password" className="text-xs tracking-wide uppercase">Mot de passe</Label>
+                  {isLogin && (
+                    <button
+                      type="button"
+                      className="text-xs text-muted-foreground hover:text-foreground underline tracking-wide transition-colors"
+                      onClick={() => setIsForgotPassword(true)}
+                    >
+                      Mot de passe oublié ?
+                    </button>
+                  )}
+                </div>
+                <div className="relative">
+                  <Input id="password" type={showPassword ? 'text' : 'password'} value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} className="h-12 pr-12" />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                    aria-label={showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
               </div>
-            </div>
+            )}
 
             <Button type="submit" className="w-full h-12 text-sm tracking-widest uppercase" disabled={loading}>
-              {loading ? 'Chargement...' : isLogin ? 'Se connecter' : "S'inscrire"}
+              {loading ? 'Chargement...' : isForgotPassword ? 'Envoyer le lien' : isLogin ? 'Se connecter' : "S'inscrire"}
             </Button>
           </form>
 
           <p className="text-center text-sm text-muted-foreground mt-8">
-            {isLogin ? "Pas encore de compte ?" : 'Déjà un compte ?'}{' '}
-            <button type="button" className="underline text-foreground tracking-wide" onClick={() => setIsLogin(!isLogin)}>
-              {isLogin ? "Créer un compte" : 'Se connecter'}
-            </button>
+            {isForgotPassword ? (
+              <button type="button" className="underline text-foreground tracking-wide" onClick={() => setIsForgotPassword(false)}>
+                Retour à la connexion
+              </button>
+            ) : (
+              <>
+                {isLogin ? "Pas encore de compte ?" : 'Déjà un compte ?'}{' '}
+                <button type="button" className="underline text-foreground tracking-wide" onClick={() => setIsLogin(!isLogin)}>
+                  {isLogin ? "Créer un compte" : 'Se connecter'}
+                </button>
+              </>
+            )}
           </p>
         </div>
       </main>
