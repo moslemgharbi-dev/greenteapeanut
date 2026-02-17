@@ -26,6 +26,7 @@ import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
 import ResetPassword from "./pages/ResetPassword";
 import Profile from "./pages/Profile";
+import Onboarding from "./pages/Onboarding";
 import { PerfumeAssistantWidget } from "@/components/perfumist/PerfumeAssistantWidget";
 import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
 import { ScrollToTop } from "@/components/layout/ScrollToTop";
@@ -97,6 +98,7 @@ function AppContent() {
         <Route path="/auth" element={<Auth />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/profil" element={<Profile />} />
+        <Route path="/onboarding" element={<Onboarding />} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />
       </Routes>
