@@ -4,6 +4,10 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useCartSync } from "@/hooks/useCartSync";
+import { useEffect } from "react";
+import { toast } from "sonner";
+import { useFavoritesStore } from "@/stores/favoritesStore";
+import { supabase } from "@/integrations/supabase/client";
 import Index from "./pages/Index";
 import Shop from "./pages/Shop";
 import Brand from "./pages/Brand";
@@ -30,6 +34,31 @@ const queryClient = new QueryClient();
 
 function AppContent() {
   useCartSync();
+
+  const loadFavorites = useFavoritesStore(state => state.loadFavorites);
+  const setAuthenticated = useFavoritesStore(state => state.setAuthenticated);
+
+  useEffect(() => {
+    loadFavorites();
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === 'SIGNED_IN') {
+        loadFavorites();
+      } else if (event === 'SIGNED_OUT') {
+        setAuthenticated(false);
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [loadFavorites, setAuthenticated]);
+
+  useEffect(() => {
+    const dismiss = () => toast.dismiss();
+    document.addEventListener('touchstart', dismiss);
+    document.addEventListener('click', dismiss);
+    return () => {
+      document.removeEventListener('touchstart', dismiss);
+      document.removeEventListener('click', dismiss);
+    };
+  }, []);
   
   return (
     <BrowserRouter>

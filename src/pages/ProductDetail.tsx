@@ -73,6 +73,7 @@ export default function ProductDetail() {
     toast.success('Ajouté au panier', {
       description: `${product.title}${selectedVariant.title !== 'Default Title' ? ` - ${selectedVariant.title}` : ''}`,
       position: 'top-center',
+      duration: 2000,
     });
   };
 
