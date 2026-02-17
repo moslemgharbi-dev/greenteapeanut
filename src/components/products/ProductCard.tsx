@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ShopifyProduct } from '@/lib/shopify';
 import { Button } from '@/components/ui/button';
 import { useCartStore } from '@/stores/cartStore';
@@ -17,6 +17,8 @@ export function ProductCard({ product }: ProductCardProps) {
   const isLoading = useCartStore(state => state.isLoading);
   const toggleFavorite = useFavoritesStore(state => state.toggleFavorite);
   const isFavorite = useFavoritesStore(state => state.isFavorite)(node.id);
+  const isAuthenticated = useFavoritesStore(state => state.isAuthenticated);
+  const navigate = useNavigate();
   
   const firstVariant = node.variants.edges[0]?.node;
   const firstImage = node.images?.edges?.[0]?.node;
@@ -41,6 +43,7 @@ export function ProductCard({ product }: ProductCardProps) {
     toast.success('Ajouté au panier', {
       description: node.title,
       position: 'top-center',
+      duration: 2000,
     });
   };
 
@@ -70,6 +73,14 @@ export function ProductCard({ product }: ProductCardProps) {
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
+              if (!isAuthenticated) {
+                toast.info('Connectez-vous pour ajouter des favoris', {
+                  position: 'top-center',
+                  duration: 2000,
+                  action: { label: 'Se connecter', onClick: () => navigate('/auth') },
+                });
+                return;
+              }
               toggleFavorite(node.id);
             }}
             className="w-8 h-8 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center hover:bg-background transition-colors"
@@ -101,7 +112,7 @@ export function ProductCard({ product }: ProductCardProps) {
             ) : (
               <>
                 <Plus className="h-4 w-4 mr-1" />
-                Ajout rapide
+                Ajouter au panier
               </>
             )}
           </Button>
