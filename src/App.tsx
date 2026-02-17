@@ -20,6 +20,7 @@ import ConfidentialiteCookies from "./pages/ConfidentialiteCookies";
 import ParametresCookies from "./pages/ParametresCookies";
 import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
+import ResetPassword from "./pages/ResetPassword";
 import Profile from "./pages/Profile";
 import { PerfumeAssistantWidget } from "@/components/perfumist/PerfumeAssistantWidget";
 import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
@@ -52,6 +53,7 @@ function AppContent() {
         <Route path="/confidentialite-cookies" element={<ConfidentialiteCookies />} />
         <Route path="/parametres-cookies" element={<ParametresCookies />} />
         <Route path="/auth" element={<Auth />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/profil" element={<Profile />} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />
