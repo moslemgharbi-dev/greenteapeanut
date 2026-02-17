@@ -45,10 +45,23 @@ function AppContent() {
         loadFavorites();
       } else if (event === 'SIGNED_OUT') {
         setAuthenticated(false);
+        sessionStorage.removeItem('session-only');
       }
     });
     return () => subscription.unsubscribe();
   }, [loadFavorites, setAuthenticated]);
+
+  // Sign out on browser/tab close if "Rester connecté" was not checked
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      if (sessionStorage.getItem('session-only') === 'true') {
+        supabase.auth.signOut();
+        sessionStorage.removeItem('session-only');
+      }
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, []);
 
   useEffect(() => {
     const dismiss = () => toast.dismiss();

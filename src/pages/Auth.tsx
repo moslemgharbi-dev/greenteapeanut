@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Eye, EyeOff } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from '@/hooks/use-toast';
@@ -18,6 +19,7 @@ export default function Auth() {
   const [fullName, setFullName] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
   const { signIn, signUp, resetPassword, user } = useAuth();
   const navigate = useNavigate();
 
@@ -47,6 +49,11 @@ export default function Auth() {
       if (error) {
         toast({ title: 'Erreur', description: error.message, variant: 'destructive' });
       } else {
+        if (!rememberMe) {
+          sessionStorage.setItem('session-only', 'true');
+        } else {
+          sessionStorage.removeItem('session-only');
+        }
         navigate('/profil');
       }
     } else {
@@ -117,6 +124,19 @@ export default function Auth() {
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
                 </div>
+              </div>
+            )}
+
+            {isLogin && !isForgotPassword && (
+              <div className="flex items-center gap-2">
+                <Checkbox
+                  id="rememberMe"
+                  checked={rememberMe}
+                  onCheckedChange={(checked) => setRememberMe(checked === true)}
+                />
+                <Label htmlFor="rememberMe" className="text-sm text-muted-foreground cursor-pointer">
+                  Rester connecté
+                </Label>
               </div>
             )}
 
