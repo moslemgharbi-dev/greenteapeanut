@@ -104,7 +104,7 @@ export function ProductCard({ product }: ProductCardProps) {
           <Button 
             onClick={handleAddToCart}
             disabled={isLoading || !firstVariant?.availableForSale}
-            className="w-full"
+            className="w-full text-xs sm:text-sm"
             size="sm"
           >
             {isLoading ? (
