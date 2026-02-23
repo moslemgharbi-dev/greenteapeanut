@@ -20,7 +20,7 @@ export default {
       fontFamily: {
         serif: ["Playfair Display", "Georgia", "serif"],
         sans: ["Inter", "system-ui", "sans-serif"],
-        brand: ["GFS Didot", "Georgia", "serif"],
+        brand: ["Cormorant SC", "Georgia", "serif"],
       },
       colors: {
         border: "hsl(var(--border))",
