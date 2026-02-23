@@ -20,7 +20,7 @@ export default {
       fontFamily: {
         serif: ["Playfair Display", "Georgia", "serif"],
         sans: ["Inter", "system-ui", "sans-serif"],
-        brand: ["Bodoni Moda", "Georgia", "serif"],
+        brand: ["Tenor Sans", "system-ui", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
