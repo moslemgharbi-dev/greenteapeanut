@@ -1,57 +1,33 @@
 
-# Formulaire d'onboarding post-inscription (2 pages)
 
-## Objectif
-Apres l'inscription d'un nouveau client, afficher un formulaire en 2 etapes pour collecter des informations supplementaires avant d'acceder au profil.
+## Typography A/B Testing for "WAEL BEN YAGHLANE"
 
-## Modifications de la base de donnees
+We'll swap the brand font one at a time so you can see each option live and pick your favorite.
 
-Ajouter des colonnes a la table `profiles` :
+### Round 1: Cinzel
 
-- `civility` (text, nullable) -- "monsieur" ou "madame"
-- `first_name` (text, nullable)
-- `last_name` (text, nullable)
-- `phone` (text, nullable)
-- `address` (text, nullable)
-- `privacy_accepted` (boolean, default false)
-- `notify_sms` (boolean, default false)
-- `notify_email` (boolean, default false)
-- `onboarding_completed` (boolean, default false)
+**What changes:**
+1. **index.html** - Replace the Google Fonts link: swap `Cormorant+Garamond` for `Cinzel` (weights 400, 500, 600, 700)
+2. **tailwind.config.ts** - Update `fontFamily.brand` from `["Cormorant Garamond", ...]` to `["Cinzel", "Georgia", "serif"]`
 
-La colonne `onboarding_completed` permet de savoir si le client a deja rempli le formulaire.
+No other files change -- the Header and all components already use `font-brand`, so the new font propagates automatically.
 
-## Nouveau composant : `src/pages/Onboarding.tsx`
+After you see it live, tell me:
+- **"Next"** to move to Bodoni Moda
+- **"Keep this"** to stop here
+- **"Next"** again after Bodoni Moda to try Tenor Sans
 
-Un formulaire en 2 etapes avec navigation interne (state React, pas de routes separees) :
+### Round 2: Bodoni Moda
+Same two files, swapping to `Bodoni+Moda` from Google Fonts.
 
-### Page 1 -- Informations personnelles
-- Civilite : boutons radio "Monsieur" / "Madame"
-- Nom (requis)
-- Prenom (requis)
-- Numero de telephone (optionnel)
-- Adresse (optionnel)
-- Case a cocher : "J'ai lu et j'ai pris connaissance de la politique de donnees personnelles" (requis pour continuer, avec lien vers `/confidentialite-cookies`)
+### Round 3: Tenor Sans
+Same two files, swapping to `Tenor+Sans` from Google Fonts.
 
-Bouton "Suivant" (desactive si champs requis non remplis)
+### Round 4 (if none fit): Revert to Cormorant Garamond
+Restore the original configuration.
 
-### Page 2 -- Preferences de communication
-- Texte explicatif : "Souhaitez-vous recevoir nos nouvelles offres ?"
-- Case a cocher : "Par SMS"
-- Case a cocher : "Par email"
-- Bouton "Confirmer"
+### Technical details
+- Only 2 files are modified each round: `index.html` (font import) and `tailwind.config.ts` (font-brand definition)
+- All components using `font-brand` class will automatically reflect the change
+- Letter-spacing (`tracking-[0.15em]`) stays the same unless you want adjustments per font
 
-Au clic sur Confirmer, les donnees sont sauvegardees dans la table `profiles` et `onboarding_completed` passe a `true`. Redirection vers `/profil`.
-
-## Modifications du routage
-
-- Ajouter la route `/onboarding` dans `App.tsx`
-- Modifier `Auth.tsx` : apres inscription reussie + confirmation email + premiere connexion, rediriger vers `/onboarding` au lieu de `/profil` si `onboarding_completed` est `false`
-- Modifier `Profile.tsx` : verifier `onboarding_completed` au chargement, rediriger vers `/onboarding` si `false`
-
-## Details techniques
-
-- Le formulaire utilise les composants existants : `Input`, `Label`, `Checkbox`, `Button`, `RadioGroup`
-- Design coherent avec la page Auth : style luxe, uppercase labels, hauteur h-12 pour les inputs
-- Validation cote client avec messages d'erreur en francais
-- La mise a jour se fait via `supabase.from('profiles').update(...)` avec RLS existante (l'utilisateur ne peut modifier que son propre profil)
-- Indicateur de progression visuel (etape 1/2, 2/2) en haut du formulaire
