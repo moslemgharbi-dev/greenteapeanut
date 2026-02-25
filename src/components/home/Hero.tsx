@@ -22,7 +22,7 @@ export function Hero() {
       
       <div className="container relative z-10 text-center px-4 py-20">
         <span className="inline-block text-xs uppercase tracking-[0.3em] text-white/70 mb-6 animate-fade-in">
-          Wael Ben Yaghlane
+          Wael Scents
         </span>
         
         <h1 className="font-serif text-3xl md:text-5xl lg:text-6xl font-medium tracking-tight mb-6 animate-fade-in text-white" style={{ animationDelay: '0.1s' }}>

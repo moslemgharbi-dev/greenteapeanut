@@ -44,7 +44,7 @@ export function Header() {
             Contact
           </Link>
           <Link to="/maison" className="hover:opacity-80 transition-opacity">
-            Maison Wael Ben Yaghlane
+            Maison Wael Scents
           </Link>
         </div>
       </div>
@@ -70,7 +70,7 @@ export function Header() {
         {/* Brand (center) */}
         <Link to="/" className="justify-self-center text-center group min-w-0">
           <span className="font-brand text-base sm:text-lg md:text-3xl font-medium tracking-[0.1em] md:tracking-[0.15em] uppercase transition-opacity group-hover:opacity-80 whitespace-nowrap">
-            Wael Ben Yaghlane
+            Wael Scents
           </span>
           <span className="sr-only">Accueil</span>
         </Link>
@@ -200,7 +200,7 @@ export function Header() {
                 className="text-sm font-medium py-2"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Maison Wael Ben Yaghlane
+                Maison Wael Scents
               </Link>
             </div>
           </div>

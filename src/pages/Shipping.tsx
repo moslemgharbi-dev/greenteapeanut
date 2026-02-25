@@ -3,7 +3,7 @@ import StaticPage from "./StaticPage";
 export default function Shipping() {
   return (
     <StaticPage
-      eyebrow="Maison Wael Ben Yaghlane & vous"
+      eyebrow="Maison Wael Scents & vous"
       title="Livraison"
       lead="Livraison en Tunisie : délais, frais et retours."
     >
