@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Pipetton Script';
+  src: url('/fonts/Pipetton_Script_Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Luxury Perfume E-Commerce Design System
    Elegant, minimal aesthetic with generous whitespace
    Color palette: blacks, golds, creams
