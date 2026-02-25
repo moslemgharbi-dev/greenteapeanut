@@ -24,7 +24,7 @@ export function AboutSection() {
             L'art de la parfumerie
           </h2>
           <p className="text-white/80 text-lg leading-relaxed mb-8">
-            Chez Wael Ben Yaghlane, nous croyons que la fragrance est bien plus qu'un parfum : 
+            Chez Wael Scents, nous croyons que la fragrance est bien plus qu'un parfum : 
             c'est une expression d'identité, un souvenir capturé en essence, et un 
             sillage invisible qui laisse une impression durable. Nous sélectionnons 
             uniquement des fragrances d'exception.

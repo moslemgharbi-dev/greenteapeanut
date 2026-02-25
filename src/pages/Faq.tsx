@@ -3,7 +3,7 @@ import StaticPage from "./StaticPage";
 export default function Faq() {
   return (
     <StaticPage
-      eyebrow="Maison Wael Ben Yaghlane & vous"
+      eyebrow="Maison Wael Scents & vous"
       title="FAQ"
       lead="Les réponses aux questions les plus fréquentes."
     >

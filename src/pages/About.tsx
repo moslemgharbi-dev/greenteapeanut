@@ -31,13 +31,13 @@ export default function About() {
             <div className="max-w-2xl mx-auto space-y-8">
               <div>
                 <h2 className="font-serif text-2xl md:text-3xl font-medium mb-4">
-                  L’origine
+                  L'origine
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
-                  Wael Ben Yaghlane est né d’une passion exigeante pour les belles compositions
+                  Wael Scents est né d'une passion exigeante pour les belles compositions
                   et pour le geste du choix : comparer, sentir, comprendre, puis sélectionner.
-                  L’histoire commence avec un désir simple — proposer des fragrances capables
-                  de marquer un moment, sans jamais trahir l’élégance.
+                  L'histoire commence avec un désir simple — proposer des fragrances capables
+                  de marquer un moment, sans jamais trahir l'élégance.
                 </p>
               </div>
 
@@ -46,19 +46,19 @@ export default function About() {
                   Le parcours
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
-                  Au fil du temps, la sélection s’est affinée autour d’un même fil conducteur :
-                  des signatures olfactives nettes, des matières qui s’expriment avec justesse,
+                  Au fil du temps, la sélection s'est affinée autour d'un même fil conducteur :
+                  des signatures olfactives nettes, des matières qui s'expriment avec justesse,
                   et des sillages qui restent mémorables sans être envahissants.
                 </p>
               </div>
 
               <div>
                 <h2 className="font-serif text-2xl md:text-3xl font-medium mb-4">
-                  Aujourd’hui
+                  Aujourd'hui
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
                   Notre histoire continue avec vous : chaque recommandation, chaque découverte,
-                  chaque retour en boutique nourrit cette quête d’excellence.
+                  chaque retour en boutique nourrit cette quête d'excellence.
                   Choisir un parfum est un voyage personnel — nous sommes là pour le rendre
                   clair, agréable, et profondément inspirant.
                 </p>

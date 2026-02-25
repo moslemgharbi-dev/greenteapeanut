@@ -63,7 +63,7 @@ export function Footer() {
           {/* Brand section - always visible */}
           <div className="mb-8 md:hidden">
             <Link to="/" className="font-brand text-xl font-medium tracking-[0.15em]">
-              Wael Ben Yaghlane
+              Wael Scents
             </Link>
             <p className="mt-4 text-sm text-background/70 leading-relaxed">
               Là où chaque fragrance raconte une histoire.
@@ -128,7 +128,7 @@ export function Footer() {
               </ul>
             </FooterAccordion>
 
-            <FooterAccordion title="Maison Wael Ben Yaghlane & vous">
+            <FooterAccordion title="Maison Wael Scents & vous">
               <ul className="space-y-3">
                 <li>
                   <Link to="/shipping" className="text-sm text-background/70 hover:text-background transition-colors">
@@ -184,7 +184,7 @@ export function Footer() {
             {/* Brand */}
             <div>
               <Link to="/" className="font-brand text-xl font-medium tracking-[0.15em]">
-                Wael Ben Yaghlane
+                Wael Scents
               </Link>
               <p className="mt-4 text-sm text-background/70 leading-relaxed">
                 Là où chaque fragrance raconte une histoire.
@@ -251,9 +251,9 @@ export function Footer() {
               </ul>
             </div>
 
-            {/* Maison Wael Ben Yaghlane & vous */}
+            {/* Maison Wael Scents & vous */}
             <div>
-              <h4 className="font-medium text-sm uppercase tracking-wider mb-4">Maison Wael Ben Yaghlane &amp; vous</h4>
+              <h4 className="font-medium text-sm uppercase tracking-wider mb-4">Maison Wael Scents &amp; vous</h4>
               <ul className="space-y-3">
                 <li>
                   <Link to="/shipping" className="text-sm text-background/70 hover:text-background transition-colors">
