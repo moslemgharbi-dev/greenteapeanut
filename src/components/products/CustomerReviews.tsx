@@ -23,10 +23,11 @@ function StarRating({ count, filled }: { count: number; filled: number }) {
 
 export function CustomerReviews({ productHandle }: { productHandle: string }) {
   const { user } = useAuth();
-  const { reviews, averageRating, ratingDistribution, upsertReview, userReview } = useReviews(productHandle);
+  const { reviews, averageRating, ratingDistribution, upsertReview, deleteReview, userReview } = useReviews(productHandle);
   const [selectedRating, setSelectedRating] = useState(0);
   const [comment, setComment] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   // Pre-fill if user has existing review
   const effectiveRating = selectedRating || (userReview?.rating ?? 0);
