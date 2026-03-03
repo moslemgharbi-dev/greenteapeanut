@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: 'Pipetton Script';
-  src: url('/fonts/Pipetton_Script_Regular.otf') format('opentype');
+  font-family: 'Atteron';
+  src: url('/fonts/Atteron.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
