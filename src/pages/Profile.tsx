@@ -35,10 +35,22 @@ export default function Profile() {
       if (data?.full_name) setFullName(data.full_name);
     });
     // Fetch user reviews
-    supabase.from('reviews').select('product_handle, rating, comment, created_at').eq('user_id', user.id).order('created_at', { ascending: false }).then(({ data }) => {
+    supabase.from('reviews').select('id, product_handle, rating, comment, created_at').eq('user_id', user.id).order('created_at', { ascending: false }).then(({ data }) => {
       if (data) setReviews(data);
     });
   }, [user, navigate]);
+
+  const handleDeleteReview = async (reviewId: string) => {
+    setDeletingId(reviewId);
+    const { error } = await supabase.from('reviews').delete().eq('id', reviewId);
+    if (error) {
+      toast({ title: 'Erreur', description: error.message, variant: 'destructive' });
+    } else {
+      setReviews((prev) => prev.filter((r) => r.id !== reviewId));
+      toast({ title: 'Avis supprimé' });
+    }
+    setDeletingId(null);
+  };
 
   const handleSave = async () => {
     if (!user) return;
