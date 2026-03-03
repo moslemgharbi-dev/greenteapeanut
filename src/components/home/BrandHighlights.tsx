@@ -1,15 +1,15 @@
-import elieSaab from '@/assets/brands/elie-saab.png';
-import atelierDesOrs from '@/assets/brands/atelier-des-ors.png';
-import zadigVoltaire from '@/assets/brands/zadig-voltaire.png';
-import mancera from '@/assets/brands/mancera.png';
-import ysl from '@/assets/brands/ysl.png';
-import parfumsDeMarly from '@/assets/brands/parfums-de-marly.png';
-import carnerBarcelona from '@/assets/brands/carner-barcelona.png';
-import merchantOfVenice from '@/assets/brands/merchant-of-venice.png';
-import valentino from '@/assets/brands/valentino.png';
-import burberry from '@/assets/brands/burberry.png';
-import montale from '@/assets/brands/montale.png';
-import versace from '@/assets/brands/versace.png';
+import elieSaab from '@/assets/brands/elie-saab.png?format=avif&quality=80&w=384&h=256';
+import atelierDesOrs from '@/assets/brands/atelier-des-ors.png?format=avif&quality=80&w=384&h=256';
+import zadigVoltaire from '@/assets/brands/zadig-voltaire.png?format=avif&quality=80&w=384&h=256';
+import mancera from '@/assets/brands/mancera.png?format=avif&quality=80&w=384&h=256';
+import ysl from '@/assets/brands/ysl.png?format=avif&quality=80&w=384&h=256';
+import parfumsDeMarly from '@/assets/brands/parfums-de-marly.png?format=avif&quality=80&w=384&h=256';
+import carnerBarcelona from '@/assets/brands/carner-barcelona.png?format=avif&quality=80&w=384&h=256';
+import merchantOfVenice from '@/assets/brands/merchant-of-venice.png?format=avif&quality=80&w=384&h=256';
+import valentino from '@/assets/brands/valentino.png?format=avif&quality=80&w=384&h=256';
+import burberry from '@/assets/brands/burberry.png?format=avif&quality=80&w=384&h=256';
+import montale from '@/assets/brands/montale.png?format=avif&quality=80&w=384&h=256';
+import versace from '@/assets/brands/versace.png?format=avif&quality=80&w=384&h=256';
 
 export function BrandHighlights() {
   const brands = [
@@ -47,6 +47,8 @@ export function BrandHighlights() {
                   alt={brand.name}
                   className="h-32 w-auto object-contain"
                   loading="lazy"
+                  width={192}
+                  height={128}
                 />
               </div>
             ))}
