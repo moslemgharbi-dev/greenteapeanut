@@ -11,6 +11,8 @@ export function Hero() {
         src={heroBanner}
         alt="Flacons de parfum luxueux sur marbre"
         className="absolute inset-0 w-full h-full object-cover"
+        fetchPriority="high"
+        decoding="async"
       />
       
       {/* Dark overlay for text readability */}
