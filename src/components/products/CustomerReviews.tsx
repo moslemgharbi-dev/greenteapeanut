@@ -46,6 +46,20 @@ export function CustomerReviews({ productHandle }: { productHandle: string }) {
     setSubmitting(false);
   };
 
+  const handleDelete = async () => {
+    if (!userReview) return;
+    setDeleting(true);
+    try {
+      await deleteReview.mutateAsync(userReview.id);
+      toast({ title: 'Avis supprimé' });
+      setSelectedRating(0);
+      setComment('');
+    } catch {
+      toast({ title: 'Erreur', description: "Impossible de supprimer l'avis.", variant: 'destructive' });
+    }
+    setDeleting(false);
+  };
+
   return (
     <section className="border-t border-border pt-10 mt-10">
       <h2 className="font-serif text-xl sm:text-2xl font-medium mb-8">Avis Clients</h2>
@@ -94,9 +108,17 @@ export function CustomerReviews({ productHandle }: { productHandle: string }) {
               maxLength={1000}
               disabled={submitting}
             />
-            <Button onClick={handleSubmit} disabled={submitting || effectiveRating === 0} size="sm">
-              {submitting ? 'Envoi...' : userReview ? 'Mettre à jour' : 'Publier'}
-            </Button>
+            <div className="flex gap-2">
+              <Button onClick={handleSubmit} disabled={submitting || effectiveRating === 0} size="sm">
+                {submitting ? 'Envoi...' : userReview ? 'Mettre à jour' : 'Publier'}
+              </Button>
+              {userReview && (
+                <Button onClick={handleDelete} disabled={deleting} variant="outline" size="sm" className="text-destructive hover:text-destructive">
+                  <Trash2 className="h-4 w-4 mr-1" />
+                  {deleting ? 'Suppression...' : 'Supprimer'}
+                </Button>
+              )}
+            </div>
           </div>
         )}
       </div>
