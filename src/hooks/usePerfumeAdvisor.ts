@@ -1,5 +1,6 @@
 import { useState, useCallback, useRef } from "react";
 import { useProducts, type ShopifyProduct } from "@/hooks/useProducts";
+import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 export type Message = {
@@ -73,11 +74,17 @@ export function usePerfumeAdvisor() {
           content: m.content,
         }));
 
+        // Get current session token
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session?.access_token) {
+          throw new Error("auth_required");
+        }
+
         const response = await fetch(ADVISOR_URL, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+            Authorization: `Bearer ${session.access_token}`,
           },
           body: JSON.stringify({
             messages: allMessages,
@@ -88,6 +95,9 @@ export function usePerfumeAdvisor() {
 
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({}));
+          if (response.status === 401) {
+            throw new Error("auth_required");
+          }
           if (response.status === 429) {
             throw new Error("rate_limit");
           }
@@ -211,7 +221,9 @@ export function usePerfumeAdvisor() {
         }
 
         const errorMessage =
-          error instanceof Error && error.message === "rate_limit"
+          error instanceof Error && error.message === "auth_required"
+            ? "Connecte-toi pour utiliser le conseiller parfum."
+            : error instanceof Error && error.message === "rate_limit"
             ? "Trop de requêtes, réessaie dans quelques secondes."
             : error instanceof Error && error.message === "payment_required"
             ? "Service temporairement indisponible."
