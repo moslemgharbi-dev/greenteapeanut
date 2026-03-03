@@ -99,14 +99,25 @@ export default function Profile() {
           ) : (
             <div className="space-y-4">
               {reviews.map((r) => (
-                <div key={r.product_handle} className="border border-border rounded-lg p-4">
-                  <div className="flex items-center gap-2 mb-1">
-                    <div className="flex gap-0.5">
-                      {[1, 2, 3, 4, 5].map(s => (
-                        <Star key={s} className={`h-4 w-4 ${s <= r.rating ? 'fill-foreground text-foreground' : 'fill-none text-foreground/30'}`} />
-                      ))}
+                <div key={r.id} className="border border-border rounded-lg p-4">
+                  <div className="flex items-center justify-between mb-1">
+                    <div className="flex items-center gap-2">
+                      <div className="flex gap-0.5">
+                        {[1, 2, 3, 4, 5].map(s => (
+                          <Star key={s} className={`h-4 w-4 ${s <= r.rating ? 'fill-foreground text-foreground' : 'fill-none text-foreground/30'}`} />
+                        ))}
+                      </div>
+                      <span className="text-xs text-muted-foreground">{new Date(r.created_at).toLocaleDateString('fr-FR')}</span>
                     </div>
-                    <span className="text-xs text-muted-foreground">{new Date(r.created_at).toLocaleDateString('fr-FR')}</span>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-destructive hover:text-destructive h-8 px-2"
+                      onClick={() => handleDeleteReview(r.id)}
+                      disabled={deletingId === r.id}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
                   </div>
                   <p className="text-sm font-medium capitalize">{r.product_handle.replace(/-/g, ' ')}</p>
                   {r.comment && <p className="text-sm text-muted-foreground mt-1">{r.comment}</p>}
