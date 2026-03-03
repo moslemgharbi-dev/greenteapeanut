@@ -5,7 +5,7 @@ import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Star } from 'lucide-react';
+import { Star, Trash2 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
@@ -15,7 +15,8 @@ export default function Profile() {
   const navigate = useNavigate();
   const [fullName, setFullName] = useState('');
   const [saving, setSaving] = useState(false);
-  const [reviews, setReviews] = useState<{ product_handle: string; rating: number; comment: string | null; created_at: string }[]>([]);
+  const [reviews, setReviews] = useState<{ id: string; product_handle: string; rating: number; comment: string | null; created_at: string }[]>([]);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -34,10 +35,22 @@ export default function Profile() {
       if (data?.full_name) setFullName(data.full_name);
     });
     // Fetch user reviews
-    supabase.from('reviews').select('product_handle, rating, comment, created_at').eq('user_id', user.id).order('created_at', { ascending: false }).then(({ data }) => {
+    supabase.from('reviews').select('id, product_handle, rating, comment, created_at').eq('user_id', user.id).order('created_at', { ascending: false }).then(({ data }) => {
       if (data) setReviews(data);
     });
   }, [user, navigate]);
+
+  const handleDeleteReview = async (reviewId: string) => {
+    setDeletingId(reviewId);
+    const { error } = await supabase.from('reviews').delete().eq('id', reviewId);
+    if (error) {
+      toast({ title: 'Erreur', description: error.message, variant: 'destructive' });
+    } else {
+      setReviews((prev) => prev.filter((r) => r.id !== reviewId));
+      toast({ title: 'Avis supprimé' });
+    }
+    setDeletingId(null);
+  };
 
   const handleSave = async () => {
     if (!user) return;
@@ -86,14 +99,25 @@ export default function Profile() {
           ) : (
             <div className="space-y-4">
               {reviews.map((r) => (
-                <div key={r.product_handle} className="border border-border rounded-lg p-4">
-                  <div className="flex items-center gap-2 mb-1">
-                    <div className="flex gap-0.5">
-                      {[1, 2, 3, 4, 5].map(s => (
-                        <Star key={s} className={`h-4 w-4 ${s <= r.rating ? 'fill-foreground text-foreground' : 'fill-none text-foreground/30'}`} />
-                      ))}
+                <div key={r.id} className="border border-border rounded-lg p-4">
+                  <div className="flex items-center justify-between mb-1">
+                    <div className="flex items-center gap-2">
+                      <div className="flex gap-0.5">
+                        {[1, 2, 3, 4, 5].map(s => (
+                          <Star key={s} className={`h-4 w-4 ${s <= r.rating ? 'fill-foreground text-foreground' : 'fill-none text-foreground/30'}`} />
+                        ))}
+                      </div>
+                      <span className="text-xs text-muted-foreground">{new Date(r.created_at).toLocaleDateString('fr-FR')}</span>
                     </div>
-                    <span className="text-xs text-muted-foreground">{new Date(r.created_at).toLocaleDateString('fr-FR')}</span>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-destructive hover:text-destructive h-8 px-2"
+                      onClick={() => handleDeleteReview(r.id)}
+                      disabled={deletingId === r.id}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
                   </div>
                   <p className="text-sm font-medium capitalize">{r.product_handle.replace(/-/g, ' ')}</p>
                   {r.comment && <p className="text-sm text-muted-foreground mt-1">{r.comment}</p>}
