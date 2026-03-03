@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import aboutImage from '@/assets/about-section.jpg';
+import aboutImage from '@/assets/about-section.jpg?format=avif&quality=80';
 
 export function AboutSection() {
   return (
