@@ -15,7 +15,8 @@ export default function Profile() {
   const navigate = useNavigate();
   const [fullName, setFullName] = useState('');
   const [saving, setSaving] = useState(false);
-  const [reviews, setReviews] = useState<{ product_handle: string; rating: number; comment: string | null; created_at: string }[]>([]);
+  const [reviews, setReviews] = useState<{ id: string; product_handle: string; rating: number; comment: string | null; created_at: string }[]>([]);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   useEffect(() => {
     if (!authLoading && !user) {
