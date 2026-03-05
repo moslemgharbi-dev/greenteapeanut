@@ -62,7 +62,7 @@ export function Footer() {
         <div className="container py-12 md:py-16">
           {/* Brand section - always visible */}
           <div className="mb-8 md:hidden">
-            <Link to="/" className="font-brand text-xl font-medium tracking-[0.15em]">
+            <Link to="/" className="font-brand text-xl font-normal tracking-[0.15em]">
               Wael Scents
             </Link>
             <p className="mt-4 text-sm text-background/70 leading-relaxed">
