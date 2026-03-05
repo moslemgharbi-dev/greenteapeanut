@@ -92,7 +92,7 @@ export default function Auth() {
         <div className="w-full max-w-md mx-auto px-4">
           {/* Brand identity */}
           <div className="text-center mb-10">
-            <h1 className="font-brand text-2xl md:text-3xl font-medium tracking-[0.15em] uppercase mb-2">
+            <h1 className="font-brand text-2xl md:text-3xl font-normal tracking-[0.15em] uppercase mb-2">
               Wael Scents
             </h1>
             <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground">

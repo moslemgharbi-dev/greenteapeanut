@@ -83,7 +83,7 @@ export default function ResetPassword() {
       <main className="flex-1 flex items-center justify-center pt-12 md:pt-16 pb-20 md:pb-28">
         <div className="w-full max-w-md mx-auto px-4">
           <div className="text-center mb-10">
-            <h1 className="font-brand text-2xl md:text-3xl font-medium tracking-[0.15em] uppercase mb-2">
+            <h1 className="font-brand text-2xl md:text-3xl font-normal tracking-[0.15em] uppercase mb-2">
               Nouveau mot de passe
             </h1>
             <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground">

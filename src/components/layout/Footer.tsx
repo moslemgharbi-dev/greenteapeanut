@@ -183,7 +183,7 @@ export function Footer() {
           <div className="hidden md:grid grid-cols-5 gap-8">
             {/* Brand */}
             <div>
-              <Link to="/" className="font-brand text-xl font-medium tracking-[0.15em]">
+              <Link to="/" className="font-brand text-xl font-normal tracking-[0.15em]">
                 Wael Scents
               </Link>
               <p className="mt-4 text-sm text-background/70 leading-relaxed">
