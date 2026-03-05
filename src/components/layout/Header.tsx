@@ -5,9 +5,9 @@ import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { CartDrawer } from '@/components/cart/CartDrawer';
 import { InlineSearch } from '@/components/search/InlineSearch';
-import collectionHommeImg from '@/assets/collection-homme-hover.jpg?format=avif&quality=80';
-import collectionFemmeImg from '@/assets/collection-femme-hover.jpg?format=avif&quality=80';
-import collectionNicheImg from '@/assets/collection-niche-hover.png?format=avif&quality=80';
+import collectionHommeImg from '@/assets/collection-homme-hover.jpg?format=avif&quality=70&w=840';
+import collectionFemmeImg from '@/assets/collection-femme-hover.jpg?format=avif&quality=70&w=840';
+import collectionNicheImg from '@/assets/collection-niche-hover.png?format=avif&quality=70&w=840';
 
 const collectionHoverImages: Record<string, { src: string; label: string; subtitle: string }> = {
   '/collection/homme': { src: collectionHommeImg, label: 'Collection Pour Lui', subtitle: 'Découvrez nos fragrances masculines' },
