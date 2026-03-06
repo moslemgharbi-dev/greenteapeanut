@@ -14,15 +14,12 @@ function GoldenParticles() {
     if (!ctx) return;
 
     let animationId: number;
-    const particles: Array<{
-      x: number; y: number; size: number; speedX: number; speedY: number;
-      opacity: number; fadeDir: number; glow: number;
-    }> = [];
+    const dpr = window.devicePixelRatio || 1;
 
     const resize = () => {
-      canvas.width = canvas.offsetWidth * window.devicePixelRatio;
-      canvas.height = canvas.offsetHeight * window.devicePixelRatio;
-      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+      canvas.width = canvas.offsetWidth * dpr;
+      canvas.height = canvas.offsetHeight * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
     resize();
     window.addEventListener('resize', resize);
@@ -30,52 +27,160 @@ function GoldenParticles() {
     const w = () => canvas.offsetWidth;
     const h = () => canvas.offsetHeight;
 
-    // Create particles
-    for (let i = 0; i < 60; i++) {
-      particles.push({
+    // Rising smoke wisps
+    const wisps: Array<{
+      x: number; y: number; radius: number; opacity: number;
+      speedX: number; speedY: number; life: number; maxLife: number;
+    }> = [];
+
+    const spawnWisp = () => {
+      wisps.push({
         x: Math.random() * w(),
-        y: Math.random() * h(),
-        size: Math.random() * 2.5 + 0.5,
-        speedX: (Math.random() - 0.5) * 0.3,
-        speedY: -Math.random() * 0.4 - 0.1,
-        opacity: Math.random() * 0.6 + 0.1,
-        fadeDir: Math.random() > 0.5 ? 1 : -1,
-        glow: Math.random() * 8 + 4,
+        y: h() + 20,
+        radius: Math.random() * 60 + 30,
+        opacity: 0,
+        speedX: (Math.random() - 0.5) * 0.8,
+        speedY: -(Math.random() * 1.2 + 0.4),
+        life: 0,
+        maxLife: Math.random() * 300 + 200,
+      });
+    };
+
+    // Golden streaks / light rays
+    const streaks: Array<{
+      x: number; angle: number; length: number; width: number;
+      opacity: number; fadeDir: number; speed: number;
+    }> = [];
+
+    for (let i = 0; i < 5; i++) {
+      streaks.push({
+        x: Math.random() * w(),
+        angle: -Math.PI / 2 + (Math.random() - 0.5) * 0.6,
+        length: Math.random() * h() * 0.6 + h() * 0.3,
+        width: Math.random() * 3 + 1,
+        opacity: 0,
+        fadeDir: 1,
+        speed: Math.random() * 0.003 + 0.001,
       });
     }
 
+    // Floating orbs (larger, more visible)
+    const orbs: Array<{
+      x: number; y: number; size: number; baseSize: number;
+      speedX: number; speedY: number; opacity: number;
+      pulsePhase: number; pulseSpeed: number; glowSize: number;
+    }> = [];
+
+    for (let i = 0; i < 25; i++) {
+      const baseSize = Math.random() * 5 + 2;
+      orbs.push({
+        x: Math.random() * w(),
+        y: Math.random() * h(),
+        size: baseSize,
+        baseSize,
+        speedX: (Math.random() - 0.5) * 0.5,
+        speedY: -Math.random() * 0.6 - 0.2,
+        opacity: Math.random() * 0.5 + 0.2,
+        pulsePhase: Math.random() * Math.PI * 2,
+        pulseSpeed: Math.random() * 0.02 + 0.01,
+        glowSize: Math.random() * 20 + 10,
+      });
+    }
+
+    let frame = 0;
+
     const animate = () => {
       ctx.clearRect(0, 0, w(), h());
-      
-      for (const p of particles) {
-        p.x += p.speedX;
-        p.y += p.speedY;
-        p.opacity += p.fadeDir * 0.003;
-        
-        if (p.opacity >= 0.7) p.fadeDir = -1;
-        if (p.opacity <= 0.05) p.fadeDir = 1;
-        
-        if (p.y < -10) { p.y = h() + 10; p.x = Math.random() * w(); }
-        if (p.x < -10) p.x = w() + 10;
-        if (p.x > w() + 10) p.x = -10;
+      frame++;
 
-        // Golden glow
-        ctx.save();
-        ctx.globalAlpha = p.opacity * 0.3;
-        ctx.shadowBlur = p.glow;
-        ctx.shadowColor = 'rgba(212, 175, 55, 0.8)';
-        ctx.fillStyle = 'rgba(212, 175, 55, 0.6)';
+      // Spawn smoke wisps periodically
+      if (frame % 30 === 0 && wisps.length < 15) spawnWisp();
+
+      // Draw smoke wisps
+      for (let i = wisps.length - 1; i >= 0; i--) {
+        const ws = wisps[i];
+        ws.x += ws.speedX + Math.sin(ws.life * 0.02) * 0.3;
+        ws.y += ws.speedY;
+        ws.life++;
+
+        const lifeRatio = ws.life / ws.maxLife;
+        ws.opacity = lifeRatio < 0.15 ? lifeRatio / 0.15 * 0.12 :
+                     lifeRatio > 0.7 ? (1 - lifeRatio) / 0.3 * 0.12 : 0.12;
+        ws.radius += 0.15;
+
+        if (ws.life > ws.maxLife) { wisps.splice(i, 1); continue; }
+
+        const grad = ctx.createRadialGradient(ws.x, ws.y, 0, ws.x, ws.y, ws.radius);
+        grad.addColorStop(0, `rgba(212, 175, 55, ${ws.opacity * 0.6})`);
+        grad.addColorStop(0.5, `rgba(180, 150, 50, ${ws.opacity * 0.3})`);
+        grad.addColorStop(1, 'rgba(180, 150, 50, 0)');
+        ctx.fillStyle = grad;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size * 2, 0, Math.PI * 2);
+        ctx.arc(ws.x, ws.y, ws.radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Draw golden light streaks
+      for (const s of streaks) {
+        s.opacity += s.fadeDir * s.speed;
+        if (s.opacity > 0.15) s.fadeDir = -1;
+        if (s.opacity < 0) { s.fadeDir = 1; s.opacity = 0; s.x = Math.random() * w(); }
+
+        if (s.opacity > 0.01) {
+          ctx.save();
+          ctx.globalAlpha = s.opacity;
+          ctx.translate(s.x, 0);
+          ctx.rotate(s.angle);
+
+          const grad = ctx.createLinearGradient(0, 0, 0, s.length);
+          grad.addColorStop(0, 'rgba(212, 175, 55, 0)');
+          grad.addColorStop(0.3, 'rgba(212, 175, 55, 0.4)');
+          grad.addColorStop(0.7, 'rgba(232, 200, 100, 0.2)');
+          grad.addColorStop(1, 'rgba(212, 175, 55, 0)');
+
+          ctx.strokeStyle = grad;
+          ctx.lineWidth = s.width;
+          ctx.shadowBlur = 15;
+          ctx.shadowColor = 'rgba(212, 175, 55, 0.5)';
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          ctx.lineTo(0, s.length);
+          ctx.stroke();
+          ctx.restore();
+        }
+      }
+
+      // Draw floating orbs
+      for (const orb of orbs) {
+        orb.x += orb.speedX;
+        orb.y += orb.speedY;
+        orb.pulsePhase += orb.pulseSpeed;
+        orb.size = orb.baseSize + Math.sin(orb.pulsePhase) * orb.baseSize * 0.4;
+
+        if (orb.y < -20) { orb.y = h() + 20; orb.x = Math.random() * w(); }
+        if (orb.x < -20) orb.x = w() + 20;
+        if (orb.x > w() + 20) orb.x = -20;
+
+        // Outer glow
+        ctx.save();
+        ctx.globalAlpha = orb.opacity * 0.3;
+        const glow = ctx.createRadialGradient(orb.x, orb.y, 0, orb.x, orb.y, orb.glowSize);
+        glow.addColorStop(0, 'rgba(212, 175, 55, 0.5)');
+        glow.addColorStop(1, 'rgba(212, 175, 55, 0)');
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.arc(orb.x, orb.y, orb.glowSize, 0, Math.PI * 2);
         ctx.fill();
         ctx.restore();
 
-        // Core particle
+        // Core
         ctx.save();
-        ctx.globalAlpha = p.opacity;
+        ctx.globalAlpha = orb.opacity;
+        ctx.shadowBlur = 12;
+        ctx.shadowColor = 'rgba(232, 200, 100, 0.8)';
         ctx.fillStyle = 'rgba(232, 200, 100, 0.9)';
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.arc(orb.x, orb.y, orb.size, 0, Math.PI * 2);
         ctx.fill();
         ctx.restore();
       }
@@ -122,7 +227,7 @@ export function Hero() {
         <div className="absolute bottom-0 left-0 right-0 h-[30%] bg-gradient-to-t from-black/20 to-transparent animate-mist-2" />
       </div>
 
-      {/* Golden particles */}
+      {/* Golden particles, wisps & streaks */}
       <GoldenParticles />
       
       <div className="container relative z-10 text-center px-4 py-20">
