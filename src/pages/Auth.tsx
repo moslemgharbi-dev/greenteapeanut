@@ -5,7 +5,6 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
@@ -20,7 +19,6 @@ export default function Auth() {
   const [fullName, setFullName] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
   const { signIn, signUp, resetPassword, user } = useAuth();
   const navigate = useNavigate();
 
@@ -56,12 +54,6 @@ export default function Auth() {
       if (error) {
         toast({ title: 'Erreur', description: error.message, variant: 'destructive' });
       } else {
-        if (!rememberMe) {
-          sessionStorage.setItem('session-only', 'true');
-        } else {
-          sessionStorage.removeItem('session-only');
-        }
-        // Check onboarding status
         const { data: profile } = await supabase.from('profiles').select('onboarding_completed').eq('id', (await supabase.auth.getUser()).data.user?.id ?? '').maybeSingle();
         if (profile?.onboarding_completed === false) {
           navigate('/onboarding');
@@ -140,18 +132,6 @@ export default function Auth() {
               </div>
             )}
 
-            {isLogin && !isForgotPassword && (
-              <div className="flex items-center gap-2">
-                <Checkbox
-                  id="rememberMe"
-                  checked={rememberMe}
-                  onCheckedChange={(checked) => setRememberMe(checked === true)}
-                />
-                <Label htmlFor="rememberMe" className="text-sm text-muted-foreground cursor-pointer">
-                  Rester connecté
-                </Label>
-              </div>
-            )}
 
             <Button type="submit" className="w-full h-12 text-sm tracking-widest uppercase" disabled={loading}>
               {loading ? 'Chargement...' : isForgotPassword ? 'Envoyer le lien' : isLogin ? 'Se connecter' : "S'inscrire"}

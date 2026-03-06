@@ -54,19 +54,17 @@ function AppContent() {
         loadFavorites();
       } else if (event === 'SIGNED_OUT') {
         setAuthenticated(false);
-        sessionStorage.removeItem('session-only');
       }
     });
     return () => subscription.unsubscribe();
   }, [loadFavorites, setAuthenticated]);
 
-  // Sign out on browser/tab close if "Rester connecté" was not checked
+  // Always sign out on browser/tab close
   useEffect(() => {
     const handleBeforeUnload = () => {
-      if (sessionStorage.getItem('session-only') === 'true') {
-        supabase.auth.signOut();
-        sessionStorage.removeItem('session-only');
-      }
+      // Clear Supabase auth tokens from localStorage to end session
+      const keys = Object.keys(localStorage).filter(k => k.startsWith('sb-'));
+      keys.forEach(k => localStorage.removeItem(k));
     };
     window.addEventListener('beforeunload', handleBeforeUnload);
     return () => window.removeEventListener('beforeunload', handleBeforeUnload);
