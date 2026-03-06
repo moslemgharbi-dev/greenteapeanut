@@ -53,9 +53,9 @@ export default function Auth() {
 
     if (isLogin) {
       const { error } = await signIn(email, password);
-        // Redirect after login
-        }
-        // Check onboarding status
+      if (error) {
+        toast({ title: 'Erreur', description: error.message, variant: 'destructive' });
+      } else {
         const { data: profile } = await supabase.from('profiles').select('onboarding_completed').eq('id', (await supabase.auth.getUser()).data.user?.id ?? '').maybeSingle();
         if (profile?.onboarding_completed === false) {
           navigate('/onboarding');
