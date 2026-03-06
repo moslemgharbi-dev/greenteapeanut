@@ -164,6 +164,39 @@
     animation: marquee-rtl 45s linear infinite;
   }
 
+  /* Hero animations */
+  @keyframes hero-zoom {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.08); }
+  }
+  .animate-hero-zoom {
+    animation: hero-zoom 20s ease-out forwards;
+  }
+
+  @keyframes mist-1 {
+    0%, 100% { opacity: 0.3; transform: translateX(-5%); }
+    50% { opacity: 0.6; transform: translateX(5%); }
+  }
+  .animate-mist-1 {
+    animation: mist-1 8s ease-in-out infinite;
+  }
+
+  @keyframes mist-2 {
+    0%, 100% { opacity: 0.2; transform: translateX(5%); }
+    50% { opacity: 0.5; transform: translateX(-5%); }
+  }
+  .animate-mist-2 {
+    animation: mist-2 12s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+  .animate-shimmer {
+    animation: shimmer 4s ease-in-out infinite;
+  }
+
   /* Elegant thin scrollbar for select dropdowns */
   .select-scrollbar::-webkit-scrollbar {
     width: 4px;
