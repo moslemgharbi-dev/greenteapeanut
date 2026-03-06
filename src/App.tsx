@@ -54,7 +54,7 @@ function AppContent() {
         loadFavorites();
       } else if (event === 'SIGNED_OUT') {
         setAuthenticated(false);
-        sessionStorage.removeItem('session-only');
+      }
       }
     });
     return () => subscription.unsubscribe();
