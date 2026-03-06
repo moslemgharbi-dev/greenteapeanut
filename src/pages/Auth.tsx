@@ -134,18 +134,6 @@ export default function Auth() {
               </div>
             )}
 
-            {isLogin && !isForgotPassword && (
-              <div className="flex items-center gap-2">
-                <Checkbox
-                  id="rememberMe"
-                  checked={rememberMe}
-                  onCheckedChange={(checked) => setRememberMe(checked === true)}
-                />
-                <Label htmlFor="rememberMe" className="text-sm text-muted-foreground cursor-pointer">
-                  Rester connecté
-                </Label>
-              </div>
-            )}
 
             <Button type="submit" className="w-full h-12 text-sm tracking-widest uppercase" disabled={loading}>
               {loading ? 'Chargement...' : isForgotPassword ? 'Envoyer le lien' : isLogin ? 'Se connecter' : "S'inscrire"}
