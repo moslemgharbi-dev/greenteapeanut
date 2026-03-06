@@ -55,7 +55,6 @@ function AppContent() {
       } else if (event === 'SIGNED_OUT') {
         setAuthenticated(false);
       }
-      }
     });
     return () => subscription.unsubscribe();
   }, [loadFavorites, setAuthenticated]);
