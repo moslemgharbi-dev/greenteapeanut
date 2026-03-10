@@ -5,3 +5,6 @@ verify_jwt = false
 
 [functions.create-shopify-customer]
 verify_jwt = false
+
+[functions.create-newsletter-customer]
+verify_jwt = false
