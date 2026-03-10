@@ -14,7 +14,7 @@ export default function Index() {
         <Hero />
         <FeaturedProducts />
         <AboutSection />
-        <Newsletter />
+        
         <BrandHighlights />
       </main>
       <Footer />
