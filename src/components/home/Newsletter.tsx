@@ -2,18 +2,44 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
 
 export function Newsletter() {
   const [email, setEmail] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) {
-      toast.success('Bienvenue !', {
-        description: 'Vous serez le premier informé des nouveautés.',
+    if (!email) return;
+
+    setIsLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('create-newsletter-customer', {
+        body: { email },
+      });
+
+      if (error) throw error;
+
+      if (data?.message === 'already_subscribed') {
+        toast.info('Vous êtes déjà inscrit(e) !', {
+          description: 'Vous recevez déjà nos nouveautés.',
+          position: 'top-center',
+        });
+      } else {
+        toast.success('Bienvenue !', {
+          description: 'Vous serez le premier informé des nouveautés.',
+          position: 'top-center',
+        });
+      }
+      setEmail('');
+    } catch (error) {
+      console.error('Newsletter signup error:', error);
+      toast.error('Une erreur est survenue', {
+        description: 'Veuillez réessayer plus tard.',
         position: 'top-center',
       });
-      setEmail('');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -36,9 +62,10 @@ export function Newsletter() {
               onChange={(e) => setEmail(e.target.value)}
               className="flex-1 h-9 text-sm"
               required
+              disabled={isLoading}
             />
-            <Button type="submit" size="sm" className="px-6">
-              S'inscrire
+            <Button type="submit" size="sm" className="px-6" disabled={isLoading}>
+              {isLoading ? 'Envoi...' : "S'inscrire"}
             </Button>
           </form>
           
