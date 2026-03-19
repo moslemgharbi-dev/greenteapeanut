@@ -34,7 +34,7 @@ export default function About() {
                   L'origine
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
-                  Wael Scents est né d'une passion exigeante pour les belles compositions
+                  Wael Ben Yaghlane est né d'une passion exigeante pour les belles compositions
                   et pour le geste du choix : comparer, sentir, comprendre, puis sélectionner.
                   L'histoire commence avec un désir simple — proposer des fragrances capables
                   de marquer un moment, sans jamais trahir l'élégance.
