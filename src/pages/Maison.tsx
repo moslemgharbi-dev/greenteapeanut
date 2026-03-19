@@ -6,7 +6,7 @@ export default function Maison() {
     <>
       <StaticPage
         eyebrow="La Maison"
-        title="Wael Scents"
+        title="Wael Ben Yaghlane"
         lead="Une parfumerie pensée comme un lieu de découverte : exigeante dans la sélection, précise dans le conseil, attentive dans chaque détail."
       >
         <p>
