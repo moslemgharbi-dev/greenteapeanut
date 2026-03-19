@@ -87,15 +87,6 @@ export function Header() {
             {isMobileSearchOpen ? <X className="h-5 w-5" /> : <Search className="h-5 w-5" />}
           </Button>
 
-          <Button
-            variant="ghost"
-            size="icon"
-            aria-label="Favoris"
-            className="hidden md:flex"
-            onClick={() => {}}
-          >
-            <Heart className="h-5 w-5" />
-          </Button>
 
           <Button
             variant="ghost"
