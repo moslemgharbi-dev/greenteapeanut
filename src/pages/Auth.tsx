@@ -85,7 +85,7 @@ export default function Auth() {
           {/* Brand identity */}
           <div className="text-center mb-10">
             <h1 className="font-brand text-2xl md:text-3xl font-normal tracking-[0.15em] uppercase mb-2">
-              Wael Scents
+              Wael Ben Yaghlane
             </h1>
             <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground">
               {isForgotPassword ? 'Réinitialiser votre mot de passe' : isLogin ? 'Connexion à votre compte' : 'Créer votre compte'}

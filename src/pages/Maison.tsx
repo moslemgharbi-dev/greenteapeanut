@@ -10,7 +10,7 @@ export default function Maison() {
         lead="Une parfumerie pensée comme un lieu de découverte : exigeante dans la sélection, précise dans le conseil, attentive dans chaque détail."
       >
         <p>
-          La Maison Wael Scents célèbre la fragrance comme un art de vivre.
+          La Maison Wael Ben Yaghlane célèbre la fragrance comme un art de vivre.
           Ici, chaque création est choisie pour son caractère, sa tenue et son équilibre —
           afin que le parfum devienne une signature, et non un simple accessoire.
         </p>

@@ -21,7 +21,7 @@ export default function Cgv() {
       <h2 className="text-base font-medium text-foreground">2. Identité du vendeur</h2>
       <ul className="list-disc pl-5 space-y-2">
         <li>Vendeur : Personne physique (à compléter : nom complet si différent).</li>
-        <li>Nom commercial : Wael Scents.</li>
+        <li>Nom commercial : Wael Ben Yaghlane.</li>
         <li>Contact : via la page Contact du Site.</li>
       </ul>
 

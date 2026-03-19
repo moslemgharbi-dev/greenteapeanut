@@ -184,7 +184,7 @@ export function Footer() {
             {/* Brand */}
             <div>
               <Link to="/" className="font-brand text-xl font-normal tracking-[0.15em]">
-                Wael Scents
+                Wael Ben Yaghlane
               </Link>
               <p className="mt-4 text-sm text-background/70 leading-relaxed">
                 Là où chaque fragrance raconte une histoire.

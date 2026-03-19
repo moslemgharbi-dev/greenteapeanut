@@ -200,7 +200,7 @@ export function Header() {
                 className="text-sm font-medium py-2"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Maison Wael Scents
+                Maison Wael Ben Yaghlane
               </Link>
             </div>
           </div>
