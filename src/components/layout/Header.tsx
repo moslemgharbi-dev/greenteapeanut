@@ -69,7 +69,7 @@ export function Header() {
 
         {/* Brand (center) */}
         <Link to="/" className="justify-self-center text-center group min-w-0">
-          <span className="font-brand text-2xl sm:text-3xl md:text-5xl font-normal tracking-[0.1em] md:tracking-[0.15em] uppercase transition-opacity group-hover:opacity-80 whitespace-nowrap">
+          <span className="font-brand text-xl sm:text-2xl md:text-4xl font-normal tracking-[0.08em] md:tracking-[0.12em] uppercase transition-opacity group-hover:opacity-80 whitespace-nowrap">
             Wael Ben Yaghlane
           </span>
           <span className="sr-only">Accueil</span>
