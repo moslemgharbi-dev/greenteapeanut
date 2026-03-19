@@ -171,14 +171,6 @@ export function Header() {
                 <User className="h-4 w-4" />
                 {user ? 'Mon compte' : 'Connexion'}
               </Link>
-              <button
-                type="button"
-                className="flex items-center gap-2 text-sm font-medium py-2"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                <Heart className="h-4 w-4" />
-                Favoris
-              </button>
               <Link
                 to="/contact"
                 className="text-sm font-medium py-2"
