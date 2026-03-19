@@ -128,7 +128,7 @@ export function Footer() {
               </ul>
             </FooterAccordion>
 
-            <FooterAccordion title="Maison Wael Scents & vous">
+            <FooterAccordion title="Maison Wael Ben Yaghlane & vous">
               <ul className="space-y-3">
                 <li>
                   <Link to="/shipping" className="text-sm text-background/70 hover:text-background transition-colors">
