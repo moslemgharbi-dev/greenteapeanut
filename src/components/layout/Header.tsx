@@ -44,7 +44,7 @@ export function Header() {
             Contact
           </Link>
           <Link to="/maison" className="hover:opacity-80 transition-opacity">
-            Maison Wael Scents
+            Maison Wael Ben Yaghlane
           </Link>
         </div>
       </div>
