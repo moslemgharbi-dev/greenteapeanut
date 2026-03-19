@@ -253,7 +253,7 @@ export function Footer() {
 
             {/* Maison Wael Scents & vous */}
             <div>
-              <h4 className="font-medium text-sm uppercase tracking-wider mb-4">Maison Wael Scents &amp; vous</h4>
+              <h4 className="font-medium text-sm uppercase tracking-wider mb-4">Maison Wael Ben Yaghlane &amp; vous</h4>
               <ul className="space-y-3">
                 <li>
                   <Link to="/shipping" className="text-sm text-background/70 hover:text-background transition-colors">
