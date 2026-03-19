@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Heart, Menu, Search, User, X } from 'lucide-react';
+import { Menu, Search, User, X } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { CartDrawer } from '@/components/cart/CartDrawer';
@@ -87,15 +87,6 @@ export function Header() {
             {isMobileSearchOpen ? <X className="h-5 w-5" /> : <Search className="h-5 w-5" />}
           </Button>
 
-          <Button
-            variant="ghost"
-            size="icon"
-            aria-label="Favoris"
-            className="hidden md:flex"
-            onClick={() => {}}
-          >
-            <Heart className="h-5 w-5" />
-          </Button>
 
           <Button
             variant="ghost"
@@ -180,14 +171,6 @@ export function Header() {
                 <User className="h-4 w-4" />
                 {user ? 'Mon compte' : 'Connexion'}
               </Link>
-              <button
-                type="button"
-                className="flex items-center gap-2 text-sm font-medium py-2"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                <Heart className="h-4 w-4" />
-                Favoris
-              </button>
               <Link
                 to="/contact"
                 className="text-sm font-medium py-2"
