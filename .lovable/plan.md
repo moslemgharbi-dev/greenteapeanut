@@ -1,33 +1,12 @@
 
 
-## Typography A/B Testing for "WAEL BEN YAGHLANE"
+## Generate Updated Brand Logo
 
-We'll swap the brand font one at a time so you can see each option live and pick your favorite.
+**What**: Create a new logo image — "Wael Ben Yaghlane" in white text on a solid black background — replacing the old "Wael Scents" version at `public/wael-scents-logo-white.png`.
 
-### Round 1: Cinzel
-
-**What changes:**
-1. **index.html** - Replace the Google Fonts link: swap `Cormorant+Garamond` for `Cinzel` (weights 400, 500, 600, 700)
-2. **tailwind.config.ts** - Update `fontFamily.brand` from `["Cormorant Garamond", ...]` to `["Cinzel", "Georgia", "serif"]`
-
-No other files change -- the Header and all components already use `font-brand`, so the new font propagates automatically.
-
-After you see it live, tell me:
-- **"Next"** to move to Bodoni Moda
-- **"Keep this"** to stop here
-- **"Next"** again after Bodoni Moda to try Tenor Sans
-
-### Round 2: Bodoni Moda
-Same two files, swapping to `Bodoni+Moda` from Google Fonts.
-
-### Round 3: Tenor Sans
-Same two files, swapping to `Tenor+Sans` from Google Fonts.
-
-### Round 4 (if none fit): Revert to Cormorant Garamond
-Restore the original configuration.
-
-### Technical details
-- Only 2 files are modified each round: `index.html` (font import) and `tailwind.config.ts` (font-brand definition)
-- All components using `font-brand` class will automatically reflect the change
-- Letter-spacing (`tracking-[0.15em]`) stays the same unless you want adjustments per font
+**How**:
+1. Generate a new image using the AI image generation tool: white uppercase "WAEL BEN YAGHLANE" text in Bodoni Moda style (high-contrast serif, thin elegant strokes), wide letter spacing, centered on a solid black background.
+2. Save it to `public/wael-ben-yaghlane-logo-white.png`.
+3. Also generate a black-on-transparent version at `public/wael-ben-yaghlane-logo.png` to replace the old `wael-scents-logo.png`.
+4. Update any code references from the old filenames to the new ones.
 
